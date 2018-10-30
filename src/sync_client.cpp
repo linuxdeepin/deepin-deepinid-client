@@ -4,6 +4,8 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
 
+#include <QCoreApplication>
+
 namespace Const
 {
 const auto SyncDaemonService   = "com.deepin.sync.Daemon";
@@ -42,10 +44,20 @@ SyncClient::~SyncClient()
 
 }
 
+QString SyncClient::machineID() const
+{
+    Q_D(const SyncClient);
+    return d->daemonIf->property("MachineID").toString();
+}
+
 void SyncClient::setToken(const QString &token)
 {
-//    Q_D(SyncClient);
-    qDebug() << token;
-//   d->daemonIf->call();
+    Q_D(SyncClient);
+    auto reply = d->daemonIf->call("SetToken", token);
+    qDebug() << "set token" << token
+             << "with reply:" << reply.errorName() << reply.errorMessage();
+
+    // TODO: deal with failed issue
+    qApp->quit();
 }
 }

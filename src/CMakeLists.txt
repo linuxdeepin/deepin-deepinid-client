@@ -8,6 +8,8 @@ set(CMAKE_AUTOMOC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
 
+add_definitions("-DQT_MESSAGELOGCONTEXT")
+
 # Qt Config
 find_package(PkgConfig REQUIRED)
 find_package(Qt5Core REQUIRED)

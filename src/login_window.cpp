@@ -1,3 +1,4 @@
+
 #include "login_window.h"
 
 #include <QDebug>
@@ -21,9 +22,17 @@ public:
     LoginWindowPrivate(LoginWindow *parent) : q_ptr(parent)
     {
         client = new SyncClient(parent);
+
+        auto templateURL = "https://login.deepin.org/oauth2/authorize?client_id=%1&redirect_uri=%2&response_type=code&scope=%3&display=client";
+        auto clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
+        auto redirectURI = "http://sync.deepin.org/login";
+        auto scope = "base,user:read";
+        url = QString(templateURL).arg(clientID).arg(redirectURI).arg(scope);
     }
 
-    SyncClient *client;
+    QCefWebView     *webView;
+    SyncClient      *client;
+    QString         url;
 
     LoginWindow *q_ptr;
     Q_DECLARE_PUBLIC(LoginWindow)
@@ -37,28 +46,37 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     this->titlebar()->setTitle("");
 
-    auto web_view_ = new QCefWebView();
-    this->setCentralWidget(web_view_);
-    qDebug() << web_view_;
+    d->webView = new QCefWebView();
+    this->setCentralWidget(d->webView);
+
+    auto machineID = d->client->machineID();
     // Disable web security.
-    auto settings = web_view_->page()->settings();
+    auto settings = d->webView->page()->settings();
     settings->setMinimumFontSize(8);
     settings->setWebSecurity(QCefWebSettings::StateDisabled);
+    settings->setCustomHeaders({
+        {"X-Machine-ID", machineID}
+    });
 
-
-    auto web_channel = web_view_->page()->webChannel();
-
+    auto web_channel = d->webView->page()->webChannel();
     web_channel->registerObject("client", d->client);
-//    auto web_event_delegate_ = new dstore::WebEventDelegate(this);
-//    web_view_->page()->setEventDelegate(web_event_delegate_);
-
-    auto url = "https://login.deepin.org/oauth2/authorize?client_id=fcb9f8cac81074100b9482d534767a1fecc148b3&redirect_uri=https%3A%2F%2Faccount.deepin.org%2Flogin&response_type=code&scope=base%2Cuser%3Aread%2Cuser%3Aedit%2Cprofile%3Aread%2Cprofile%3Aedit&display=client";
-//    url = "http://127.0.0.1:8000/a.html";
-    web_view_->load(QUrl(url));
 }
 
 LoginWindow::~LoginWindow()
 {
 
 }
+
+void LoginWindow::setURL(const QString &url)
+{
+    Q_D(LoginWindow);
+    d->url = url;
+}
+
+void LoginWindow::load()
+{
+    Q_D(LoginWindow);
+    d->webView->load(QUrl(d->url));
+}
+
 }

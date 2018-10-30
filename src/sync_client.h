@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
+#include <QObject>
+#include <QScopedPointer>
 
 namespace dsc
 {
@@ -13,6 +13,8 @@ class SyncClient : public QObject
 public:
     explicit SyncClient(QObject *parent = Q_NULLPTR);
     ~SyncClient();
+
+    QString machineID() const;
 
 public Q_SLOTS:
     Q_SCRIPTABLE void setToken(const QString& token);
