@@ -2,7 +2,13 @@ Source: deepin-sync-client
 Section: net
 Priority: optional
 Maintainer: Iceyer <me@iceyer.net>
-Build-Depends: debhelper (>= 10)
+Build-Depends: debhelper (>= 10),
+ cmake,
+ libdtkwidget-dev,
+ libqcef-dev,
+ libqt5webchannel5-dev,
+ pkg-config,
+ qttools5-dev-tools
 Standards-Version: 4.1.2
 Homepage: https://www.deepin.org
 #Vcs-Git: https://anonscm.debian.org/git/collab-maint/deepin-sync-client.git
