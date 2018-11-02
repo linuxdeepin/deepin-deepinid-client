@@ -53,7 +53,7 @@ bool initQCef(int argc, char **argv)
     settings.addCommandLineSwitch(Const::EnableLogging, "");
     settings.addCommandLineSwitch(Const::LogLevel, "0");
 
-    settings.setBackgroundColor(0x001C1C1C);
+    settings.setBackgroundColor(0x00FFFFFF);
     auto ret = QCefInit(argc, argv, settings);
     if (ret >= 0) {
         qCritical() << "init qcef failed" << ret;
@@ -73,7 +73,6 @@ int main(int argc, char **argv)
 
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
-
 
     Dtk::Widget::DApplication::loadDXcbPlugin();
     Dtk::Widget::DApplication app(argc, argv);
@@ -96,7 +95,7 @@ int main(int argc, char **argv)
     parser.process(app);
 
     dsc::LoginWindow lw;
-    lw.setFixedSize(380, 390);
+    lw.setFixedSize(360, 420);
 
 //    if (parser.isSet(bootstrap)) {
 //        lw.setURL(parser.value(bootstrap));
@@ -105,6 +104,5 @@ int main(int argc, char **argv)
     Dtk::Widget::moveToCenter(&lw);
 //    lw.setURL("https://www.baidu.com");
     lw.load();
-
     return app.exec();
 }
