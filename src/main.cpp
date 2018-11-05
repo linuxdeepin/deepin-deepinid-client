@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     parser.process(app);
 
     dsc::LoginWindow lw;
-    lw.setFixedSize(360, 420);
+    lw.setFixedSize(360, 430);
 
 //    if (parser.isSet(bootstrap)) {
 //        lw.setURL(parser.value(bootstrap));

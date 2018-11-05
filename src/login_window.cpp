@@ -45,6 +45,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     Q_D(LoginWindow);
 
     this->titlebar()->setTitle("");
+    setWindowFlag(Qt::ToolTip);
+
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
     setWindowFlags(flag);
