@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     QCefBindApp(&app);
 
     QCommandLineParser parser;
-    QCommandLineOption bootstrap("bootstrap", "start up url");
+    QCommandLineOption bootstrap({"b", "bootstrap"}, "start up url", "url", "");
     parser.addOption(bootstrap);
     parser.addHelpOption();
 
@@ -96,13 +96,11 @@ int main(int argc, char **argv)
 
     dsc::LoginWindow lw;
     lw.setFixedSize(360, 430);
-
-//    if (parser.isSet(bootstrap)) {
-//        lw.setURL(parser.value(bootstrap));
-//    }
+    if (parser.isSet(bootstrap)) {
+        lw.setURL(parser.value(bootstrap));
+    }
     lw.show();
     Dtk::Widget::moveToCenter(&lw);
-//    lw.setURL("https://www.baidu.com");
     lw.load();
 
     return app.exec();
