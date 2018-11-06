@@ -4,6 +4,8 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
 
+#include <QUrl>
+#include <QDesktopServices>
 #include <QCoreApplication>
 
 namespace Const
@@ -60,4 +62,10 @@ void SyncClient::setToken(const QString &token)
     // TODO: deal with failed issue
     qApp->quit();
 }
+
+void SyncClient::open(const QString &url)
+{
+    QDesktopServices::openUrl(url);
+}
+
 }

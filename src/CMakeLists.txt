@@ -31,7 +31,9 @@ set(CLIENT_FILES
     login_window.h
     login_window.cpp
     sync_client.h
-    sync_client.cpp)
+    sync_client.cpp
+    web_event_delegate.h
+    web_event_delegate.cpp)
 
 add_executable(deepin-sync-client ${CLIENT_FILES})
 

@@ -104,5 +104,6 @@ int main(int argc, char **argv)
     Dtk::Widget::moveToCenter(&lw);
 //    lw.setURL("https://www.baidu.com");
     lw.load();
+
     return app.exec();
 }
