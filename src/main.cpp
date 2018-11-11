@@ -1,10 +1,11 @@
 #include <QIcon>
+#include <QDBusError>
+#include <QDBusConnection>
 
 #include <DApplication>
 #include <DLog>
 #include <DPlatformWindowHandle>
 #include <DStandardPaths>
-#include <DWidgetUtil>
 
 #include <qcef_context.h>
 #include <qcef_web_settings.h>
@@ -17,6 +18,9 @@ const char EnableDomStorageFlush[] = "--enable-aggressive-domstorage-flushing";
 const char DisableGpu[] = "--disable-gpu";
 const char EnableLogging[] = "--enable-logging";
 const char LogLevel[] = "--log-level";
+const char *DBusService = "com.deepin.sync.Client";
+const char *DBusPath = "/com/deepin/sync/Client";
+const char *DBusInterface = "com.deepin.sync.Client";
 } // namespace Const
 
 bool initQCef(int argc, char **argv)
@@ -89,19 +93,35 @@ int main(int argc, char **argv)
 
     QCommandLineParser parser;
     QCommandLineOption bootstrap({"b", "bootstrap"}, "start up url", "url", "");
+    QCommandLineOption daemon({"d", "daemon"}, "run in background");
     parser.addOption(bootstrap);
+    parser.addOption(daemon);
     parser.addHelpOption();
 
     parser.process(app);
 
     dsc::LoginWindow lw;
     lw.setFixedSize(360, 430);
+
+    auto sessionBus = QDBusConnection::sessionBus();
+    if (!sessionBus.registerService(Const::DBusService)) {
+        qDebug() << "register service failed" << sessionBus.lastError();
+        return -1;
+    }
+    if (!sessionBus.registerObject(Const::DBusPath,
+                                   &lw,
+                                   QDBusConnection::ExportScriptableSlots)) {
+        qDebug() << "register object failed" << sessionBus.lastError();
+        return -2;
+    }
+
     if (parser.isSet(bootstrap)) {
         lw.setURL(parser.value(bootstrap));
     }
-    lw.show();
-    Dtk::Widget::moveToCenter(&lw);
-    lw.load();
+
+    if (!parser.isSet(daemon)) {
+        lw.Show();
+    }
 
     return app.exec();
 }

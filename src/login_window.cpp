@@ -6,6 +6,7 @@
 #include <QtWebChannel/QWebChannel>
 
 #include <DTitlebar>
+#include <DWidgetUtil>
 
 #include <qcef_web_page.h>
 #include <qcef_web_settings.h>
@@ -78,6 +79,13 @@ LoginWindow::LoginWindow(QWidget *parent)
 LoginWindow::~LoginWindow()
 {
 
+}
+
+void LoginWindow::Show()
+{
+    this->show();
+    Dtk::Widget::moveToCenter(this);
+    this->load();
 }
 
 void LoginWindow::setURL(const QString &url)
