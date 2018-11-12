@@ -18,9 +18,9 @@ const char EnableDomStorageFlush[] = "--enable-aggressive-domstorage-flushing";
 const char DisableGpu[] = "--disable-gpu";
 const char EnableLogging[] = "--enable-logging";
 const char LogLevel[] = "--log-level";
-const char *DBusService = "com.deepin.sync.Client";
-const char *DBusPath = "/com/deepin/sync/Client";
-const char *DBusInterface = "com.deepin.sync.Client";
+const char DBusService[] = "com.deepin.sync.Client";
+const char DBusPath[] = "/com/deepin/sync/Client";
+//const char DBusInterface[] = "com.deepin.sync.Client";
 } // namespace Const
 
 bool initQCef(int argc, char **argv)
@@ -47,13 +47,15 @@ bool initQCef(int argc, char **argv)
     // See public/common/content_switches.cc.
     settings.addCommandLineSwitch(Const::EnableDomStorageFlush, "");
 
-    QDir cache_dir(Dtk::Core::DStandardPaths::standardLocations(QStandardPaths::CacheLocation).value(0));
-    cache_dir.mkpath(".");
+    QDir cacheDir(Dtk::Core::DStandardPaths::standardLocations(QStandardPaths::CacheLocation).value(0));
+    QDir appCacheDir(cacheDir.absoluteFilePath("deepin/deepin-sync-client"));
+    qDebug() <<appCacheDir;
+    appCacheDir.mkpath(".");
 
-    settings.setCachePath(cache_dir.filePath("cache"));
-    settings.setUserDataPath(cache_dir.filePath("cef-storage"));
+    settings.setCachePath(appCacheDir.filePath("cache"));
+    settings.setUserDataPath(appCacheDir.filePath("cef-storage"));
 
-    settings.setLogFile(cache_dir.filePath("web-console.log"));
+    settings.setLogFile(appCacheDir.filePath("web-console.log"));
     settings.addCommandLineSwitch(Const::EnableLogging, "");
     settings.addCommandLineSwitch(Const::LogLevel, "0");
 

@@ -25,9 +25,9 @@ public:
     {
         client = new SyncClient(parent);
 
-        auto templateURL = "http://127.0.0.1:8012/oauth2/authorize?client_id=%1&redirect_uri=%2&response_type=code&scope=%3&display=sync&handle_open_link=true";
-        auto clientID = "49a9d6097794b827f187a685818d347ffc8f7a7c";
-        auto redirectURI = "http://test.account.deepin.org/login";
+        auto templateURL = "http://login.deepin.org/oauth2/authorize?client_id=%1&redirect_uri=%2&response_type=code&scope=%3&display=sync&handle_open_link=true";
+        auto clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
+        auto redirectURI = "http://sync.deepin.org/login";
         auto scope = "base,user:read";
         url = QString(templateURL).arg(clientID).arg(redirectURI).arg(scope);
     }
@@ -47,7 +47,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     Q_D(LoginWindow);
 
     this->titlebar()->setTitle("");
-//    setWindowFlag(Qt::SplashScreen);
+    setWindowFlag(Qt::Dialog);
 
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
@@ -72,8 +72,6 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     auto web_channel = d->webView->page()->webChannel();
     web_channel->registerObject("client", d->client);
-
-    this->setFocusPolicy(Qt::ClickFocus);
 }
 
 LoginWindow::~LoginWindow()
