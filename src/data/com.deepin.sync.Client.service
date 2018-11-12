@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.deepin.sync.Client
+Exec=/usr/bin/deepin-sync-client

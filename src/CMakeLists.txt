@@ -41,3 +41,5 @@ install(TARGETS deepin-sync-client
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 target_link_libraries(deepin-sync-client Qt5::Widgets Qt5::WebChannel Qt5::DBus ${QCef_LDFLAGS} ${DtkWidget_LDFLAGS})
+
+add_subdirectory(data)
