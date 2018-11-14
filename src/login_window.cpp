@@ -27,7 +27,7 @@ public:
 
         auto templateURL = "http://login.deepin.org/oauth2/authorize?client_id=%1&redirect_uri=%2&response_type=code&scope=%3&display=sync&handle_open_link=true";
         auto clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
-        auto redirectURI = "http://sync.deepin.org/login";
+        auto redirectURI = "http://sync.deepin.org/oauth/callback";
         auto scope = "base,user:read";
         url = QString(templateURL).arg(clientID).arg(redirectURI).arg(scope);
     }
