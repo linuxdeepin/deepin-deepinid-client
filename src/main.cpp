@@ -18,9 +18,9 @@ const char EnableDomStorageFlush[] = "--enable-aggressive-domstorage-flushing";
 const char DisableGpu[] = "--disable-gpu";
 const char EnableLogging[] = "--enable-logging";
 const char LogLevel[] = "--log-level";
+
 const char DBusService[] = "com.deepin.sync.Client";
 const char DBusPath[] = "/com/deepin/sync/Client";
-//const char DBusInterface[] = "com.deepin.sync.Client";
 } // namespace Const
 
 bool initQCef(int argc, char **argv)
@@ -49,7 +49,6 @@ bool initQCef(int argc, char **argv)
 
     QDir cacheDir(Dtk::Core::DStandardPaths::standardLocations(QStandardPaths::CacheLocation).value(0));
     QDir appCacheDir(cacheDir.absoluteFilePath("deepin/deepin-sync-client"));
-    qDebug() <<appCacheDir;
     appCacheDir.mkpath(".");
 
     settings.setCachePath(appCacheDir.filePath("cache"));
@@ -103,6 +102,11 @@ int main(int argc, char **argv)
     parser.process(app);
 
     dsc::LoginWindow lw;
+
+    if (lw.logined()) {
+        qWarning() << "user has logined";
+        return 0;
+    }
     lw.setFixedSize(360, 430);
 
     auto sessionBus = QDBusConnection::sessionBus();

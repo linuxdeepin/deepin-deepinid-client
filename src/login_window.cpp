@@ -79,6 +79,12 @@ LoginWindow::~LoginWindow()
 
 }
 
+bool LoginWindow::logined() const
+{
+    Q_D(const LoginWindow);
+    return d->client->logined();
+}
+
 void LoginWindow::Show()
 {
     this->show();

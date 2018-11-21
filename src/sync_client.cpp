@@ -52,6 +52,12 @@ QString SyncClient::machineID() const
     return d->daemonIf->property("MachineID").toString();
 }
 
+bool SyncClient::logined() const
+{
+    Q_D(const SyncClient);
+    return d->daemonIf->property("Logined").toBool();
+}
+
 void SyncClient::setToken(const QString &token)
 {
     Q_D(SyncClient);

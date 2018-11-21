@@ -14,6 +14,7 @@ public:
     LoginWindow(QWidget *parent = Q_NULLPTR);
     ~LoginWindow();
 
+    bool logined() const;
     void setURL(const QString &url);
     void load();
 
