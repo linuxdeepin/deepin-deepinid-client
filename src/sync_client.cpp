@@ -64,11 +64,11 @@ bool SyncClient::logined() const
     return userInfo.value("loggedIn").toBool();
 }
 
-void SyncClient::setToken(const QString &token)
+void SyncClient::setToken(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);
-    auto reply = d->daemonIf->SetToken(token);
-    qDebug() << "set token" << token
+    auto reply = d->daemonIf->SetToken(tokenInfo);
+    qDebug() << "set token" << tokenInfo
              << "with reply:" << reply.error();
 
     // TODO: deal with failed issue

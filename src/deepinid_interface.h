@@ -69,7 +69,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("Logout"), argumentList);
     }
 
-    inline QDBusPendingReply<> SetToken(const QString &in0)
+    inline QDBusPendingReply<> SetToken(const QVariantMap &in0)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0);

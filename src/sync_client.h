@@ -18,7 +18,7 @@ public:
     bool logined() const;
 
 public Q_SLOTS:
-    Q_SCRIPTABLE void setToken(const QString &token);
+    Q_SCRIPTABLE void setToken(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
 
 private:
