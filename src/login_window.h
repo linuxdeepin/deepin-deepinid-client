@@ -9,7 +9,7 @@ class LoginWindowPrivate;
 class LoginWindow: public Dtk::Widget::DMainWindow
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "com.deepin.sync.Client")
+    Q_CLASSINFO("D-Bus Interface", "com.deepin.deepinid.Client")
 public:
     LoginWindow(QWidget *parent = Q_NULLPTR);
     ~LoginWindow();

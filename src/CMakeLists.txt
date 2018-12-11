@@ -32,14 +32,16 @@ set(CLIENT_FILES
     login_window.cpp
     sync_client.h
     sync_client.cpp
+    deepinid_interface.h
+    deepinid_interface.cpp
     web_event_delegate.h
     web_event_delegate.cpp)
 
-add_executable(deepin-sync-client ${CLIENT_FILES})
+add_executable(deepin-deepinid-client ${CLIENT_FILES})
 
-install(TARGETS deepin-sync-client
+install(TARGETS deepin-deepinid-client
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
-target_link_libraries(deepin-sync-client Qt5::Widgets Qt5::WebChannel Qt5::DBus ${QCef_LDFLAGS} ${DtkWidget_LDFLAGS})
+target_link_libraries(deepin-deepinid-client Qt5::Widgets Qt5::WebChannel Qt5::DBus ${QCef_LDFLAGS} ${DtkWidget_LDFLAGS})
 
 add_subdirectory(data)

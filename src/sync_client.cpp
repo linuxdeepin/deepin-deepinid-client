@@ -1,6 +1,8 @@
 #include "sync_client.h"
 
 #include <QDebug>
+#include <QtDBus>
+#include <QVariantMap>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
 
@@ -8,11 +10,13 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 
+#include "deepinid_interface.h"
+
 namespace Const
 {
-const auto SyncDaemonService   = "com.deepin.sync.Daemon";
-const auto SyncDaemonPath      = "/com/deepin/sync/Daemon";
-const auto SyncDaemonInterface = "com.deepin.sync.Daemon";
+const auto SyncDaemonService   = "com.deepin.deepinid";
+const auto SyncDaemonPath      = "/com/deepin/deepinid";
+//const auto SyncDaemonInterface = "com.deepin.deepinid";
 }
 
 namespace dsc
@@ -23,13 +27,13 @@ class SyncClientPrivate
 public:
     SyncClientPrivate(SyncClient *parent) : q_ptr(parent)
     {
-        daemonIf = new QDBusInterface(Const::SyncDaemonService,
-                                      Const::SyncDaemonPath,
-                                      Const::SyncDaemonInterface,
-                                      QDBusConnection::sessionBus());
+
+        daemonIf = new DeepinIDInterface(Const::SyncDaemonService,
+                                         Const::SyncDaemonPath,
+                                         QDBusConnection::sessionBus());
     }
 
-    QDBusInterface *daemonIf;
+    DeepinIDInterface *daemonIf;
 
     SyncClient *q_ptr;
     Q_DECLARE_PUBLIC(SyncClient)
@@ -49,21 +53,23 @@ SyncClient::~SyncClient()
 QString SyncClient::machineID() const
 {
     Q_D(const SyncClient);
-    return d->daemonIf->property("MachineID").toString();
+    return d->daemonIf->property("HardwareID").toString();
 }
 
 bool SyncClient::logined() const
 {
     Q_D(const SyncClient);
-    return d->daemonIf->property("Logined").toBool();
+
+    auto userInfo = d->daemonIf->userInfo();
+    return userInfo.value("loggedIn").toBool();
 }
 
 void SyncClient::setToken(const QString &token)
 {
     Q_D(SyncClient);
-    auto reply = d->daemonIf->call("SetToken", token);
+    auto reply = d->daemonIf->SetToken(token);
     qDebug() << "set token" << token
-             << "with reply:" << reply.errorName() << reply.errorMessage();
+             << "with reply:" << reply.error();
 
     // TODO: deal with failed issue
     qApp->quit();

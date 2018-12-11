@@ -19,8 +19,8 @@ const char DisableGpu[] = "--disable-gpu";
 const char EnableLogging[] = "--enable-logging";
 const char LogLevel[] = "--log-level";
 
-const char DBusService[] = "com.deepin.sync.Client";
-const char DBusPath[] = "/com/deepin/sync/Client";
+const char DBusService[] = "com.deepin.deepinid.Client";
+const char DBusPath[] = "/com/deepin/deepinid/Client";
 } // namespace Const
 
 bool initQCef(int argc, char **argv)
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     Dtk::Widget::DApplication::loadDXcbPlugin();
     Dtk::Widget::DApplication app(argc, argv);
 
-    if (!app.setSingleInstance("SyncClient")) {
+    if (!app.setSingleInstance("com.deepin.deepinid.Client")) {
         qWarning() << "another client is running";
         return 0;
     }
