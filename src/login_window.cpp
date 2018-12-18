@@ -31,12 +31,12 @@ public:
         QString redirectURI = "https://sync.deepin.com/oauth/callback";
         QString scope = "base,user:read;sync;dstore";
 
-        if (qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
+        if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
             oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_OAUTH_URI");
         }
 
-        if (qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_REDIRECT_URI")) {
-            oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_REDIRECT_URI");
+        if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_REDIRECT_URI")) {
+            redirectURI = qEnvironmentVariable("DEEPIN_DEEPINID_REDIRECT_URI");
         }
 
         url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope);
