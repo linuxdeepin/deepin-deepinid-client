@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>web/error.html</file>
+        <file>web/cloud_offline.svg</file>
+        <file>web/style.css</file>
+    </qresource>
+</RCC>

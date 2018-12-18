@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet">
+    <title>Error</title>
+</head>
+
+<body>
+    <div id="error_main">
+        <img id="cloud_offline" src="cloud_offline.svg">
+
+        <div class="error_title">
+            云同步登录
+        </div>
+
+        <div class="error_content">
+            但前没有网络连接，请联网后重试！
+        </div>
+
+
+        <div class="submit_bt">
+            <input type="submit" id="submit_bt" value="Close" />
+        </div>
+    </div>
+
+    <script>
+        function nativeExec(handler) {
+            if (window['QWebChannel'] && window['qt']) {
+                window['QWebChannel'](window['qt'].webChannelTransport, channel => {
+                    handler(channel);
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            console.log("DOM fully loaded and parsed");
+
+            var register = document.getElementById('submit_bt');
+            register.addEventListener('click', function (e) {
+                var targetWindow = window.opener || window.parent;
+                if (targetWindow) {
+                    nativeExec(function (channel) {
+                        channel.objects.client.close();
+                    })
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

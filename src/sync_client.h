@@ -17,9 +17,13 @@ public:
     QString machineID() const;
     bool logined() const;
 
+Q_SIGNALS:
+    void prepareClose();
+
 public Q_SLOTS:
     Q_SCRIPTABLE void setToken(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
+    Q_SCRIPTABLE void close();
 
 private:
     QScopedPointer<SyncClientPrivate> dd_ptr;

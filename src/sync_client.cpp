@@ -61,7 +61,7 @@ bool SyncClient::logined() const
     Q_D(const SyncClient);
 
     auto userInfo = d->daemonIf->userInfo();
-    return userInfo.value("loggedIn").toBool();
+    return userInfo.value("IsLoggedIn").toBool();
 }
 
 void SyncClient::setToken(const QVariantMap &tokenInfo)
@@ -78,6 +78,12 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
 void SyncClient::open(const QString &url)
 {
     QDesktopServices::openUrl(url);
+}
+
+void SyncClient::close()
+{
+    Q_EMIT this->prepareClose();
+    qApp->quit();
 }
 
 }

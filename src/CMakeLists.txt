@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
 
@@ -37,7 +38,7 @@ set(CLIENT_FILES
     web_event_delegate.h
     web_event_delegate.cpp)
 
-add_executable(deepin-deepinid-client ${CLIENT_FILES})
+add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 
 install(TARGETS deepin-deepinid-client
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

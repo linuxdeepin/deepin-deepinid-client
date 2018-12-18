@@ -1,4 +1,4 @@
-Source: deepin-sync-client
+Source: deepin-deepinid-client
 Section: net
 Priority: optional
 Maintainer: Iceyer <me@iceyer.net>
@@ -14,7 +14,7 @@ Homepage: https://www.deepin.org
 #Vcs-Git: https://anonscm.debian.org/git/collab-maint/deepin-sync-client.git
 #Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/deepin-sync-client.git
 
-Package: deepin-sync-client
+Package: deepin-deepinid-client
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: client to login deepin sync account

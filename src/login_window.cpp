@@ -25,11 +25,21 @@ public:
     {
         client = new SyncClient(parent);
 
-        auto templateURL = "http://login.deepin.org/oauth2/authorize?client_id=%1&redirect_uri=%2&response_type=code&scope=%3&display=sync&handle_open_link=true";
-        auto clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
-        auto redirectURI = "http://sync.deepin.org/oauth/callback";
-        auto scope = "base,user:read";
-        url = QString(templateURL).arg(clientID).arg(redirectURI).arg(scope);
+        QString templateURL = "%1/oauth2/authorize?client_id=%2&redirect_uri=%3&response_type=code&scope=%4&display=sync&handle_open_link=true";
+        QString oauthURI = "https://login.deepin.org";
+        QString clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
+        QString redirectURI = "https://sync.deepin.com/oauth/callback";
+        QString scope = "base,user:read;sync;dstore";
+
+        if (qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
+            oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_OAUTH_URI");
+        }
+
+        if (qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_REDIRECT_URI")) {
+            oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_REDIRECT_URI");
+        }
+
+        url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope);
     }
 
     QCefWebView     *webView;
@@ -69,9 +79,14 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     auto delegate = new WebEventDelegate(this);
     d->webView->page()->setEventDelegate(delegate);
-
+    qDebug() << d->webView->page()->pageErrorContent();
+    d->webView->page()->setPageErrorContent("<script>window.location.href='qrc:/web/error.html';</script>");
     auto web_channel = d->webView->page()->webChannel();
     web_channel->registerObject("client", d->client);
+
+    connect(d->client, &SyncClient::prepareClose, this, [&]() {
+        this->close();
+    });
 }
 
 LoginWindow::~LoginWindow()
