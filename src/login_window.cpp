@@ -28,7 +28,7 @@ public:
         QString templateURL = "%1/oauth2/authorize?client_id=%2&redirect_uri=%3&response_type=code&scope=%4&display=sync&handle_open_link=true";
         QString oauthURI = "https://login.deepin.org";
         QString clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
-        QString redirectURI = "https://sync.deepin.com/oauth/callback";
+        QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QString scope = "base,user:read,sync,dstore";
 
         if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
