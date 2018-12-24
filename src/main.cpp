@@ -128,6 +128,7 @@ int main(int argc, char **argv)
     if (!parser.isSet(daemon)) {
         lw.Show();
     }
-
+    app.setWindowIcon(QIcon(":/web/cloud_offline.svg"));
+    lw.setWindowIcon(QIcon(":/web/cloud_offline.svg"));
     return app.exec();
 }

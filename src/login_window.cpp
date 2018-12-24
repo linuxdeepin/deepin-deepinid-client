@@ -61,6 +61,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
+    flag |= Qt::WindowStaysOnTopHint;
     setWindowFlags(flag);
     this->titlebar()->setDisableFlags(Qt::WindowSystemMenuHint);
     this->titlebar()->setBackgroundTransparent(true);
