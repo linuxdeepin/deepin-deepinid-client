@@ -1,3 +1,13 @@
+<a name="1.0.1"></a>
+## 1.0.1 (2019-01-09)
+
+
+#### Bug Fixes
+
+*   use english for none chinese user ([c6ebdf24](c6ebdf24))
+
+
+
 <a name="1.0.0"></a>
 ## 1.0.0 (2019-01-02)
 
