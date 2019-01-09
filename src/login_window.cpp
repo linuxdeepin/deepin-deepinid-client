@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QUrl>
+#include <QLocale>
 #include <QtWebChannel/QWebChannel>
 
 #include <DTitlebar>
@@ -25,11 +26,12 @@ public:
     {
         client = new SyncClient(parent);
 
-        QString templateURL = "%1/oauth2/authorize?client_id=%2&redirect_uri=%3&response_type=code&scope=%4&display=sync&handle_open_link=true";
+        QString templateURL = "%1/oauth2/authorize?client_id=%2&redirect_uri=%3&response_type=code&scope=%4&display=sync&handle_open_link=true&lang=%5";
         QString oauthURI = "https://login.deepin.org";
         QString clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QString scope = "base,user:read,sync,dstore";
+        QString locale = QLocale().name().split("_").value(0);
 
         if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
             oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_OAUTH_URI");
@@ -39,7 +41,7 @@ public:
             redirectURI = qEnvironmentVariable("DEEPIN_DEEPINID_REDIRECT_URI");
         }
 
-        url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope);
+        url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope).arg(locale);
     }
 
     QCefWebView     *webView;
