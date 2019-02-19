@@ -34,11 +34,11 @@ public:
         QString locale = QLocale().name().split("_").value(0);
 
         if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_OAUTH_URI")) {
-            oauthURI = qEnvironmentVariable("DEEPIN_DEEPINID_OAUTH_URI");
+            oauthURI = qgetenv("DEEPIN_DEEPINID_OAUTH_URI");
         }
 
         if (!qEnvironmentVariableIsEmpty("DEEPIN_DEEPINID_REDIRECT_URI")) {
-            redirectURI = qEnvironmentVariable("DEEPIN_DEEPINID_REDIRECT_URI");
+            redirectURI = qgetenv("DEEPIN_DEEPINID_REDIRECT_URI");
         }
 
         url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope).arg(locale);
@@ -59,7 +59,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     Q_D(LoginWindow);
 
     this->titlebar()->setTitle("");
-    setWindowFlag(Qt::Dialog);
+    setWindowFlags(Qt::Dialog);
 
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
