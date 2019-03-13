@@ -40,6 +40,15 @@ set(CLIENT_FILES
 
 add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${QCef_LIBDIR}/qcef")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set_target_properties(deepin-deepinid-client
+                             PROPERTIES INSTALL_RPATH "${QCef_LIBDIR}/qcef")
+target_link_libraries(deepin-deepinid-client ${QCef_LIBDIR}/qcef/libcef.so
+                                                   ${LINK_LIBS})
+
 install(TARGETS deepin-deepinid-client
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
