@@ -65,7 +65,12 @@ LoginWindow::LoginWindow(QWidget *parent)
     flag &= ~Qt::WindowMinMaxButtonsHint;
     flag |= Qt::WindowStaysOnTopHint;
     setWindowFlags(flag);
+    this->titlebar()->setMenuVisible(false);
+    this->titlebar()->setMenuDisabled(true);
+
+    // TODO: workaround for old version dtk, remove as soon as possible.
     this->titlebar()->setDisableFlags(Qt::WindowSystemMenuHint);
+
     this->titlebar()->setBackgroundTransparent(true);
 
     d->webView = new QCefWebView();
