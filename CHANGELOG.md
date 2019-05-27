@@ -1,3 +1,18 @@
+<a name="1.0.3"></a>
+## 1.0.3 (2019-05-27)
+
+
+#### Features
+
+*   update server url ([b2ae52bc](b2ae52bc))
+
+#### Bug Fixes
+
+*   hide menu button from dtitlebar ([23ec79cf](23ec79cf))
+*   link qcef rpath for loongson ([89e05703](89e05703))
+
+
+
 <a name="1.0.2"></a>
 ## 1.0.2 (2019-03-11)
 
