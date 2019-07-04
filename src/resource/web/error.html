@@ -20,15 +20,37 @@
 
 
         <div class="submit_bt">
-            <input type="submit" id="submit_bt" value="Close" />
+            <input type="submit" id="submit_bt" data-value-function="getSubmitButtonText" />
         </div>
     </div>
 
     <script>
-        function nativeExec(handler) {
+        function QT_TRANSLATE_NOOP(obj, str) {
+            return function (element) {
+                nativeExec(function (channel, element) {
+                    channel.objects.client.gettext(str, function (result) {
+                        console.log(element)
+                        console.log(result)
+                        element.value = result
+                    })
+                }, element)
+            }
+        }
+
+        window.getSubmitButtonText = function (data) {
+            return QT_TRANSLATE_NOOP("dsc::SyncClient", "Close")(data)
+        }
+
+        var elements = document.querySelectorAll('*[data-value-function]');
+        for (var i = 0; i < elements.length; i++) {
+            var valueFunctionName = elements[i].getAttribute('data-value-function');
+            window[valueFunctionName](elements[i]);
+        }
+
+        function nativeExec(handler, data) {
             if (window['QWebChannel'] && window['qt']) {
                 window['QWebChannel'](window['qt'].webChannelTransport, channel => {
-                    handler(channel);
+                    handler(channel, data);
                 });
             }
         }
@@ -40,9 +62,9 @@
             register.addEventListener('click', function (e) {
                 var targetWindow = window.opener || window.parent;
                 if (targetWindow) {
-                    nativeExec(function (channel) {
+                    nativeExec(function (channel, data) {
                         channel.objects.client.close();
-                    })
+                    }, "")
                     e.preventDefault();
                 }
             });

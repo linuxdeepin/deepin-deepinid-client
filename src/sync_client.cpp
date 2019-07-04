@@ -64,6 +64,11 @@ bool SyncClient::logined() const
     return userInfo.value("IsLoggedIn").toBool();
 }
 
+QString SyncClient::gettext(const QString &str)
+{
+    return tr(str.toStdString().c_str());
+}
+
 void SyncClient::setToken(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);

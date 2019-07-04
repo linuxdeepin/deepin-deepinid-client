@@ -101,6 +101,8 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
+    app.loadTranslator();
+
     dsc::LoginWindow lw;
 
     if (lw.logined()) {

@@ -21,6 +21,7 @@ Q_SIGNALS:
     void prepareClose();
 
 public Q_SLOTS:
+    Q_SCRIPTABLE QString gettext(const QString &str);
     Q_SCRIPTABLE void setToken(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
     Q_SCRIPTABLE void close();
