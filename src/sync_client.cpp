@@ -23,7 +23,7 @@ namespace dsc
 {
 
 
-void sendDBusNotify()
+void sendDBusNotify(const QString &message)
 {
     QStringList actions = QStringList() << "_open" << QObject::tr("View");
     QVariantMap hints;
@@ -34,7 +34,7 @@ void sendDBusNotify()
     argumentList << static_cast<uint>(0);
     argumentList << "com.deepin.deepinid.Client";
     argumentList << "";
-    argumentList << QObject::tr("Login successful, please go to Cloud Sync to view the settings.");
+    argumentList << message;
     argumentList << actions;
     argumentList << hints;
     argumentList << static_cast<int>(5000);
@@ -97,12 +97,14 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
     auto reply = d->daemonIf->SetToken(tokenInfo);
 
 
-    qDebug() << "set token" << tokenInfo
-             << "with reply:" << reply.error();
+    qDebug() << "set token with reply:" << reply.error();
+    if (reply.error().isValid()) {
+        sendDBusNotify(tr("Login failed"));
+    } else {
+        sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
+    }
 
-
-    sendDBusNotify();
-    // TODO: deal with failed issue
+// TODO: deal with failed issue
     qApp->quit();
 }
 

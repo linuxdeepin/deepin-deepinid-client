@@ -8,11 +8,6 @@
         <source>View</source>
         <translation>查看</translation>
     </message>
-    <message>
-        <location filename="../src/sync_client.cpp" line="37"/>
-        <source>Login successful, please go to Cloud Sync to view the settings.</source>
-        <translation>Deepin ID登录成功，可前往云同步模块查看设置选项</translation>
-    </message>
 </context>
 <context>
     <name>dsc::SyncClient</name>
@@ -20,6 +15,16 @@
         <location filename="../src/resource/web/error.html" line="41"/>
         <source>Close</source>
         <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../src/sync_client.cpp" line="102"/>
+        <source>Login failed</source>
+        <translation>登录失败</translation>
+    </message>
+    <message>
+        <location filename="../src/sync_client.cpp" line="104"/>
+        <source>Login successful, please go to Cloud Sync to view the settings</source>
+        <translation>Deepin ID登录成功，可前往云同步模块查看设置选项</translation>
     </message>
 </context>
 </TS>
