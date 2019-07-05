@@ -38,8 +38,6 @@ bool initQCef(int argc, char **argv)
         settings.setLogSeverity(QCefGlobalSettings::LogSeverity::Error);
     }
 
-    settings.setIgnoresCertificateErrors(true);
-
     // Disable GPU process.
     settings.addCommandLineSwitch(Const::DisableGpu, "");
 
@@ -130,7 +128,9 @@ int main(int argc, char **argv)
     if (!parser.isSet(daemon)) {
         lw.Show();
     }
-    app.setWindowIcon(QIcon(":/web/cloud_offline.svg"));
-    lw.setWindowIcon(QIcon(":/web/cloud_offline.svg"));
+
+    auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
+    app.setWindowIcon(QIcon(iconPath));
+    lw.setWindowIcon(QIcon(iconPath));
     return app.exec();
 }

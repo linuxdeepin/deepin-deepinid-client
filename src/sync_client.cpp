@@ -22,6 +22,28 @@ const auto SyncDaemonPath      = "/com/deepin/deepinid";
 namespace dsc
 {
 
+
+void sendDBusNotify()
+{
+    QStringList actions = QStringList() << "_open" << QObject::tr("View");
+    QVariantMap hints;
+    hints["x-deepin-action-_open"] = "dde-control-center,-m,cloudsync";
+
+    QList<QVariant> argumentList;
+    argumentList << "deepin-deepinid-client";
+    argumentList << static_cast<uint>(0);
+    argumentList << "com.deepin.deepinid.Client";
+    argumentList << "";
+    argumentList << QObject::tr("Login successful, please go to Cloud Sync to view the settings.");
+    argumentList << actions;
+    argumentList << hints;
+    argumentList << static_cast<int>(5000);
+
+    static QDBusInterface notifyApp("org.freedesktop.Notifications",
+                                    "/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+    notifyApp.callWithArgumentList(QDBus::Block, "Notify", argumentList);
+}
+
 class SyncClientPrivate
 {
 public:
@@ -73,9 +95,13 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);
     auto reply = d->daemonIf->SetToken(tokenInfo);
+
+
     qDebug() << "set token" << tokenInfo
              << "with reply:" << reply.error();
 
+
+    sendDBusNotify();
     // TODO: deal with failed issue
     qApp->quit();
 }

@@ -3,5 +3,6 @@
         <file>web/error.html</file>
         <file>web/cloud_offline.svg</file>
         <file>web/style.css</file>
+        <file>web/com.deepin.deepinid.Client.svg</file>
     </qresource>
 </RCC>

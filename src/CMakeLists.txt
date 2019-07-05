@@ -45,8 +45,8 @@ add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 file(GLOB DMAN_TRANSLATION_TS ${CMAKE_SOURCE_DIR}/translations/*.ts)
 set_source_files_properties(${DMAN_TRANSLATION_TS}
                             PROPERTIES
-                            OUTPUT_LOCATION
-                            ${CMAKE_BINARY_DIR}/translations)
+			    OUTPUT_LOCATION
+			    ${CMAKE_BINARY_DIR}/translations)
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
@@ -62,15 +62,20 @@ target_link_libraries(deepin-deepinid-client ${QCef_LIBDIR}/qcef/libcef.so
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/translations
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
-        FILES_MATCHING
-        PATTERN "*")
+	FILES_MATCHING
+	PATTERN "*")
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.deepin.deepinid.Client.service
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services/)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/com.deepin.deepinid.Client.svg
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
+
 
 target_link_libraries(deepin-deepinid-client
                       Qt5::Widgets
-                      Qt5::WebChannel
-                      Qt5::DBus
-                      ${QCef_LDFLAGS}
-                      ${DtkWidget_LDFLAGS})
+		      Qt5::WebChannel
+		      Qt5::DBus
+		      ${QCef_LDFLAGS}
+		      ${DtkWidget_LDFLAGS})
 
 add_dependencies(deepin-deepinid-client update-qm)
 
