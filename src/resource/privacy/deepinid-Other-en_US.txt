@@ -1,0 +1,294 @@
+
+Privacy Policy
+
+Update date: July 1st, 2019
+
+Effective Date: July 1st, 2019
+
+Wuhan Deepin Technology Co., Ltd. (hereinafter referred to as “we” or “Deepin Technology”) has always valued the protection of personal data and privacy. We firmly understand the importance of personal data to you (or “users”) and will do our utmost to protect the safety and reliability of your personal data.
+
+Important:
+
+This Privacy Policy applies only to the products and services provided by the [Deepin User Center] website, DeepinID (other than the mainland of China) and Deepin operating system software (hereinafter collectively referred to as the “Website”), not applicable to the products and services provided by a third party through the Website, or those directed by third-party links on the Website. Accordingly, we recommend that you review the privacy policies of third parties carefully.
+
+This Privacy Policy and its amendments are governed by the laws, regulations and normative documents of the mainland of China. Your use of any service of DeepinID (other than the mainland of China) means that you shall comply with the laws and regulations and relevant normative documents of the mainland of China.
+
+This Policy is closely related to the products and services offered on this Website. We will explain to you how we collect, use, keep and transfer the information from or about you in a clear, understandable and appropriate manner. You are encouraged to read this Policy carefully to be aware of your rights and make your choices.
+
+All terms of the Policy are an integral part of the legal statement of Deepin Technology. Your visit to the Website or registration with us to use our services, or your continued use of our services after we update this Policy, of which you will be informed, means that you have fully read and understood this Policy and agree to grant your consent accordingly. This Policy is valid when you use the Website and services thereof. If you have any questions, comments or suggestions about the Policy, you may use the information provided in Section IX to contact us. If you do not agree to this Policy, please stop using the products and services offered on the Website immediately.
+
+This Privacy Policy will describe how we protect your personal data on the Website as well as your rights in the following sections:
+
+1.Collection and use of your personal data;
+
+2.Use of cookies and similar technologies;
+
+3.Sharing, transfer and publicly disclosure of your personal data;
+
+4.Protection of your personal data;
+
+5.Management of your personal data by yourself;
+
+6.Transfer of your personal data around the world;
+
+7.Protection of the personal data of minors;
+
+8.Policy updating;
+
+9.Contact us
+
+I.Collection and use of your personal data:
+
+(I) Rules for the collection and use of personal data
+
+1.The circumstances when we collect users’ personal data will be described in the Policy, and the personal data so collected will be used in strict accordance with the Policy for the purpose to realize our products and/or service functions.
+
+2.When collecting other personal data for specific functions and purposes, we will ask for your consent in advance through your explicit choice such as a ticking. We will also obtain your permit separately before we use your personal data we collect upon your permit for other purposes not described in the Policy.
+
+3.You have the right to exercise your control over your personal data by changing or deleting your personal data, or by refusing our collection of certain data via system settings, except for the data that have been de-identified.
+
+4.Please be aware that your personal data may be automatically processed after collection. In such case, we will de-identify the data pursuant to the general technical standards of China to create user database. The use of data conforming to the de-identification standards does not infringe on your personal privacy or violate the personal data protection policy. We have the right to analyze and commercially utilize the user database.
+
+5.For the avoidance of doubt, we will make statistics about the use of our products and/or service to show the overall use trend of the products and/or services. However, these statistics will not contain any of your identification information.
+
+(II) Circumstances when personal data are collected and used
+
+Personal data refers to various kinds of information recorded electronically or otherwise that can identify a specific natural person or reflect the activity of a specific natural person, either alone or in combination with other information.
+
+We collect and use your personal data only for the purposes set out in the Policy:
+
+1.User registration / real name authentication
+
+You need to use DeepinID or a third-party social account supported by the Website to access and use the Website. In order to comply with regulatory requirements, you may be required to provide your email account to complete the registration with or login on DeepinID when you create a website account or use your website account / third-party social account to log in to the Website.
+
+You may decide whether or not to provide it based on the actual service you need. Subject to regulatory requirements, if you refuse to provide your email account, we may not be able to provide services to you. You may only browse the Website as a visitor, but could not use such basic functions as application synchronization, comments on the application, posting and exchange of exchanging views in forums.
+
+2.Other data submitted by users
+
+When you use Website services, you may be required to submit your phone number and email address by completing forms on the Website, calling the customer service or sending an email.
+
+You may submit additional data to create a full profile upon registration, or provide us with all or part of the following additional data by authorizing our access to your third-party social account: your real name, gender, date of birth and place of residence; your virtual/real avatar, hobbies, and educational and professional information; your third-party social account information, and your email address. Such data will help us to provide a more personalized service to you and improve users’ experience on the Website; however, your failure to provide such data will not affect your use of basic services offered by the Website. You understand and acknowledge that we have the right, but are not obliged, to verify the truthfulness, accuracy and validity of such data, and your voluntary submission will be deemed to consent to our treatment of such personal data in accordance with the Policy.
+
+3.Website visit and browsing
+
+When you visit and browse the Website, we may, through cookies or other technologies, collect such data about your device and browsing information, including the data about the browser version you use upon registration, the basic information about your operating system obtained through the browser, and your visits information of DeepinID pages, as well as your IP address. See Section II for our Use of Cookies and Similar Technologies.
+
+Please note that separate device and browsing information is not identifiable and we use this information to analyze the in-site activities of different group of users and the socio-demographic information of the user base as a whole. We will not use such information in conjunction with other data to make it identifiable unless otherwise authorized by you or required by law.
+
+4.Visit and use of the Deepin System App Store
+
+When you log in to the DeepinID and use the Deepin OS app store software to download apps, synchronize app information or check your app comments or rewards, to provide you with such services, we need to collect the data on your device Hardware, operating system version and application software you have installed, your setups in the OS control center, your historical app reviews and your historical rewards.
+
+The DeepinID records such information to enable you to synchronize the setups you have made in your system control center and the installation of your apps when using different hardware devices. You may decide whether or not to provide such information based on the actual service you need. You may not be able to use relevant sync features provided by the DeepinID in the Deepin operating system if you do not provide such data, but you can still use the software installation and uninstallation features offered by the Deepin Store as a visitor (i.e. without logging in to the DeepinID).
+
+5.Cloud-Syncing
+
+By logging in your DeepinID and switch on the button of “cloud-syncing” through the cloudsyncing model in the control center of Deepin operating system, you may synchronize and deploy your specific system configuration quickly, without manually repeating your system configuration on different devices. The “cloud-syncing” function is set up merely for your convenience, we will not check, count, analyze or use your synchronous data unless otherwise stated in this agreement.
+
+To meet your demands for such synchronization service, we may collect and store the configuration information as follows: your personal settings of sound effect, system updates, power control, mouse, themes, wallpapers, launcher, taskbar, hotspots in Deepin operating system. If you authorize us to synchronize your network configuration you are required to switch on the button of network synchronization and provide your corresponding password of wireless network, VPN configuration as well if needed.
+
+In order to provide you with the cloud-syncing services, you grant us to generate a unique serial number to identify the data of your device information, which includes all or part of the information about your mainboard, CPU, RAM, hard disk, and network card in your devices.
+
+If you do not agree to synchronize one of the configuration information mentioned above, you may switch off the corresponding synchronous button of such configuration through the cloud-syncing model of the control center in Deepin operating system. If you do not agree to authorize any of the above information, you may switch off the button of “cloud-syncing” or log out your DeepinID through the cloud-syncing model of the control center. Your refusal to offer or be collected the above information will result in our failure to provide corresponding service or provide full functions of such services, however, you may still use the basic functions of the website.
+
+6.Safety and security guarantees
+
+To ensure your safety and security, prevent fraud and protect your account when you use services offered on our website, we will collect data about your browsing, software commonly used, devices and IP address to determine your account risks.
+
+(III)  Exceptions to the requirements on permit to collect and use personal data
+
+If any provisions of applicable laws and regulations permit us to collect and use your personal data without your consent, such provisions will apply.
+
+II.Use of cookies and similar technologies
+
+A cookie is a small file containing a series of text strings that is stored on your computer, mobile phone or other devices when you visit a website or other web contents. A web beacon is an electronic image file or other techniques embedded in a website or email that can be used to count the number of visitors, record when an email or website is browsed, and whether or not an email or website has been browsed or certain cookies are used.
+
+In order to provide you with more personalized user experience and services, we may use cookies, web beacons and other similar technologies to record your identity as a registered user of the Website, analyze your use of our services, and form user’s profile based on the data collected and analysis results to offer services that may be of interest to you or other personalized products/services. Please note that we use cookies and web beacons for these purposes, but we may also provide materials containing aggregated and de-identified data collected through cookies and web beacons to advertisers and other partners.
+
+We also allow advertisers and other partners to place their cookies and web beacons in some of our services to analyze how users use these services and for promotional purposes. Please note that these third party cookies and web beacons are subject to the privacy policies of relevant third parties.
+
+You may reject or manage the Cookies tool through the settings on your browser, or request removal from commercial push lists. However, please note that if you stop using these tools, you may not be able to enjoy the best service experience and some services may be unavailable to you.
+
+Many web browsers have a Do Not Track feature that may send Do Not Track requests to websites. Currently, major Internet standards organizations have not yet established policies to dictate how websites should respond to such requests. But if your browser has Do Not Track enabled, all of our websites will respect your choice.
+
+III.Sharing, transfer and publicly disclosure of your personal data
+
+(I) Sharing
+
+We will share your personal data with third parties only:
+
+1.For the purposes described in the section “Collection and use of your personal data”;
+
+2.For the purpose of fulfillment of our obligations and exercise of our rights under the Terms of Service or this Policy;
+
+3.As required by laws and regulations, for the need of settlement of litigated disputes, or in response to the legitimate requests of relevant administrative or judicial authorities.
+
+4.We only share necessary personal information to the extent of necessary purposes and subject to the purposes stated in this Policy;
+
+5.Under other circumstances with your explicit consent.
+
+(II) Transfer
+
+We will not transfer your personal data to a third party except:
+
+1.With your explicit consent;
+
+2.In the case of a M&A, asset transfer or similar transaction, which involves personal data transfer; in such case, we will require the new holder who continue to control your personal data to be bound by this Policy. Otherwise we will require the new holder to seek your explicit consent again; or
+
+3. As required by judicial or other competent authorities.
+
+(III) Public disclosure
+
+We will disclose user information if:
+
+1.It is required by relevant laws and regulations;
+
+2.It is required by judicial or administrative organs according to legal procedures;
+
+3.The Website files a lawsuit or arbitration against the user to protect its or other users’ legitimate rights;
+
+4.It is disclosed to avoid any imminent danger to the life, body or property of the user; or
+
+5.It is disclosed to the extent required or permitted by relevant laws and regulations and necessary to protect the legitimate rights, property or safety of the users of the Website or other third parties from damage.
+
+The practice that the personal data legally collected upon consent is labeled or portrayed with non-manual automatic decision-making technologies such as information systems and algorithms to be used for automatic decision making (e.g. commercial information push) shall constitute de-identification of data, and does not share, transfer or disclose any of your personal data to a third party. If you do not wish to join in such targeted advertising push, please contact us to cancel according to Section IX below.
+
+IV.Protection of your personal data
+
+The Website has adopted security technologies and safeguards that comply with industry standards to protect users’ personal data from unauthorized access, use or disclosure. It strictly follows the security standards at both home and abroad to build a security system, and combines cutting-edge and mainstream security technologies to prevent users’ personal data from being accessed, used, and disclosed without authorization. A sound security defense system has been established to conduct prompt interception when the Website suffers network attack or virus infection. Every application platform of the Website has adopted SSL encryption protocol to secure transmission in the process of network communication, which can effectively avoid the information being stolen by a third party during the communication between users and the platform. Users’ private or sensitive data is stored in the Website in an encrypted way, and is backed up in real time.
+
+The Website has established a sound data security management system, including hierarchical classification and encrypted storage of user data and access control. The internal data management system and operating procedures have been formulated, containing strict process requirements on data collection, use and destruction to prevent illegal use of users’ personal data. The safety and security management responsibilities of each department and its heads that may get to know users’ personal data have been determined. The workflow and security management system for collection and use of users’ personal data and other related activities have been established. The authority control has been implemented for staff and agents, the export, copy and destroy of data in batch are subject to review and measures have been taken to prevent information leakage. The paper, optical and electromagnetic media that carry users’ personal data have been properly maintained and appropriate security storage measures have been taken. Any connection to the information systems for storing users’ personal data will be examined and checked, and anti-intrusion and anti-virus measures have been in place. The information about the persons who conduct an operation on users’ personal data and the operation times and places as well as relevant matters are required to be recorded. Trainings on security and privacy protection are held on a regular basis to improve employees’ awareness of personal data protection.
+
+We will take all reasonable and practicable steps to ensure that no irrelevant personal data is or will be collected. Your personal data will be only retained for the period of time necessary to achieve the purposes stated in the Policy, unless an extension of the retention period is required or permitted by law.
+
+We will regularly update and disclose our reports on security risks and on assessments of those impacts on the safety and security of personal data in accordance with applicable laws and regulations and the requirements of the competent authorities.
+
+The Internet environment is not 100% secure, but we will do our best to ensure or guarantee the security of any information you send to us. If our physical, technical, or administrative protective facilities are destroyed, resulting in unauthorized access, public disclosure, tampering, or destruction of user data, which causes damage to your legitimate rights, we will assume legal liabilities accordingly.
+
+In case of any security incident involving your personal data, we will inform you of the incident and its possible impacts, the emergency responses taken or to be taken and other disposal measures as well as remedies available to you, via the internal message / the contact information you submit to us, in accordance with the applicable laws and regulations. Where it is difficult to inform every owner of the personal data affected, we will post a notice in a reasonable and effective manner and will report our disposal of the security incident to relevant regulators.
+
+If you have any question about our protection of personal data, you can contact us by means described in Section IX below. If you find any of your personal data has been disclosed, please contact us immediately by means stated in the Policy, so that we can take appropriate measures in a timely manner.
+
+V.Management of your personal data by yourself
+
+We will do our utmost to take appropriate technical measures to ensure that you can access, update and correct your information submitted upon registration or other personal data provided when using the services of the Website.
+
+(I) Access to your personal data
+
+Except as otherwise required by laws and regulations, you have the right to access your personal data. You may access your personal data in the following ways:
+
+1.Account Profile / User Profile: You may access or edit your personal data in your DeepinID, including mobile phone number, gender, educational and professional information or other personal data, through the [Personal Center] on the Website.
+
+2.Transaction information: If you want to see your historical rewards record, you may find your reward amounts and other corresponding reward information in the Personal Center.
+
+3.If you are unable to access your personal data in the above manner, you can always contact us by means described in Section IX below. Your access request will be replied within [30] days.
+
+4.Other personal data generated during your use of our products or services will be provided to you according to the arrangements stated in Clause (VIII) “Our reply to your requests” of this section.
+
+(II) Correction of inaccurate or incomplete personal data
+
+1.You can correct or supplement your personal data in your [Personal Center]. In particular, please ensure that the personal data you submit is true, current, complete and accurate; otherwise we may be unable to contact you effectively or provide you with certain services. In the event that we believe the information you provided is incorrect, incomplete or untrue at our reasonable discretion, we reserve the right to check it with you or notify you of correction, or even discontinue or suspend some of the services to you.
+
+2.You may not correct certain special information, for which, you may contact us by means described in Section IX below. Your access request will be replied within [30] days. To protect the security of your account, you may be asked to authenticate.
+
+(III) Saving of your personal data
+
+1.Your personal data will be stored in accordance with applicable laws, except as otherwise agreed in Section VI below.
+
+2.We will keep your personal data for the minimum retention periods as required by laws and regulations based on the type and use purpose of such data in accordance with applicable laws. Such data will be deleted or anonymized after expiry of the above retention period.
+
+3.In case we terminate our services or operation, we will send a 30-day prior notice to you and delete or anonymize your personal data after terminating our services or operation and meeting the requirements of relevant laws and regulations on retention periods.
+
+(IV) Withdrawal of consent or restrictions on disposal
+
+You may change the scope of your personal data that you allow us to collect and use by deleting relevant information, closing the relevant functions of your device/tool or changing privacy settings on the Website.
+
+If you are unable to withdraw your consent in the above manner, you can always contact us by means described in Section IX below, indicating the specific consent you wish to withdraw. Your request will be replied within [30] days.
+
+Accordingly, we will no longer handle certain personal data after you withdraw your consent. Your decision to withdraw your consent, however, will not affect the legality of previous disposal of your personal data based on your consent.
+
+(V) Deletion of personal data
+
+You may request for deletion of your personal data if:
+
+1.Our disposal of your personal data violates any applicable laws and regulations or breaches the agreement with you;
+
+2.We collect and use your personal data without your explicit consent;
+
+3.We terminate the provision or you terminate your use of the products or services offered on the Website.
+
+If we decide to response to your request for deletion, we will also try our best to notify the third parties (including affiliates of the Website) with whom we have shared your personal data, requiring them to promptly delete your personal data, unless otherwise stipulated by applicable laws and regulations, or such third parties have obtained your consent separately.
+
+When your personal data are deleted from the Website, we may not immediately delete the same from the backup system, but such data will be deleted when the backup is updated.
+
+If you are unable to delete such personal data by the above methods, you can always contact us through the customer service of the Website. To protect the security of your account, you may be asked to authenticate.
+
+(VI) Cancellation of your account
+
+1.You may cancel your registered DeepinID at any time. You can either go to the [Account Profile in the Personal Center] to cancel your account or contact us to cancel your DeepinID by means described in Section IX below, while we may ask you to authenticate to protect the security of your account.
+
+2.After cancellation of your account, we will terminate provision of services to you, and upon your request, will delete your personal data within the time limit stipulated by applicable laws and regulations, unless otherwise stipulated by laws and regulations or agreed between us.
+
+(VII) Receipt of a copy of personal data
+
+1.You have the right to obtain a copy of your personal data by making a written request through the ways described in the Policy.
+
+2.Where technically feasible, such as data interface matching, we can also directly transfer a copy of your personal data to your designated third party according to your requirements based on existing technologies. We will not be liable for failure of such transmission due to the refusal of such third party to receive the copy of your personal data, and you shall solely settle the issue with the third party.
+
+(VIII) Our reply to your requests
+
+1.To protect the security of your account, you may be required to provide a written request or otherwise prove your identity. We may ask you to verify your identity before processing your request.
+
+2.Except otherwise agreed or stipulated in applicable laws and regulations, we will reply to your request within [30] days. You may file a complaint according to the provisions stated in Section IX below if you are not satisfied with our reply.
+
+3.In principle, we do not charge you for your reasonable request, but we will charge a certain fee for the repeated requests that exceed the reasonable extent. We may refuse irrationally repeated requests and the requests that require many technical inputs (which, for instance, require developing a new system or fundamentally changing the existing practices), that pose risks to the legitimate rights of others, or that are impractical (which, for instance, involve information stored on backup tapes).
+
+VI.Transfer of your personal data around the world
+
+The personal data collected and generated by Deepin Technology in the operation of the Website is stored in accordance with applicable laws.
+
+We reserve the right to transfer your personal data to other countries/regions. Your consent to this Privacy Policy, and your submission or our collection of such data constitutes your explicit consent to any such transfer. In this case, we will transfer and provide adequate protection to your personal data in accordance with relevant legal requirements and the Policy.
+
+VII.Protection of the personal data of minors
+
+The Website places emphasis on the security and protection of the collection and use of personal data of minors. A minor under the age of sixteen may not use the Website unless his/her legal guardian (hereinafter referred to as the “guardian”) carefully read and agree to this Policy. We may collect the personal data of the minor with the consent of his/her guardian, but the guardian has the right to refuse further collection of the personal data of his/her child or ward by the Website, and the rights to review or request deletion of any personal data of the minor.
+
+We warrant that minors will not be required to provide additional personal data as a condition for use of relevant Services. We will only use, share, transfer or disclose such data as permitted by laws and regulations, with the guardian’s explicit consent or under circumstances necessary to protect minors.
+
+VIII.Policy updating
+
+We may modify our privacy policy from time to time. These changes will be reflected in the Policy, and any change will give priority to your satisfaction. We will remind you of the relevant updates through the announcement of the Website or other appropriate ways before such changes take effect. You are encouraged to review our Privacy Policy each time you visit the services on the Website.
+
+Any significant changes to the Privacy Policy, such as such changes concerning what personal data we may treat, the controller of your personal data, the circumstance to share, transfer or disclose personal data, your rights to protect your personal data or how you can exercise such rights, will be notified in a more evident way (such as a pop-up at the first-level page or an internal message).
+
+Significant changes referred to in this Policy include but are not limited to:
+
+1.Any significant changes in our model of service, for instance, the purpose of use of personal data, the type of personal data processed, the way in which personal data is used;
+
+2.Any significant changes in our ownership structure or organizational structure, for instance, change of owner caused by business adjustments, bankruptcy, or mergers, etc.;
+
+3.Any change of the persons or entities with or to whom your personal data is shared, transferred or disclosed;
+
+4.Any significant change of your right to participate in the handling of your personal data and the way in which such right may be exercised;
+
+5.Any change of our department responsible for personal data security or its contact or complaint channels; and
+
+6.Existence of high risks indicated by an impact assessment report on personal data security.
+
+We will also archive old versions of the Policy for your review.
+
+IX.Contact us
+
+For questions regarding the Policy or the privacy measures of the Website, please contact us by following way and we will reply you within thirty (30) days.
+
+We have set up data protection officer that you may contact by the means below. Normally, we will reply you within 30 days:
+
+[email of data protection officer: privacy@deepin.com]
+
+[Official contact email: DeepinID@deepin.com]
+
+You may also make a complaint or report to our administrative authorities if you are dissatisfied with our reply, especially if you believe that our practice of personal data treatment has harmed your legitimate rights.
+
+In the event of any dispute between us on the terms of the Policy or its implementation, we shall settle it through friendly consultations; and in case such consultations fail, either party may file a lawsuit with the People’s Court of jurisdiction in Wuhan.
+
+ 

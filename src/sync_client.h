@@ -19,6 +19,7 @@ public:
 
 Q_SIGNALS:
     void prepareClose();
+    void requestHide();
 
 public Q_SLOTS:
     Q_SCRIPTABLE QString gettext(const QString &str);

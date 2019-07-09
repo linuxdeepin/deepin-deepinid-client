@@ -95,6 +95,10 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(d->client, &SyncClient::prepareClose, this, [&]() {
         this->close();
     });
+
+    connect(d->client, &SyncClient::requestHide, this, [&]() {
+        this->close();
+    });
 }
 
 LoginWindow::~LoginWindow()

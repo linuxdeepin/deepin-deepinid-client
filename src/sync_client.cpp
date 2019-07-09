@@ -5,6 +5,7 @@
 #include <QVariantMap>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
+#include <QProcess>
 
 #include <QUrl>
 #include <QDesktopServices>
@@ -42,6 +43,52 @@ void sendDBusNotify(const QString &message)
     static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                     "/org/freedesktop/Notifications", "org.freedesktop.Notifications");
     notifyApp.callWithArgumentList(QDBus::Block, "Notify", argumentList);
+}
+
+// QLocale::system().name(): zh_CN/en_US
+// zh/en is lang
+QString getLang(const QString &region)
+{
+    if (region == "CN") {
+        return "zh_CN";
+    }
+
+    auto locale = QLocale::system().name();
+    if (locale.startsWith("zh_")) {
+        return "zh_CN";
+    }
+    return "en_US";
+}
+
+QString getPrivacyPolicyPath(const QString &region)
+{
+    auto prefix = "/usr/share/deepin-deepinid-client/privacy";
+    return QString("%1/deepinid-%2-%3.txt").arg(prefix).arg(region).arg(getLang(region));
+}
+
+bool confirmPrivacyPolicy(QString region)
+{
+    if (region.isEmpty()) {
+        region = "CN";
+    }
+
+    QProcess ddeLicenseDialog;
+    QString title = QObject::tr("Deepin ID Privacy Policy");
+    QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
+    QString privacyPolicyPath = getPrivacyPolicyPath(region);
+    ddeLicenseDialog.setProgram("dde-license-dialog");
+
+    QStringList args;
+    args << "-t" << title
+         << "-c" << privacyPolicyPath
+         << "-a" << allowHint;
+
+    ddeLicenseDialog.setArguments(args);
+
+    ddeLicenseDialog.start();
+    ddeLicenseDialog.waitForFinished(-1);
+
+    return ddeLicenseDialog.exitCode() == 96;
 }
 
 class SyncClientPrivate
@@ -94,17 +141,19 @@ QString SyncClient::gettext(const QString &str)
 void SyncClient::setToken(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);
-    auto reply = d->daemonIf->SetToken(tokenInfo);
 
+    Q_EMIT this->requestHide();
 
-    qDebug() << "set token with reply:" << reply.error();
-    if (reply.error().isValid()) {
-        sendDBusNotify(tr("Login failed"));
-    } else {
-        sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
+    if (confirmPrivacyPolicy(tokenInfo.value("region").toString())) {
+        auto reply = d->daemonIf->SetToken(tokenInfo);
+        qDebug() << "set token with reply:" << reply.error();
+        if (reply.error().isValid()) {
+            sendDBusNotify(tr("Login failed"));
+        } else {
+            sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
+        }
     }
 
-// TODO: deal with failed issue
     qApp->quit();
 }
 

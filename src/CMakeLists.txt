@@ -60,15 +60,22 @@ target_link_libraries(deepin-deepinid-client ${QCef_LIBDIR}/qcef/libcef.so
                       ${LINK_LIBS})
 
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
 install(DIRECTORY ${CMAKE_BINARY_DIR}/translations
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
 	FILES_MATCHING
 	PATTERN "*")
+
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.deepin.deepinid.Client.service
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services/)
+
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/com.deepin.deepinid.Client.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
+	FILES_MATCHING
+	PATTERN "*")
 
 target_link_libraries(deepin-deepinid-client
                       Qt5::Widgets
