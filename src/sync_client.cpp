@@ -6,7 +6,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
 #include <QProcess>
-
+#include <QFile>
 #include <QUrl>
 #include <QDesktopServices>
 #include <QCoreApplication>
@@ -72,10 +72,22 @@ bool confirmPrivacyPolicy(QString region)
         region = "CN";
     }
 
+    QString privacyPolicyPath = getPrivacyPolicyPath(region);
+
+    if (!QFile::exists(privacyPolicyPath)) {
+        privacyPolicyPath = getPrivacyPolicyPath("Other");
+    }
+
+
+    if (!QFile::exists(privacyPolicyPath)) {
+        qWarning() << "can not find policy text" << privacyPolicyPath;
+        sendDBusNotify(SyncClient::tr("Login failed"));
+        return false;
+    }
+
     QProcess ddeLicenseDialog;
     QString title = QObject::tr("Deepin ID Privacy Policy");
     QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
-    QString privacyPolicyPath = getPrivacyPolicyPath(region);
     ddeLicenseDialog.setProgram("dde-license-dialog");
     QStringList args;
     args << "-t" << title
