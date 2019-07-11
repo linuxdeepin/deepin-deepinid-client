@@ -77,15 +77,20 @@ bool confirmPrivacyPolicy(QString region)
     QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
     QString privacyPolicyPath = getPrivacyPolicyPath(region);
     ddeLicenseDialog.setProgram("dde-license-dialog");
-
     QStringList args;
     args << "-t" << title
          << "-c" << privacyPolicyPath
          << "-a" << allowHint;
 
     ddeLicenseDialog.setArguments(args);
-
     ddeLicenseDialog.start();
+
+    if (!ddeLicenseDialog.waitForStarted(-1)) {
+        qWarning() << "start dde-license-dialog failed" << ddeLicenseDialog.state();
+        sendDBusNotify(SyncClient::tr("Login failed"));
+        return false;
+    }
+
     ddeLicenseDialog.waitForFinished(-1);
 
     return ddeLicenseDialog.exitCode() == 96;
