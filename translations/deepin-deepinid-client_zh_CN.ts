@@ -9,12 +9,12 @@
         <translation>查看</translation>
     </message>
     <message>
-        <location filename="../src/sync_client.cpp" line="76"/>
+        <location filename="../src/sync_client.cpp" line="89"/>
         <source>Deepin ID Privacy Policy</source>
         <translation>Deepin ID隐私政策</translation>
     </message>
     <message>
-        <location filename="../src/sync_client.cpp" line="77"/>
+        <location filename="../src/sync_client.cpp" line="90"/>
         <source>Agree and Turn On Cloud Sync</source>
         <translation>同意并开启云同步功能</translation>
     </message>
@@ -22,17 +22,14 @@
 <context>
     <name>dsc::SyncClient</name>
     <message>
-        <location filename="../src/resource/web/error.html" line="41"/>
-        <source>Close</source>
-        <translation>关闭</translation>
-    </message>
-    <message>
-        <location filename="../src/sync_client.cpp" line="151"/>
+        <location filename="../src/sync_client.cpp" line="84"/>
+        <location filename="../src/sync_client.cpp" line="102"/>
+        <location filename="../src/sync_client.cpp" line="168"/>
         <source>Login failed</source>
         <translation>登录失败</translation>
     </message>
     <message>
-        <location filename="../src/sync_client.cpp" line="153"/>
+        <location filename="../src/sync_client.cpp" line="170"/>
         <source>Login successful, please go to Cloud Sync to view the settings</source>
         <translation>Deepin ID登录成功，可前往云同步模块查看设置选项</translation>
     </message>

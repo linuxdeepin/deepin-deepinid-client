@@ -39,7 +39,7 @@ body {
     margin-bottom: 20px;
 }
 
-.submit_bt input {
+.submit_bt button {
     padding: 1px;
     min-width: 300px;
     border: 1px solid rgba(29, 129, 255, 0.30);
@@ -55,7 +55,7 @@ body {
     color: #2ca7f8;
 }
 
-.submit_bt input:hover {
+.submit_bt button:hover {
     padding: 1px;
     border: 1px solid rgba(76, 145, 248, 0.100);
     border-bottom-color: rgba(7, 90, 214, 0.3);
@@ -64,7 +64,7 @@ body {
     color: #fff;
 }
 
-.submit_bt input:active {
+.submit_bt button:active {
     padding: 1px;
     border: 1px solid rgba(76, 145, 248, 0.100);
     background-image: linear-gradient(-180deg, #1CA8FC 0%, #2AA9F9 100%);

@@ -10,42 +10,46 @@
     <div id="error_main">
         <img id="cloud_offline" src="cloud_offline.svg">
 
-        <div class="error_title">
-            云同步登录
+        <div class="error_title" i18n-content="Cloud sync login">
         </div>
 
-        <div class="error_content">
-            但前没有网络连接，请联网后重试！
+        <div class="error_content" i18n-content="Network error, please try again later!">
         </div>
-
 
         <div class="submit_bt">
-            <input type="submit" id="submit_bt" data-value-function="getSubmitButtonText" />
+            <button type="submit" id="submit_bt" i18n-content="Close" />
         </div>
     </div>
 
+    <script src="di18n.min.js"></script>
     <script>
-        function QT_TRANSLATE_NOOP(obj, str) {
-            return function (element) {
-                nativeExec(function (channel, element) {
-                    channel.objects.client.gettext(str, function (result) {
-                        console.log(element)
-                        console.log(result)
-                        element.value = result
-                    })
-                }, element)
+        var language;
+        if (window.navigator.languages) {
+            language = window.navigator.languages[0];
+        } else {
+            language = window.navigator.userLanguage || window.navigator.language;
+        }
+
+        if (language != 'zh-CN') {
+            language = 'en';
+        }
+
+        const di18n = new DI18n({
+            locale: language,
+            isReplace: true,
+            messages: {
+                'en': {
+                    "Cloud sync login": "Cloud sync login",
+                    "Network error, please try again later!": "Network error, please try again later!",
+                    "Close": "Close",
+                },
+                'zh-CN': {
+                    "Cloud sync login": "云同步登录",
+                    "Network error, please try again later!": "当前没有网络连接，请联网后重试！",
+                    "Close": "关闭",
+                }
             }
-        }
-
-        window.getSubmitButtonText = function (data) {
-            return QT_TRANSLATE_NOOP("dsc::SyncClient", "Close")(data)
-        }
-
-        var elements = document.querySelectorAll('*[data-value-function]');
-        for (var i = 0; i < elements.length; i++) {
-            var valueFunctionName = elements[i].getAttribute('data-value-function');
-            window[valueFunctionName](elements[i]);
-        }
+        })
 
         function nativeExec(handler, data) {
             if (window['QWebChannel'] && window['qt']) {

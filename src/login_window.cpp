@@ -2,6 +2,7 @@
 #include "login_window.h"
 
 #include <QDebug>
+#include <QTimer>
 #include <QUrl>
 #include <QLocale>
 #include <QtWebChannel/QWebChannel>
@@ -99,6 +100,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(d->client, &SyncClient::requestHide, this, [&]() {
         this->close();
     });
+
+    QTimer::singleShot(100, this, SLOT(setFocus()));
 }
 
 LoginWindow::~LoginWindow()
