@@ -66,48 +66,6 @@ QString getPrivacyPolicyPath(const QString &region)
     return QString("%1/deepinid-%2-%3.txt").arg(prefix).arg(region).arg(getLang(region));
 }
 
-bool confirmPrivacyPolicy(QString region)
-{
-    if (region.isEmpty()) {
-        region = "CN";
-    }
-
-    QString privacyPolicyPath = getPrivacyPolicyPath(region);
-
-    if (!QFile::exists(privacyPolicyPath)) {
-        privacyPolicyPath = getPrivacyPolicyPath("Other");
-    }
-
-
-    if (!QFile::exists(privacyPolicyPath)) {
-        qWarning() << "can not find policy text" << privacyPolicyPath;
-        sendDBusNotify(SyncClient::tr("Login failed"));
-        return false;
-    }
-
-    QProcess ddeLicenseDialog;
-    QString title = QObject::tr("Deepin ID Privacy Policy");
-    QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
-    ddeLicenseDialog.setProgram("dde-license-dialog");
-    QStringList args;
-    args << "-t" << title
-         << "-c" << privacyPolicyPath
-         << "-a" << allowHint;
-
-    ddeLicenseDialog.setArguments(args);
-    ddeLicenseDialog.start();
-
-    if (!ddeLicenseDialog.waitForStarted(-1)) {
-        qWarning() << "start dde-license-dialog failed" << ddeLicenseDialog.state();
-        sendDBusNotify(SyncClient::tr("Login failed"));
-        return false;
-    }
-
-    ddeLicenseDialog.waitForFinished(-1);
-
-    return ddeLicenseDialog.exitCode() == 96;
-}
-
 class SyncClientPrivate
 {
 public:
@@ -118,6 +76,61 @@ public:
                                          Const::SyncDaemonPath,
                                          QDBusConnection::sessionBus());
     }
+
+
+    bool confirmPrivacyPolicy(QString id, QString region)
+    {
+        QDBusReply<bool> reply = daemonIf->HasConfirmPrivacy(id);
+        if (!reply.error().isValid() && reply.value()) {
+            qWarning() << "HasConfirmPrivacy" << reply.error();
+            return true;
+        }
+
+
+        if (region.isEmpty()) {
+            region = "CN";
+        }
+
+        QString privacyPolicyPath = getPrivacyPolicyPath(region);
+
+        if (!QFile::exists(privacyPolicyPath)) {
+            privacyPolicyPath = getPrivacyPolicyPath("Other");
+        }
+
+
+        if (!QFile::exists(privacyPolicyPath)) {
+            qWarning() << "can not find policy text" << privacyPolicyPath;
+            return false;
+        }
+
+        QProcess ddeLicenseDialog;
+        QString title = QObject::tr("Deepin ID Privacy Policy");
+        QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
+        ddeLicenseDialog.setProgram("dde-license-dialog");
+        QStringList args;
+        args << "-t" << title
+             << "-c" << privacyPolicyPath
+             << "-a" << allowHint;
+
+        ddeLicenseDialog.setArguments(args);
+        ddeLicenseDialog.start();
+
+        if (!ddeLicenseDialog.waitForStarted(-1)) {
+            qWarning() << "start dde-license-dialog failed" << ddeLicenseDialog.state();
+            sendDBusNotify(SyncClient::tr("Login failed"));
+            return false;
+        }
+
+        ddeLicenseDialog.waitForFinished(-1);
+
+        auto userConfirm = (ddeLicenseDialog.exitCode() == 96);
+
+        if (userConfirm) {
+            daemonIf->ConfirmPrivacy(id);
+        }
+        return userConfirm;
+    }
+
 
     DeepinIDInterface *daemonIf;
 
@@ -161,7 +174,11 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
 
     Q_EMIT this->requestHide();
 
-    if (confirmPrivacyPolicy(tokenInfo.value("region").toString())) {
+//    qDebug() << tokenInfo;
+    auto region = tokenInfo.value("region").toString();
+    auto syncUserID = tokenInfo.value("sync_user_id").toString();
+
+    if (d->confirmPrivacyPolicy(syncUserID, region)) {
         auto reply = d->daemonIf->SetToken(tokenInfo);
         qDebug() << "set token with reply:" << reply.error();
         if (reply.error().isValid()) {
@@ -169,8 +186,9 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
         } else {
             sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
         }
+    } else {
+        sendDBusNotify(SyncClient::tr("Login failed"));
     }
-
     qApp->quit();
 }
 
