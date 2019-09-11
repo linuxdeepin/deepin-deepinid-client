@@ -17,12 +17,16 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5WebChannel CONFIG REQUIRED)
+find_package(Qt5WebEngineCore CONFIG REQUIRED)
+find_package(Qt5WebEngine CONFIG REQUIRED)
+find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-# QCef config
-pkg_search_module(QCef REQUIRED libqcef)
-include_directories(${QCef_INCLUDE_DIRS})
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+  message(STATUS "dir='${dir}'")
+endforeach()
 
 # DtkConfig
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
@@ -36,8 +40,8 @@ set(CLIENT_FILES
     sync_client.cpp
     deepinid_interface.h
     deepinid_interface.cpp
-    web_event_delegate.h
-    web_event_delegate.cpp)
+    login_page.h
+    login_page.cpp)
 
 add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 
@@ -49,15 +53,6 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
 			    ${CMAKE_BINARY_DIR}/translations)
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
-
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "${QCef_LIBDIR}/qcef")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-set_target_properties(deepin-deepinid-client
-                      PROPERTIES INSTALL_RPATH "${QCef_LIBDIR}/qcef")
-target_link_libraries(deepin-deepinid-client ${QCef_LIBDIR}/qcef/libcef.so
-                      ${LINK_LIBS})
 
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
@@ -81,7 +76,7 @@ target_link_libraries(deepin-deepinid-client
                       Qt5::Widgets
 		      Qt5::WebChannel
 		      Qt5::DBus
-		      ${QCef_LDFLAGS}
+		      Qt5::WebEngineWidgets
 		      ${DtkWidget_LDFLAGS})
 
 add_dependencies(deepin-deepinid-client update-qm)

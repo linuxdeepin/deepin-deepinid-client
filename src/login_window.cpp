@@ -6,16 +6,17 @@
 #include <QUrl>
 #include <QLocale>
 #include <QtWebChannel/QWebChannel>
+#include <QWebEngineView>
+#include <QWebEngineProfile>
+#include <QWebEngineSettings>
+#include <QWebEngineScriptCollection>
+#include <QFile>
 
 #include <DTitlebar>
 #include <DWidgetUtil>
 
-#include <qcef_web_page.h>
-#include <qcef_web_settings.h>
-#include <qcef_web_view.h>
-
 #include "sync_client.h"
-#include "web_event_delegate.h"
+#include "login_page.h"
 
 namespace dsc
 {
@@ -45,7 +46,7 @@ public:
         url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope).arg(locale);
     }
 
-    QCefWebView     *webView;
+    LoginPage       *page;
     SyncClient      *client;
     QString         url;
 
@@ -58,6 +59,18 @@ LoginWindow::LoginWindow(QWidget *parent)
     : Dtk::Widget::DMainWindow(parent), dd_ptr(new LoginWindowPrivate(this))
 {
     Q_D(LoginWindow);
+
+    QFile scriptFile(":/qtwebchannel/qwebchannel.js");
+    scriptFile.open(QIODevice::ReadOnly);
+    QString apiScript = QString::fromLatin1(scriptFile.readAll());
+    scriptFile.close();
+    QWebEngineScript script;
+    script.setSourceCode(apiScript);
+    script.setName("qwebchannel.js");
+    script.setWorldId(QWebEngineScript::MainWorld);
+    script.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    script.setRunsOnSubFrames(false);
+    QWebEngineProfile::defaultProfile()->scripts()->insert(script);
 
     this->titlebar()->setTitle("");
     setWindowFlags(Qt::Dialog);
@@ -74,24 +87,27 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     this->titlebar()->setBackgroundTransparent(true);
 
-    d->webView = new QCefWebView();
-    this->setCentralWidget(d->webView);
 
     auto machineID = d->client->machineID();
-    // Disable web security.
-    auto settings = d->webView->page()->settings();
-    settings->setMinimumFontSize(8);
-    settings->setWebSecurity(QCefWebSettings::StateDisabled);
-    settings->setCustomHeaders({
-        {"X-Machine-ID", machineID}
-    });
 
-    auto delegate = new WebEventDelegate(this);
-    d->webView->page()->setEventDelegate(delegate);
-    qDebug() << d->webView->page()->pageErrorContent();
-    d->webView->page()->setPageErrorContent("<script>window.location.href='qrc:/web/error.html';</script>");
-    auto web_channel = d->webView->page()->webChannel();
-    web_channel->registerObject("client", d->client);
+    WebUrlRequestInterceptor *wuri = new WebUrlRequestInterceptor();
+    wuri->setHeader({
+        {"X-Machine-ID", machineID.toLatin1()}
+    });
+    QWebEngineProfile::defaultProfile()->setRequestInterceptor(wuri);
+
+
+    // TODO: support error page
+    //    auto delegate = new WebEventDelegate(this);
+    //    d->webView->page()->setEventDelegate(delegate);
+    //    qDebug() << d->webView->page()->pageErrorContent();
+    //    d->webView->page()->setPageErrorContent("<script>window.location.href='qrc:/web/error.html';</script>");
+
+    QWebChannel *channel = new QWebChannel(this);
+    channel->registerObject("client", d->client);
+
+    d->page = new LoginPage(this);
+    d->page->setWebChannel(channel);
 
     connect(d->client, &SyncClient::prepareClose, this, [&]() {
         this->close();
@@ -100,6 +116,11 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(d->client, &SyncClient::requestHide, this, [&]() {
         this->close();
     });
+
+    auto view = new QWebEngineView(this);
+    view->setPage(d->page);
+
+    this->setCentralWidget(view);
 
     QTimer::singleShot(100, this, SLOT(setFocus()));
 }
@@ -132,7 +153,7 @@ void LoginWindow::load()
 {
     Q_D(LoginWindow);
     qDebug() << d->url;
-    d->webView->load(QUrl(d->url));
+    d->page->load(QUrl(d->url));
 }
 
 }
