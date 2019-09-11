@@ -119,10 +119,8 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     auto view = new QWebEngineView(this);
     view->setPage(d->page);
-
     this->setCentralWidget(view);
-
-    QTimer::singleShot(100, this, SLOT(setFocus()));
+    view->setFocus();
 }
 
 LoginWindow::~LoginWindow()
