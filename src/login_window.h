@@ -18,7 +18,12 @@ public:
     void setURL(const QString &url);
     void load();
 
+Q_SIGNALS:
+    void loadError();
+
 public Q_SLOTS:
+    void onLoadError();
+
     Q_SCRIPTABLE void Show();
 
 private:

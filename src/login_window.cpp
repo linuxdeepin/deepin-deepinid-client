@@ -16,6 +16,7 @@
 #include <DWidgetUtil>
 
 #include "sync_client.h"
+#include "login_view.h"
 #include "login_page.h"
 
 namespace dsc
@@ -117,10 +118,26 @@ LoginWindow::LoginWindow(QWidget *parent)
         this->close();
     });
 
-    auto view = new QWebEngineView(this);
+    auto view = new LoginView(this);
     view->setPage(d->page);
     this->setCentralWidget(view);
     view->setFocus();
+
+    connect(d->page, &QWebEnginePage::loadStarted, this, [ = ]() {
+        qDebug() << "ok";
+    });
+    connect(d->page, &QWebEnginePage::loadFinished, this, [ = ](bool ok) {
+        qDebug() << ok;
+        if (!ok) {
+            d->page->load(QUrl("qrc:/web/error.html"));
+        }
+    });
+    connect(d->page, &QWebEnginePage::loadProgress, this, [ = ](int progress) {
+        qDebug() << progress;
+
+    });
+
+    connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
 }
 
 LoginWindow::~LoginWindow()
@@ -147,10 +164,18 @@ void LoginWindow::setURL(const QString &url)
     d->url = url;
 }
 
+void LoginWindow::onLoadError()
+{
+    Q_D(LoginWindow);
+    qDebug() << "load error page";
+    d->page->load(QUrl("qrc:/web/error.html"));
+}
+
 void LoginWindow::load()
 {
     Q_D(LoginWindow);
     qDebug() << d->url;
+//    d->page->load(QUrl("qrc:/web/error.html"));
     d->page->load(QUrl(d->url));
 }
 

@@ -17,16 +17,13 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5DBus REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5WebChannel CONFIG REQUIRED)
-find_package(Qt5WebEngineCore CONFIG REQUIRED)
 find_package(Qt5WebEngine CONFIG REQUIRED)
+find_package(Qt5WebEngineCore CONFIG REQUIRED)
 find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
-foreach(dir ${dirs})
-  message(STATUS "dir='${dir}'")
-endforeach()
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 # DtkConfig
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
@@ -34,6 +31,8 @@ include_directories(${DtkWidget_INCLUDE_DIRS})
 
 set(CLIENT_FILES
     main.cpp
+    login_view.h
+    login_view.cpp
     login_window.h
     login_window.cpp
     sync_client.h
