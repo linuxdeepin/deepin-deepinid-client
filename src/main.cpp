@@ -57,7 +57,6 @@ int main(int argc, char **argv)
         qWarning() << "user has logined";
         return 0;
     }
-    lw.setFixedSize(360, 430);
 
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {

@@ -138,6 +138,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     });
 
     connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
+
+    setFixedSize(360, 390 + this->titlebar()->height());
 }
 
 LoginWindow::~LoginWindow()

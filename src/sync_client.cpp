@@ -60,10 +60,27 @@ QString getLang(const QString &region)
     return "en_US";
 }
 
-QString getPrivacyPolicyPath(const QString &region)
+QString getRegionLang(const QString &region, const QString &lang)
 {
+    if (region == "CN") {
+        return "zh_CN";
+    }
+    return lang;
+}
+
+QString getPrivacyPolicyPathByLang(QString region, const QString &lang)
+{
+    const auto defaultRegion = "Other";
     auto prefix = "/usr/share/deepin-deepinid-client/privacy";
-    return QString("%1/deepinid-%2-%3.txt").arg(prefix).arg(region).arg(getLang(region));
+    auto privacyPolicyPath = QString("%1/deepinid-%2-%3.txt").
+                             arg(prefix).
+                             arg(region).
+                             arg(getRegionLang(region, lang));
+
+    if (!QFile::exists(privacyPolicyPath) && region != defaultRegion) {
+        privacyPolicyPath = getPrivacyPolicyPathByLang(defaultRegion, getRegionLang(region, lang));
+    }
+    return privacyPolicyPath;
 }
 
 class SyncClientPrivate
@@ -91,16 +108,15 @@ public:
             region = "CN";
         }
 
-        QString privacyPolicyPath = getPrivacyPolicyPath(region);
+        QString privacyPolicyPathZH = getPrivacyPolicyPathByLang(region, "zh_CN");
+        QString privacyPolicyPathEN = getPrivacyPolicyPathByLang(region, "en_US");
 
-        if (!QFile::exists(privacyPolicyPath)) {
-            privacyPolicyPath = getPrivacyPolicyPath("Other");
+        if (!QFile::exists(privacyPolicyPathZH)) {
+            qCritical() << "can not find policy text" << privacyPolicyPathZH;
         }
 
-
-        if (!QFile::exists(privacyPolicyPath)) {
-            qWarning() << "can not find policy text" << privacyPolicyPath;
-            return false;
+        if (!QFile::exists(privacyPolicyPathEN)) {
+            qCritical() << "can not find policy text" << privacyPolicyPathEN;
         }
 
         QProcess ddeLicenseDialog;
@@ -109,10 +125,13 @@ public:
         ddeLicenseDialog.setProgram("dde-license-dialog");
         QStringList args;
         args << "-t" << title
-             << "-c" << privacyPolicyPath
+             << "-c" << privacyPolicyPathZH
+             << "-e" << privacyPolicyPathEN
              << "-a" << allowHint;
 
         ddeLicenseDialog.setArguments(args);
+        qDebug() << ddeLicenseDialog.program() << ddeLicenseDialog.arguments().join(" ");
+
         ddeLicenseDialog.start();
 
         if (!ddeLicenseDialog.waitForStarted(-1)) {
@@ -174,7 +193,7 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
 
     Q_EMIT this->requestHide();
 
-//    qDebug() << tokenInfo;
+    qDebug() << tokenInfo;
     auto region = tokenInfo.value("region").toString();
     auto syncUserID = tokenInfo.value("sync_user_id").toString();
 
