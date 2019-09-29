@@ -11,8 +11,8 @@ class LoginWindow: public Dtk::Widget::DMainWindow
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "com.deepin.deepinid.Client")
 public:
-    LoginWindow(QWidget *parent = Q_NULLPTR);
-    ~LoginWindow();
+    explicit LoginWindow(QWidget *parent = Q_NULLPTR);
+    Q_DECL_OVERRIDE ~LoginWindow() = default;
 
     bool logined() const;
     void setURL(const QString &url);

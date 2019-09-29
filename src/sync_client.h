@@ -12,7 +12,7 @@ class SyncClient : public QObject
     Q_OBJECT
 public:
     explicit SyncClient(QObject *parent = Q_NULLPTR);
-    ~SyncClient();
+    Q_DECL_OVERRIDE ~SyncClient()= default;
 
     QString machineID() const;
     bool logined() const;

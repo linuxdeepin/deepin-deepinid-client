@@ -74,11 +74,13 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    Dtk::Core::DLogManager::registerConsoleAppender();
-    Dtk::Core::DLogManager::registerFileAppender();
-
     Dtk::Widget::DApplication::loadDXcbPlugin();
     Dtk::Widget::DApplication app(argc, argv);
+
+    Dtk::Widget::DApplication::setOrganizationName("deepin");
+
+    Dtk::Core::DLogManager::registerConsoleAppender();
+    Dtk::Core::DLogManager::registerFileAppender();
 
     if (!app.setSingleInstance("com.deepin.deepinid.Client")) {
         qWarning() << "another client is running";
@@ -86,7 +88,7 @@ int main(int argc, char **argv)
     }
 
     if (!Dtk::Widget::DPlatformWindowHandle::pluginVersion().isEmpty()) {
-        app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
+        Dtk::Widget::DApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
     }
     QCefBindApp(&app);
 
@@ -107,7 +109,6 @@ int main(int argc, char **argv)
         qWarning() << "user has logined";
         return 0;
     }
-    lw.setFixedSize(360, 430);
 
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
@@ -130,7 +131,7 @@ int main(int argc, char **argv)
     }
 
     auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
-    app.setWindowIcon(QIcon(iconPath));
+    Dtk::Widget::DApplication::setWindowIcon(QIcon(iconPath));
     lw.setWindowIcon(QIcon(iconPath));
-    return app.exec();
+    return Dtk::Widget::DApplication::exec();
 }

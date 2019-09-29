@@ -23,7 +23,7 @@ namespace dsc
 class LoginWindowPrivate
 {
 public:
-    LoginWindowPrivate(LoginWindow *parent) : q_ptr(parent)
+    explicit LoginWindowPrivate(LoginWindow *parent) : q_ptr(parent)
     {
         client = new SyncClient(parent);
 
@@ -45,8 +45,8 @@ public:
         url = QString(templateURL).arg(oauthURI).arg(clientID).arg(redirectURI).arg(scope).arg(locale);
     }
 
-    QCefWebView     *webView;
-    SyncClient      *client;
+    QCefWebView     *webView = nullptr;
+    SyncClient      *client = nullptr;
     QString         url;
 
     LoginWindow *q_ptr;
@@ -101,12 +101,8 @@ LoginWindow::LoginWindow(QWidget *parent)
         this->close();
     });
 
+    setFixedSize(360, 390 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
-}
-
-LoginWindow::~LoginWindow()
-{
-
 }
 
 bool LoginWindow::logined() const
