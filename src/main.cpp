@@ -105,8 +105,8 @@ int main(int argc, char **argv)
 
     dsc::LoginWindow lw;
 
-    if (lw.logined()) {
-        qWarning() << "user has logined";
+    if (lw.isLogin()) {
+        qWarning() << "user has isLogin";
         return 0;
     }
 

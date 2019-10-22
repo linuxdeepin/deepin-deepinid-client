@@ -6,15 +6,15 @@
 namespace dsc
 {
 class LoginWindowPrivate;
-class LoginWindow: public Dtk::Widget::DMainWindow
+class LoginWindow : public Dtk::Widget::DMainWindow
 {
-    Q_OBJECT
+Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "com.deepin.deepinid.Client")
 public:
     explicit LoginWindow(QWidget *parent = Q_NULLPTR);
-    Q_DECL_OVERRIDE ~LoginWindow() = default;
+    ~LoginWindow() Q_DECL_OVERRIDE;
 
-    bool logined() const;
+    bool isLogin() const;
     void setURL(const QString &url);
     void load();
 

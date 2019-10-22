@@ -105,7 +105,9 @@ LoginWindow::LoginWindow(QWidget *parent)
     QTimer::singleShot(100, this, SLOT(setFocus()));
 }
 
-bool LoginWindow::logined() const
+LoginWindow::~LoginWindow() = default;
+
+bool LoginWindow::isLogin() const
 {
     Q_D(const LoginWindow);
     return d->client->logined();

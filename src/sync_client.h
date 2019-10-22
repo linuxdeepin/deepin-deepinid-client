@@ -9,10 +9,10 @@ namespace dsc
 class SyncClientPrivate;
 class SyncClient : public QObject
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     explicit SyncClient(QObject *parent = Q_NULLPTR);
-    Q_DECL_OVERRIDE ~SyncClient()= default;
+    ~SyncClient() Q_DECL_OVERRIDE;
 
     QString machineID() const;
     bool logined() const;

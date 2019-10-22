@@ -163,6 +163,8 @@ SyncClient::SyncClient(QObject *parent) :
 
 }
 
+SyncClient::~SyncClient() = default;
+
 QString SyncClient::machineID() const
 {
     Q_D(const SyncClient);
