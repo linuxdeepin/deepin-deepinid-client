@@ -3,11 +3,11 @@
 #include <QObject>
 #include <QScopedPointer>
 
-namespace dsc
+namespace ddc
 {
 
 class SyncClientPrivate;
-class SyncClient : public QObject
+class SyncClient: public QObject
 {
 Q_OBJECT
 public:
@@ -20,10 +20,15 @@ public:
 Q_SIGNALS:
     void prepareClose();
     void requestHide();
+    void onLogin(const QString &sessionID,
+                 const QString &clientID,
+                 const QString &state,
+                 const QString &code);
 
 public Q_SLOTS:
     Q_SCRIPTABLE QString gettext(const QString &str);
     Q_SCRIPTABLE void setToken(const QVariantMap &tokenInfo);
+    Q_SCRIPTABLE void authCallback(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
     Q_SCRIPTABLE void close();
 

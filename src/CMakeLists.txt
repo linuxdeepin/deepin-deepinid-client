@@ -29,24 +29,29 @@ pkg_search_module(DtkWidget REQUIRED dtkwidget)
 include_directories(${DtkWidget_INCLUDE_DIRS})
 
 set(CLIENT_FILES
-    main.cpp
-    login_window.h
-    login_window.cpp
-    sync_client.h
-    sync_client.cpp
-    deepinid_interface.h
-    deepinid_interface.cpp
-    web_event_delegate.h
-    web_event_delegate.cpp)
+        ui/login_window.h
+        ui/login_window.cpp
+        ui/sync_client.h
+        ui/sync_client.cpp
+        ui/web_event_delegate.h
+        ui/web_event_delegate.cpp
+        ipc/deepinid_interface.h
+        ipc/deepinid_interface.cpp
+        service/session.h
+        service/session.cpp
+        service/authentication_manager.cpp
+        service/authentication_manager.h
+        service/authorize.h
+        main.cpp utils/utils.cpp utils/utils.h)
 
 add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 
 # Executable files Generate .qm files from .ts files.
 file(GLOB DMAN_TRANSLATION_TS ${CMAKE_SOURCE_DIR}/translations/*.ts)
 set_source_files_properties(${DMAN_TRANSLATION_TS}
-                            PROPERTIES
-			    OUTPUT_LOCATION
-			    ${CMAKE_BINARY_DIR}/translations)
+        PROPERTIES
+        OUTPUT_LOCATION
+        ${CMAKE_BINARY_DIR}/translations)
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
@@ -55,16 +60,16 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH "${QCef_LIBDIR}/qcef")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set_target_properties(deepin-deepinid-client
-                      PROPERTIES INSTALL_RPATH "${QCef_LIBDIR}/qcef")
+        PROPERTIES INSTALL_RPATH "${QCef_LIBDIR}/qcef")
 target_link_libraries(deepin-deepinid-client ${QCef_LIBDIR}/qcef/libcef.so
-                      ${LINK_LIBS})
+        ${LINK_LIBS})
 
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/translations
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
-	FILES_MATCHING
-	PATTERN "*")
+        FILES_MATCHING
+        PATTERN "*")
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.deepin.deepinid.Client.service
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services/)
@@ -74,15 +79,15 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/com.deepin.deepinid.Clien
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
-	FILES_MATCHING
-	PATTERN "*")
+        FILES_MATCHING
+        PATTERN "*")
 
 target_link_libraries(deepin-deepinid-client
-                      Qt5::Widgets
-		      Qt5::WebChannel
-		      Qt5::DBus
-		      ${QCef_LDFLAGS}
-		      ${DtkWidget_LDFLAGS})
+        Qt5::Widgets
+        Qt5::WebChannel
+        Qt5::DBus
+        ${QCef_LDFLAGS}
+        ${DtkWidget_LDFLAGS})
 
 add_dependencies(deepin-deepinid-client update-qm)
 

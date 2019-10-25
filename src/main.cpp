@@ -10,7 +10,7 @@
 #include <qcef_context.h>
 #include <qcef_web_settings.h>
 
-#include "login_window.h"
+#include "ui/login_window.h"
 
 namespace Const
 {
@@ -29,7 +29,7 @@ bool initQCef(int argc, char **argv)
     // Do not use sandbox.
     settings.setNoSandbox(true);
 
-    if (qEnvironmentVariableIntValue("QCEF_DEBUG") == 12) {
+    if (qEnvironmentVariableIntValue("QCEF_DEBUG") == 1) {
         // Open http://localhost:9222 in chromium browser to see dev tools.
         settings.setRemoteDebug(true);
         settings.setLogSeverity(QCefGlobalSettings::LogSeverity::Verbose);
@@ -103,12 +103,12 @@ int main(int argc, char **argv)
 
     app.loadTranslator();
 
-    dsc::LoginWindow lw;
+    ddc::LoginWindow lw;
 
-    if (lw.isLogin()) {
-        qWarning() << "user has isLogin";
-        return 0;
-    }
+//    if (lw.isLogin()) {
+//        qWarning() << "user has isLogin";
+//        return 0;
+//    }
 
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     }
 
     if (!parser.isSet(daemon)) {
-        lw.Show();
+//        lw.Show();
     }
 
     auto iconPath = ":/web/com.deepin.deepinid.Client.svg";

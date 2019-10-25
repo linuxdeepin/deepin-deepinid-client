@@ -11,16 +11,17 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 
-#include "deepinid_interface.h"
+#include "ipc/deepinid_interface.h"
 
 namespace Const
 {
-const auto SyncDaemonService   = "com.deepin.deepinid";
-const auto SyncDaemonPath      = "/com/deepin/deepinid";
+const auto SyncDaemonService = "com.deepin.deepinid";
+
+const auto SyncDaemonPath = "/com/deepin/deepinid";
 //const auto SyncDaemonInterface = "com.deepin.deepinid";
 }
 
-namespace dsc
+namespace ddc
 {
 
 
@@ -41,7 +42,8 @@ void sendDBusNotify(const QString &message)
     argumentList << static_cast<int>(5000);
 
     static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                    "/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+                                    "/org/freedesktop/Notifications",
+                                    "org.freedesktop.Notifications");
     notifyApp.callWithArgumentList(QDBus::Block, "Notify", argumentList);
 }
 
@@ -73,9 +75,9 @@ QString getPrivacyPolicyPathByLang(const QString &region, const QString &lang)
     const auto defaultRegion = "Other";
     auto prefix = "/usr/share/deepin-deepinid-client/privacy";
     auto privacyPolicyPath = QString("%1/deepinid-%2-%3.txt").
-                             arg(prefix).
-                             arg(region).
-                             arg(getRegionLang(region, lang));
+        arg(prefix).
+        arg(region).
+        arg(getRegionLang(region, lang));
 
     if (!QFile::exists(privacyPolicyPath) && region != defaultRegion) {
         privacyPolicyPath = getPrivacyPolicyPathByLang(defaultRegion, getRegionLang(region, lang));
@@ -86,14 +88,14 @@ QString getPrivacyPolicyPathByLang(const QString &region, const QString &lang)
 class SyncClientPrivate
 {
 public:
-    explicit SyncClientPrivate(SyncClient *parent) : q_ptr(parent)
+    explicit SyncClientPrivate(SyncClient *parent)
+        : q_ptr(parent)
     {
 
         daemonIf = new DeepinIDInterface(Const::SyncDaemonService,
                                          Const::SyncDaemonPath,
                                          QDBusConnection::sessionBus());
     }
-
 
     bool confirmPrivacyPolicy(const QString &id, QString region)
     {
@@ -150,14 +152,14 @@ public:
         return userConfirm;
     }
 
-
     DeepinIDInterface *daemonIf;
 
     SyncClient *q_ptr;
     Q_DECLARE_PUBLIC(SyncClient)
 };
 
-SyncClient::SyncClient(QObject *parent) :
+SyncClient::SyncClient(QObject *parent)
+    :
     QObject(parent), dd_ptr(new SyncClientPrivate(this))
 {
 
@@ -184,6 +186,16 @@ QString SyncClient::gettext(const QString &str)
     return tr(str.toStdString().c_str());
 }
 
+void SyncClient::authCallback(const QVariantMap &tokenInfo)
+{
+    qDebug() << tokenInfo;
+    auto sessionID = tokenInfo.value("session_id").toString();
+    auto clientID = tokenInfo.value("client_id").toString();
+    auto state = tokenInfo.value("state").toString();
+    auto code = tokenInfo.value("code").toString();
+    Q_EMIT this->onLogin(sessionID, clientID, state, code);
+}
+
 void SyncClient::setToken(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);
@@ -199,10 +211,12 @@ void SyncClient::setToken(const QVariantMap &tokenInfo)
         qDebug() << "set token with reply:" << reply.error();
         if (reply.error().isValid()) {
             sendDBusNotify(tr("Login failed"));
-        } else {
+        }
+        else {
             sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
         }
-    } else {
+    }
+    else {
         sendDBusNotify(SyncClient::tr("Login failed"));
     }
     qApp->quit();
