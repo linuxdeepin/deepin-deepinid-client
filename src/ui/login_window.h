@@ -31,6 +31,8 @@ public Q_SLOTS:
                                 const QString &callback,
                                 const QString &state);
 
+    Q_SCRIPTABLE void Logout();
+
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(dd_ptr), LoginWindow)

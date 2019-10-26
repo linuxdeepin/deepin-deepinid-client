@@ -22,6 +22,7 @@ public Q_SLOTS:
 
 public:
     void save(const QString &sessionID);
+    void clear();
 
 private:
     QScopedPointer<SessionPrivate> dd_ptr;

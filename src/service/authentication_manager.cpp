@@ -95,7 +95,12 @@ bool AuthenticationManager::hasRequest() const
     return !d->authQueue.isEmpty();
 }
 
-AuthenticationManager::~AuthenticationManager() =
-default;
+void AuthenticationManager::logout()
+{
+    Q_D(AuthenticationManager);
+    d->sess.clear();
+}
+
+AuthenticationManager::~AuthenticationManager() = default;
 
 }

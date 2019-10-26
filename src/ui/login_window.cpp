@@ -191,4 +191,10 @@ void LoginWindow::Register(const QString &clientID,
     d->megs.insert(clientID, dbusIfc);
 }
 
+void LoginWindow::Logout()
+{
+    Q_D(LoginWindow);
+    d->authMgr.logout();
+}
+
 }

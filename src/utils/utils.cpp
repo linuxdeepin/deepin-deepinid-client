@@ -19,6 +19,7 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&state=%6";
     templateURL += "&lang=%7";
     templateURL += "&display=sync";
+    templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
 
     QString oauthURI = "https://login.deepinid.deepin.com";
@@ -52,6 +53,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&state=%6";
     templateURL += "&lang=%7";
     templateURL += "&display=sync";
+    templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
     QString oauthURI = "https://login.deepinid.deepin.com";
     QString locale = QLocale().name().split("_").value(0);

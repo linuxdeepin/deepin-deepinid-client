@@ -80,6 +80,13 @@ void Session::save(const QString &sessionID)
     d->settings.sync();
 }
 
+void Session::clear()
+{
+    Q_D(Session);
+    d->settings.setValue("session", "");
+    d->settings.sync();
+}
+
 Session::~Session() = default;
 
 }

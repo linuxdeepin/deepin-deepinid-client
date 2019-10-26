@@ -27,6 +27,7 @@ public Q_SLOTS:
                  const QString &clientID,
                  const QString &state,
                  const QString &code);
+    void logout();
 
 private:
     QScopedPointer<AuthenticationManagerPrivate> dd_ptr;
