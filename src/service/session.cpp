@@ -63,10 +63,9 @@ void Session::authorize(const AuthorizeRequest &authReq)
             auto json = QJsonDocument::fromJson(data).object();
             resp.code = json.value("code").toString();
             resp.state = authReq.state;
-            // TODO: handle error
+
             if (resp.code.isEmpty()) {
                 resp.success = false;
-
             }
         }
         qDebug() << "resp" << resp.success;
