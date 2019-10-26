@@ -11,8 +11,16 @@ QString authCodeURL(const QString &clientID,
                     const QString &callback,
                     const QString &state)
 {
-    QString templateURL =
-        "%1/oauth2/authorize?client_id=%2&redirect_uri=%3&response_type=code&scope=%4&display=sync&handle_open_link=true&lang=%5";
+    QString templateURL = "%1/oauth2/authorize";
+    templateURL += "?response_type=code";
+    templateURL += "&client_id=%3";
+    templateURL += "&redirect_uri=%4";
+    templateURL += "&scope=%5";
+    templateURL += "&state=%6";
+    templateURL += "&lang=%7";
+    templateURL += "&display=sync";
+    templateURL += "&handle_open_link=true";
+
     QString oauthURI = "https://login.deepinid.deepin.com";
     QString locale = QLocale().name().split("_").value(0);
 
@@ -25,6 +33,7 @@ QString authCodeURL(const QString &clientID,
         arg(clientID).
         arg(callback).
         arg(scopes.join(",")).
+        arg(state).
         arg("zh_cn");
     return url;
 }
@@ -35,8 +44,15 @@ QString authCodeURL(const QString &path,
                     const QString &callback,
                     const QString &state)
 {
-    QString templateURL =
-        "%1%2?client_id=%3&redirect_uri=%4&response_type=code&scope=%5&display=sync&handle_open_link=true&lang=%6";
+    QString templateURL = "%1%2";
+    templateURL += "?response_type=code";
+    templateURL += "&client_id=%3";
+    templateURL += "&redirect_uri=%4";
+    templateURL += "&scope=%5";
+    templateURL += "&state=%6";
+    templateURL += "&lang=%7";
+    templateURL += "&display=sync";
+    templateURL += "&handle_open_link=true";
     QString oauthURI = "https://login.deepinid.deepin.com";
     QString locale = QLocale().name().split("_").value(0);
 
@@ -50,6 +66,7 @@ QString authCodeURL(const QString &path,
         arg(clientID).
         arg(callback).
         arg(scopes.join(",")).
+        arg(state).
         arg(locale);
     return url;
 }

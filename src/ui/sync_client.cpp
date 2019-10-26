@@ -191,9 +191,9 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
     qDebug() << tokenInfo;
     auto sessionID = tokenInfo.value("session_id").toString();
     auto clientID = tokenInfo.value("client_id").toString();
-    auto state = tokenInfo.value("state").toString();
     auto code = tokenInfo.value("code").toString();
-    Q_EMIT this->onLogin(sessionID, clientID, state, code);
+    auto state = tokenInfo.value("state").toString();
+    Q_EMIT this->onLogin(sessionID, clientID, code, state);
 }
 
 void SyncClient::setToken(const QVariantMap &tokenInfo)

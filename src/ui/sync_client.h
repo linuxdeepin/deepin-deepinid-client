@@ -22,8 +22,8 @@ Q_SIGNALS:
     void requestHide();
     void onLogin(const QString &sessionID,
                  const QString &clientID,
-                 const QString &state,
-                 const QString &code);
+                 const QString &code,
+                 const QString &state);
 
 public Q_SLOTS:
     Q_SCRIPTABLE QString gettext(const QString &str);

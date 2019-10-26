@@ -68,8 +68,8 @@ void AuthenticationManager::requestAuthorize(const AuthorizeRequest &authReq)
 
 void AuthenticationManager::onLogin(const QString &sessionID,
                                     const QString &clientID,
-                                    const QString &state,
-                                    const QString &code)
+                                    const QString &code,
+                                    const QString &state)
 {
     // save config
     Q_D(AuthenticationManager);
@@ -83,10 +83,16 @@ void AuthenticationManager::onLogin(const QString &sessionID,
     AuthorizeResponse resp;
     resp.success = true;
     resp.req = authReq;
-    resp.state = state;
+    resp.state = authReq.state;
     resp.code = code;
     d->sess.save(sessionID);
     Q_EMIT d->sess.authorizeFinished(resp);
+}
+
+bool AuthenticationManager::hasRequest() const
+{
+    Q_D(const AuthenticationManager);
+    return !d->authQueue.isEmpty();
 }
 
 AuthenticationManager::~AuthenticationManager() =
