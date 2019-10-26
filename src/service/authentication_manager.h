@@ -16,6 +16,7 @@ public:
     explicit AuthenticationManager(QObject *parent = Q_NULLPTR);
     ~AuthenticationManager() Q_DECL_OVERRIDE;
 
+    bool hasRequest() const;
 Q_SIGNALS:
     void authorizeFinished(const AuthorizeResponse &);
     void requestLogin(const AuthorizeRequest &authReq);

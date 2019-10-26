@@ -58,17 +58,20 @@ public:
             qDebug() << resp.req.clientID << clientCallback;
             clientCallback->call(QDBus::Block, "OnAuthorized", resp.code, resp.state);
             qDebug() << "call" << clientCallback << resp.code << resp.state;
-            parent->close();
+
+            if (!authMgr.hasRequest()) {
+                parent->close();
+            }
         }, Qt::QueuedConnection);
 
         QObject::connect(&client, &SyncClient::onLogin, parent, [=](
             const QString &sessionID,
             const QString &clientID,
-            const QString &state,
-            const QString &code)
+            const QString &code,
+            const QString &state)
         {
             qDebug() << "on login";
-            this->authMgr.onLogin(sessionID, clientID, state, code);
+            this->authMgr.onLogin(sessionID, clientID, code, state);
         }, Qt::QueuedConnection);
     }
 
