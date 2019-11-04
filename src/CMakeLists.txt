@@ -42,7 +42,7 @@ set(CLIENT_FILES
         service/authentication_manager.cpp
         service/authentication_manager.h
         service/authorize.h
-        main.cpp utils/utils.cpp utils/utils.h)
+        main.cpp utils/utils.cpp utils/utils.h ipc/const.h)
 
 add_executable(deepin-deepinid-client ${CLIENT_FILES} resource/resource.qrc)
 

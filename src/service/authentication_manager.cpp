@@ -85,7 +85,6 @@ void AuthenticationManager::onLogin(const QString &sessionID,
     resp.req = authReq;
     resp.state = authReq.state;
     resp.code = code;
-    d->sess.save(sessionID);
     Q_EMIT d->sess.authorizeFinished(resp);
 }
 
@@ -93,12 +92,6 @@ bool AuthenticationManager::hasRequest() const
 {
     Q_D(const AuthenticationManager);
     return !d->authQueue.isEmpty();
-}
-
-void AuthenticationManager::logout()
-{
-    Q_D(AuthenticationManager);
-    d->sess.clear();
 }
 
 AuthenticationManager::~AuthenticationManager() = default;

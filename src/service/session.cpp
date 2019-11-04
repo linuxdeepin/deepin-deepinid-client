@@ -9,6 +9,8 @@
 #include <QJsonObject>
 
 #include "utils/utils.h"
+#include "ipc/const.h"
+#include "ipc/deepinid_interface.h"
 
 namespace ddc
 {
@@ -19,9 +21,13 @@ class SessionPrivate
 {
     explicit SessionPrivate(Session *parent)
         : q_ptr(parent)
-    {}
+    {
+        daemonIf = new DeepinIDInterface(Const::SyncDaemonService,
+                                         Const::SyncDaemonPath,
+                                         QDBusConnection::sessionBus());
+    }
 
-    QSettings settings;
+    DeepinIDInterface *daemonIf = nullptr;
 
     Session *q_ptr;
     Q_DECLARE_PUBLIC(Session)
@@ -41,9 +47,13 @@ void Session::authorize(const AuthorizeRequest &authReq)
                                   authReq.scopes,
                                   authReq.callback,
                                   authReq.state);
-    auto sessionID = d->settings.value("session");
+    // get from dbus
+    QDBusReply<QVariantMap> dbusReply = d->daemonIf->Get();
+    auto session = dbusReply.value();
+    auto sessionID = session.value("SessionID").toString();
+    qDebug() << sessionID;
     QNetworkRequest req(url);
-    req.setRawHeader("X-DeepinID-SessionID", sessionID.toString().toLatin1());
+    req.setRawHeader("X-DeepinID-SessionID", sessionID.toLatin1());
     auto reply = manager.get(req);
 
     qDebug() << "get" << req.url();
@@ -71,20 +81,6 @@ void Session::authorize(const AuthorizeRequest &authReq)
         qDebug() << "resp" << resp.success;
         Q_EMIT this->authorizeFinished(resp);
     });
-}
-
-void Session::save(const QString &sessionID)
-{
-    Q_D(Session);
-    d->settings.setValue("session", sessionID);
-    d->settings.sync();
-}
-
-void Session::clear()
-{
-    Q_D(Session);
-    d->settings.setValue("session", "");
-    d->settings.sync();
 }
 
 Session::~Session() = default;

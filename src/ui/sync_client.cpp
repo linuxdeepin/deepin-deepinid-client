@@ -11,15 +11,8 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 
+#include "ipc/const.h"
 #include "ipc/deepinid_interface.h"
-
-namespace Const
-{
-const auto SyncDaemonService = "com.deepin.deepinid";
-
-const auto SyncDaemonPath = "/com/deepin/deepinid";
-//const auto SyncDaemonInterface = "com.deepin.deepinid";
-}
 
 namespace ddc
 {
@@ -105,7 +98,6 @@ public:
             return true;
         }
 
-
         if (region.isEmpty()) {
             region = "CN";
         }
@@ -153,6 +145,7 @@ public:
     }
 
     DeepinIDInterface *daemonIf;
+    QVariantMap session;
 
     SyncClient *q_ptr;
     Q_DECLARE_PUBLIC(SyncClient)
@@ -173,14 +166,6 @@ QString SyncClient::machineID() const
     return d->daemonIf->property("HardwareID").toString();
 }
 
-bool SyncClient::logined() const
-{
-    Q_D(const SyncClient);
-
-    auto userInfo = d->daemonIf->userInfo();
-    return userInfo.value("IsLoggedIn").toBool();
-}
-
 QString SyncClient::gettext(const QString &str)
 {
     return tr(str.toStdString().c_str());
@@ -188,38 +173,33 @@ QString SyncClient::gettext(const QString &str)
 
 void SyncClient::authCallback(const QVariantMap &tokenInfo)
 {
+    Q_D(SyncClient);
     qDebug() << tokenInfo;
     auto sessionID = tokenInfo.value("session_id").toString();
     auto clientID = tokenInfo.value("client_id").toString();
     auto code = tokenInfo.value("code").toString();
     auto state = tokenInfo.value("state").toString();
-    Q_EMIT this->onLogin(sessionID, clientID, code, state);
-}
-
-void SyncClient::setToken(const QVariantMap &tokenInfo)
-{
-    Q_D(SyncClient);
 
     Q_EMIT this->requestHide();
 
-    qDebug() << tokenInfo;
     auto region = tokenInfo.value("region").toString();
-    auto syncUserID = tokenInfo.value("sync_user_id").toString();
+    auto syncUserID = tokenInfo.value("uid").toString();
 
+    if (code.isEmpty()) {
+        sendDBusNotify(SyncClient::tr("Login failed"));
+        Q_EMIT this->onCancel(clientID);
+        return;
+    }
+
+    d->session = tokenInfo;
     if (d->confirmPrivacyPolicy(syncUserID, region)) {
-        auto reply = d->daemonIf->SetToken(tokenInfo);
-        qDebug() << "set token with reply:" << reply.error();
-        if (reply.error().isValid()) {
-            sendDBusNotify(tr("Login failed"));
-        }
-        else {
-            sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
-        }
+        sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
+        Q_EMIT this->onLogin(sessionID, clientID, code, state);
     }
     else {
-        sendDBusNotify(SyncClient::tr("Login failed"));
+        sendDBusNotify(tr("Login failed"));
+        Q_EMIT this->onCancel(clientID);
     }
-    qApp->quit();
 }
 
 void SyncClient::open(const QString &url)
@@ -231,6 +211,13 @@ void SyncClient::close()
 {
     Q_EMIT this->prepareClose();
     qApp->quit();
+}
+
+void SyncClient::setSession()
+{
+    Q_D(SyncClient);
+    auto reply = d->daemonIf->Set(d->session);
+    qDebug() << "set token with reply:" << reply.error();
 }
 
 }

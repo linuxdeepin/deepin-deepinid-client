@@ -56,9 +56,16 @@ public:
         {
             auto clientCallback = megs.value(resp.req.clientID);
             qDebug() << resp.req.clientID << clientCallback;
+            if (nullptr == clientCallback) {
+                qWarning() << "empty clientID" << resp.req.clientID;
+                return;
+            }
+
             clientCallback->call(QDBus::Block, "OnAuthorized", resp.code, resp.state);
             qDebug() << "call" << clientCallback << resp.code << resp.state;
 
+            this->hasLogin = true;
+            parent->hide();
             if (!authMgr.hasRequest()) {
                 parent->close();
             }
@@ -72,7 +79,24 @@ public:
         {
             qDebug() << "on login";
             this->authMgr.onLogin(sessionID, clientID, code, state);
+            this->client.setSession();
         }, Qt::QueuedConnection);
+
+        QObject::connect(&client, &SyncClient::onCancel, parent, [=](
+            const QString &clientID)
+        {
+            qDebug() << "onCancel";
+            auto clientCallback = megs.value(clientID);
+            qDebug() << clientID << clientCallback;
+            if (nullptr == clientCallback) {
+                qWarning() << "empty clientID" << clientID;
+                return;
+            }
+
+            clientCallback->call(QDBus::Block, "OnCancel");
+            qDebug() << "call" << clientCallback;
+            parent->hide();
+        });
     }
 
     QString url;
@@ -81,6 +105,7 @@ public:
     SyncClient client;
     AuthenticationManager authMgr;
 
+    bool hasLogin = false;
     QMap<QString, QDBusInterface *> megs;
 
     LoginWindow *q_ptr;
@@ -121,7 +146,6 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     auto delegate = new WebEventDelegate(this);
     d->webView->page()->setEventDelegate(delegate);
-    qDebug() << d->webView->page()->pageErrorContent();
     d->webView->page()->setPageErrorContent("<script>window.location.href='qrc:/web/error.html';</script>");
     auto web_channel = d->webView->page()->webChannel();
     web_channel->registerObject("client", &d->client);
@@ -141,19 +165,6 @@ LoginWindow::LoginWindow(QWidget *parent)
 }
 
 LoginWindow::~LoginWindow() = default;
-
-bool LoginWindow::isLogin() const
-{
-    Q_D(const LoginWindow);
-    return d->client.logined();
-}
-
-//void LoginWindow::Show()
-//{
-//    this->show();
-//    Dtk::Widget::moveToCenter(this);
-//    this->load();
-//}
 
 void LoginWindow::setURL(const QString &url)
 {
@@ -191,10 +202,15 @@ void LoginWindow::Register(const QString &clientID,
     d->megs.insert(clientID, dbusIfc);
 }
 
-void LoginWindow::Logout()
+void LoginWindow::closeEvent(QCloseEvent *event)
 {
     Q_D(LoginWindow);
-    d->authMgr.logout();
+    if (!d->hasLogin) {
+        for (const auto &id: d->megs.keys()) {
+            Q_EMIT d->client.onCancel(id);
+        }
+    }
+    QWidget::closeEvent(event);
 }
 
 }

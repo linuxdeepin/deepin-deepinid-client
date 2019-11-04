@@ -15,7 +15,7 @@ public:
     ~SyncClient() Q_DECL_OVERRIDE;
 
     QString machineID() const;
-    bool logined() const;
+    void setSession();
 
 Q_SIGNALS:
     void prepareClose();
@@ -24,10 +24,10 @@ Q_SIGNALS:
                  const QString &clientID,
                  const QString &code,
                  const QString &state);
+    void onCancel(const QString &clientID);
 
 public Q_SLOTS:
     Q_SCRIPTABLE QString gettext(const QString &str);
-    Q_SCRIPTABLE void setToken(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void authCallback(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
     Q_SCRIPTABLE void close();

@@ -105,11 +105,6 @@ int main(int argc, char **argv)
 
     ddc::LoginWindow lw;
 
-//    if (lw.isLogin()) {
-//        qWarning() << "user has isLogin";
-//        return 0;
-//    }
-
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
         qDebug() << "register service failed" << sessionBus.lastError();

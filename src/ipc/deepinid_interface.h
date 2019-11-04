@@ -21,6 +21,7 @@
 #include <QtDBus/QtDBus>
 
 typedef QVariantMap UserInfo;
+
 Q_DECLARE_METATYPE(UserInfo)
 
 /*
@@ -28,27 +29,36 @@ Q_DECLARE_METATYPE(UserInfo)
  */
 class DeepinIDInterface: public QDBusAbstractInterface
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
     { return "com.deepin.deepinid"; }
 
 public:
-    DeepinIDInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
+    DeepinIDInterface(const QString &service,
+                      const QString &path,
+                      const QDBusConnection &connection,
+                      QObject *parent = 0);
 
     ~DeepinIDInterface();
 
-    Q_PROPERTY(QString HardwareID READ hardwareID)
+    Q_PROPERTY(QString HardwareID
+                   READ
+                   hardwareID)
     inline QString hardwareID() const
-    { return qvariant_cast< QString >(property("HardwareID")); }
+    { return qvariant_cast<QString>(property("HardwareID")); }
 
-    Q_PROPERTY(QString MachineName READ machineName)
+    Q_PROPERTY(QString MachineName
+                   READ
+                   machineName)
     inline QString machineName() const
-    { return qvariant_cast< QString >(property("MachineName")); }
+    { return qvariant_cast<QString>(property("MachineName")); }
 
-    Q_PROPERTY(UserInfo UserInfo READ userInfo)
+    Q_PROPERTY(UserInfo UserInfo
+                   READ
+                   userInfo)
     inline UserInfo userInfo() const
-    { return qvariant_cast< UserInfo >(property("UserInfo")); }
+    { return qvariant_cast<UserInfo>(property("UserInfo")); }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<> ConfirmPrivacy(const QString &in0)
@@ -56,12 +66,6 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0);
         return asyncCallWithArgumentList(QStringLiteral("ConfirmPrivacy"), argumentList);
-    }
-
-    inline QDBusPendingReply<QString> GetToken()
-    {
-        QList<QVariant> argumentList;
-        return asyncCallWithArgumentList(QStringLiteral("GetToken"), argumentList);
     }
 
     inline QDBusPendingReply<bool> HasConfirmPrivacy(const QString &in0)
@@ -83,18 +87,17 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("Logout"), argumentList);
     }
 
-    inline QDBusPendingReply<> RevokeAccess(const QString &in0)
+    inline QDBusPendingReply<QVariantMap> Get()
     {
         QList<QVariant> argumentList;
-        argumentList << QVariant::fromValue(in0);
-        return asyncCallWithArgumentList(QStringLiteral("RevokeAccess"), argumentList);
+        return asyncCallWithArgumentList(QStringLiteral("Get"), argumentList);
     }
 
-    inline QDBusPendingReply<> SetToken(const QVariantMap &in0)
+    inline QDBusPendingReply<> Set(const QVariantMap &in0)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(in0);
-        return asyncCallWithArgumentList(QStringLiteral("SetToken"), argumentList);
+        return asyncCallWithArgumentList(QStringLiteral("Set"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS

@@ -25,9 +25,8 @@ public Q_SLOTS:
     void requestAuthorize(const AuthorizeRequest &authReq);
     void onLogin(const QString &sessionID,
                  const QString &clientID,
-                 const QString &state,
-                 const QString &code);
-    void logout();
+                 const QString &code,
+                 const QString &state);
 
 private:
     QScopedPointer<AuthenticationManagerPrivate> dd_ptr;

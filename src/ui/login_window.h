@@ -16,7 +16,6 @@ public:
     explicit LoginWindow(QWidget *parent = Q_NULLPTR);
     ~LoginWindow() Q_DECL_OVERRIDE;
 
-    bool isLogin() const;
     void setURL(const QString &url);
     void load();
 
@@ -31,7 +30,8 @@ public Q_SLOTS:
                                 const QString &callback,
                                 const QString &state);
 
-    Q_SCRIPTABLE void Logout();
+protected:
+    void closeEvent(QCloseEvent*);
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;
