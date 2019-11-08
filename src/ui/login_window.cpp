@@ -78,6 +78,7 @@ public:
             const QString &state)
         {
             qDebug() << "on login";
+            this->hasLogin = true;
             this->authMgr.onLogin(sessionID, clientID, code, state);
             this->client.setSession();
         }, Qt::QueuedConnection);
