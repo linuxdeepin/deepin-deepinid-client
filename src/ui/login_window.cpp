@@ -158,7 +158,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     connect(&d->client, &SyncClient::requestHide, this, [&]()
     {
-        this->close();
+        this->hide();
     });
 
     setFixedSize(360, 390 + this->titlebar()->height());
