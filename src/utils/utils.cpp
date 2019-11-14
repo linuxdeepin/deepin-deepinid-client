@@ -35,7 +35,7 @@ QString authCodeURL(const QString &clientID,
         arg(callback).
         arg(scopes.join(",")).
         arg(state).
-        arg("zh_cn");
+        arg(locale);
     return url;
 }
 
