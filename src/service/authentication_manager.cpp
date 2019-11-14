@@ -30,6 +30,12 @@ public:
                 this->authQueue.pop_front();
                 qDebug() << "authorizeFinished" << this->authQueue.length();
                 Q_EMIT p->authorizeFinished(resp);
+
+                // 如果还有请求，继续
+                if (this->authQueue.length() > 0) {
+                    auto authReq = this->authQueue.first();
+                    this->sess.authorize(authReq);
+                }
             }
             else {
                 auto authReq = this->authQueue.first();

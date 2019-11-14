@@ -43,6 +43,9 @@ public:
 
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
+            // if need login,clean cookie;
+            this->webView->page()->runJavaScript(
+                "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
             url = utils::authCodeURL(
                 authReq.clientID,
                 authReq.scopes,
