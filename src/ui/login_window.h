@@ -31,7 +31,7 @@ public Q_SLOTS:
                                 const QString &state);
 
 protected:
-    void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;

@@ -17,6 +17,8 @@ public:
     ~AuthenticationManager() Q_DECL_OVERRIDE;
 
     bool hasRequest() const;
+    void cancel();
+
 Q_SIGNALS:
     void authorizeFinished(const AuthorizeResponse &);
     void requestLogin(const AuthorizeRequest &authReq);

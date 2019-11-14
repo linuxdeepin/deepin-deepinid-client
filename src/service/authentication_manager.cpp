@@ -28,6 +28,7 @@ public:
             // remove from queue;
             if (resp.success) {
                 this->authQueue.pop_front();
+                qDebug() << "authorizeFinished" << this->authQueue.length();
                 Q_EMIT p->authorizeFinished(resp);
             }
             else {
@@ -60,6 +61,7 @@ void AuthenticationManager::requestAuthorize(const AuthorizeRequest &authReq)
 //    QMutexLocker locker(&d->mutex);
     d->authQueue.push_back(authReq);
 
+    qDebug() << "queue length" << d->authQueue.length();
     // first req, call authorize
     if (d->authQueue.length() == 1) {
         d->sess.authorize(authReq);
@@ -92,6 +94,12 @@ bool AuthenticationManager::hasRequest() const
 {
     Q_D(const AuthenticationManager);
     return !d->authQueue.isEmpty();
+}
+
+void AuthenticationManager::cancel()
+{
+    Q_D(AuthenticationManager);
+    d->authQueue.clear();
 }
 
 AuthenticationManager::~AuthenticationManager() = default;

@@ -51,7 +51,7 @@ void Session::authorize(const AuthorizeRequest &authReq)
     QDBusReply<QVariantMap> dbusReply = d->daemonIf->Get();
     auto session = dbusReply.value();
     auto sessionID = session.value("SessionID").toString();
-    qDebug() << sessionID;
+    qDebug() << "check session" << sessionID;
     QNetworkRequest req(url);
     req.setRawHeader("X-DeepinID-SessionID", sessionID.toLatin1());
     auto reply = manager.get(req);

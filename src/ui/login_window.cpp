@@ -187,6 +187,7 @@ void LoginWindow::Authorize(const QString &clientID,
 {
     Q_D(LoginWindow);
 
+    qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
     d->authMgr.requestAuthorize(AuthorizeRequest{
         clientID, scopes, callback, state
     });
@@ -206,6 +207,7 @@ void LoginWindow::Register(const QString &clientID,
 void LoginWindow::closeEvent(QCloseEvent *event)
 {
     Q_D(LoginWindow);
+    d->authMgr.cancel();
     if (!d->hasLogin) {
         for (const auto &id: d->megs.keys()) {
             Q_EMIT d->client.onCancel(id);

@@ -15,11 +15,15 @@
 namespace Const
 {
 const char EnableDomStorageFlush[] = "--enable-aggressive-domstorage-flushing";
+
 const char DisableGpu[] = "--disable-gpu";
+
 const char EnableLogging[] = "--enable-logging";
+
 const char LogLevel[] = "--log-level";
 
 const char DBusService[] = "com.deepin.deepinid.Client";
+
 const char DBusPath[] = "/com/deepin/deepinid/Client";
 } // namespace Const
 
@@ -33,7 +37,8 @@ bool initQCef(int argc, char **argv)
         // Open http://localhost:9222 in chromium browser to see dev tools.
         settings.setRemoteDebug(true);
         settings.setLogSeverity(QCefGlobalSettings::LogSeverity::Verbose);
-    } else {
+    }
+    else {
         settings.setRemoteDebug(false);
         settings.setLogSeverity(QCefGlobalSettings::LogSeverity::Error);
     }
@@ -121,8 +126,8 @@ int main(int argc, char **argv)
         lw.setURL(parser.value(bootstrap));
     }
 
-    if (!parser.isSet(daemon)) {
-//        lw.Show();
+    if (parser.isSet(daemon)) {
+        Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
     }
 
     auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
