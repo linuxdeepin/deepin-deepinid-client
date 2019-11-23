@@ -5,7 +5,7 @@ Maintainer: Iceyer <me@iceyer.net>
 Build-Depends: debhelper (>= 10),
  cmake,
  libdtkwidget-dev,
- libdtkgui-dev
+ libdtkgui-dev,
  libqt5webchannel5-dev,
  qtwebengine5-dev,
  pkg-config,

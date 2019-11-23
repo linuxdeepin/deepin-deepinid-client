@@ -92,19 +92,35 @@ public:
             const QString &clientID)
         {
             qDebug() << "onCancel";
-            auto clientCallback = megs.value(clientID);
-            qDebug() << clientID << clientCallback;
-            if (nullptr == clientCallback) {
-                qWarning() << "empty clientID" << clientID;
-                return;
-            }
-
-            clientCallback->call(QDBus::Block, "OnCancel");
-            qDebug() << "call" << clientCallback;
-            parent->hide();
+            cancelAll();
         });
     }
 
+    void cancelAll()
+    {
+        Q_Q(LoginWindow);
+        authMgr.cancel();
+        if (!hasLogin) {
+            for (const auto &id: megs.keys()) {
+                cancel(id);
+            }
+        }
+        q->hide();
+    }
+
+    void cancel(const QString &clientID)
+    {
+        auto clientCallback = megs.value(clientID);
+        qDebug() << clientID << clientCallback;
+        if (nullptr == clientCallback) {
+            qWarning() << "empty clientID" << clientID;
+            return;
+        }
+
+        clientCallback->call(QDBus::Block, "OnCancel");
+        qDebug() << "call" << clientCallback;
+
+    }
     QString url;
     LoginPage *page;
 
@@ -249,12 +265,7 @@ void LoginWindow::Register(const QString &clientID,
 void LoginWindow::closeEvent(QCloseEvent *event)
 {
     Q_D(LoginWindow);
-    d->authMgr.cancel();
-    if (!d->hasLogin) {
-        for (const auto &id: d->megs.keys()) {
-            Q_EMIT d->client.onCancel(id);
-        }
-    }
+    d->cancelAll();
     QWidget::closeEvent(event);
 }
 
