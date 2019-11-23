@@ -19,6 +19,12 @@ public:
     void setURL(const QString &url);
     void load();
 
+Q_SIGNALS:
+    void loadError();
+
+public Q_SLOTS:
+    void onLoadError();
+
 public Q_SLOTS:
     Q_SCRIPTABLE void Register(const QString &clientID,
                                const QString &service,

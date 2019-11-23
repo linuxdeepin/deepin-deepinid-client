@@ -17,7 +17,7 @@
     </div>
 
     <div class="submit_bt">
-        <button type="submit" id="submit_bt" i18n-content="Close" />
+        <button type="submit" id="submit_bt" i18n-content="Close"></button>
     </div>
 </div>
 
@@ -62,14 +62,14 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function (event) {
         console.log("DOM fully loaded and parsed");
 
         var register = document.getElementById('submit_bt');
         register.addEventListener('click', function (e) {
             var targetWindow = window.opener || window.parent;
             if (targetWindow) {
-                nativeExec(function (channel,data) {
+                nativeExec(function (channel, data) {
                     channel.objects.client.close();
                 }, "");
                 e.preventDefault();

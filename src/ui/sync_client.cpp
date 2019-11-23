@@ -162,7 +162,8 @@ SyncClient::~SyncClient() = default;
 
 QString SyncClient::machineID() const
 {
-    Q_D(const SyncClient);
+    Q_D(
+    const SyncClient);
     return d->daemonIf->property("HardwareID").toString();
 }
 
@@ -180,25 +181,29 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
     auto code = tokenInfo.value("code").toString();
     auto state = tokenInfo.value("state").toString();
 
-    Q_EMIT this->requestHide();
+    Q_EMIT
+    this->requestHide();
 
     auto region = tokenInfo.value("region").toString();
     auto syncUserID = tokenInfo.value("uid").toString();
 
     if (code.isEmpty()) {
         sendDBusNotify(SyncClient::tr("Login failed"));
-        Q_EMIT this->onCancel(clientID);
+        Q_EMIT
+        this->onCancel(clientID);
         return;
     }
 
     d->session = tokenInfo;
     if (d->confirmPrivacyPolicy(syncUserID, region)) {
         sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
-        Q_EMIT this->onLogin(sessionID, clientID, code, state);
+        Q_EMIT
+        this->onLogin(sessionID, clientID, code, state);
     }
     else {
         sendDBusNotify(tr("Login failed"));
-        Q_EMIT this->onCancel(clientID);
+        Q_EMIT
+        this->onCancel(clientID);
     }
 }
 
@@ -209,7 +214,8 @@ void SyncClient::open(const QString &url)
 
 void SyncClient::close()
 {
-    Q_EMIT this->prepareClose();
+    Q_EMIT
+    this->prepareClose();
     qApp->quit();
 }
 

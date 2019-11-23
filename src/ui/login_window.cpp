@@ -4,24 +4,26 @@
 #include <QDebug>
 #include <QTimer>
 #include <QUrl>
+#include <QFile>
 #include <QLocale>
 #include <QDBusMessage>
 #include <QDBusInterface>
 #include <QDBusMetaType>
 #include <QDBusConnectionInterface>
 #include <QtWebChannel/QWebChannel>
+#include <QWebEngineView>
+#include <QWebEngineProfile>
+#include <QWebEngineSettings>
+#include <QWebEngineScriptCollection>
 
 #include <DTitlebar>
 #include <DWidgetUtil>
 
-#include <qcef_web_page.h>
-#include <qcef_web_settings.h>
-#include <qcef_web_view.h>
-
 #include "sync_client.h"
-#include "web_event_delegate.h"
 #include "service/authentication_manager.h"
 #include "utils/utils.h"
+#include "login_view.h"
+#include "login_page.h"
 
 namespace ddc
 {
@@ -44,7 +46,7 @@ public:
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
-            this->webView->page()->runJavaScript(
+            this->page->runJavaScript(
                 "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
             url = utils::authCodeURL(
                 authReq.clientID,
@@ -104,7 +106,7 @@ public:
     }
 
     QString url;
-    QCefWebView *webView = nullptr;
+    LoginPage *page;
 
     SyncClient client;
     AuthenticationManager authMgr;
@@ -121,6 +123,18 @@ LoginWindow::LoginWindow(QWidget *parent)
 {
     Q_D(LoginWindow);
 
+    QFile scriptFile(":/qtwebchannel/qwebchannel.js");
+    scriptFile.open(QIODevice::ReadOnly);
+    QString apiScript = QString::fromLatin1(scriptFile.readAll());
+    scriptFile.close();
+    QWebEngineScript script;
+    script.setSourceCode(apiScript);
+    script.setName("qwebchannel.js");
+    script.setWorldId(QWebEngineScript::MainWorld);
+    script.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    script.setRunsOnSubFrames(false);
+    QWebEngineProfile::defaultProfile()->scripts()->insert(script);
+
     this->titlebar()->setTitle("");
     setWindowFlags(Qt::Dialog);
 
@@ -130,29 +144,23 @@ LoginWindow::LoginWindow(QWidget *parent)
     setWindowFlags(flag);
     this->titlebar()->setMenuVisible(false);
     this->titlebar()->setMenuDisabled(true);
-
     // TODO: workaround for old version dtk, remove as soon as possible.
     this->titlebar()->setDisableFlags(Qt::WindowSystemMenuHint);
-
     this->titlebar()->setBackgroundTransparent(true);
 
-    d->webView = new QCefWebView();
-    this->setCentralWidget(d->webView);
-
     auto machineID = d->client.machineID();
-    // Disable web security.
-    auto settings = d->webView->page()->settings();
-    settings->setMinimumFontSize(8);
-    settings->setWebSecurity(QCefWebSettings::StateDisabled);
-    settings->setCustomHeaders({
-                                   {"X-Machine-ID", machineID}
-                               });
+    auto *wuri = new WebUrlRequestInterceptor();
+    wuri->setHeader({
+                        {"X-Machine-ID", machineID.toLatin1()}
+                    });
+    QWebEngineProfile::defaultProfile()->setRequestInterceptor(wuri);
 
-    auto delegate = new WebEventDelegate(this);
-    d->webView->page()->setEventDelegate(delegate);
-    d->webView->page()->setPageErrorContent("<script>window.location.href='qrc:/web/error.html';</script>");
-    auto web_channel = d->webView->page()->webChannel();
-    web_channel->registerObject("client", &d->client);
+    auto *channel = new QWebChannel(this);
+    channel->registerObject("client", &d->client);
+
+    d->page = new LoginPage(this);
+    d->page->setWebChannel(channel);
+
 
     connect(&d->client, &SyncClient::prepareClose, this, [&]()
     {
@@ -163,6 +171,30 @@ LoginWindow::LoginWindow(QWidget *parent)
     {
         this->hide();
     });
+
+    auto view = new LoginView(this);
+    view->setPage(d->page);
+    this->setCentralWidget(view);
+    view->setFocus();
+
+    connect(d->page, &QWebEnginePage::loadStarted, this, [=]()
+    {
+        qDebug() << "ok";
+    });
+    connect(d->page, &QWebEnginePage::loadFinished, this, [=](bool ok)
+    {
+        qDebug() << ok;
+        if (!ok) {
+            d->page->load(QUrl("qrc:/web/error.html"));
+        }
+    });
+    connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
+    {
+        qDebug() << progress;
+    });
+
+
+    connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
 
     setFixedSize(360, 390 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
@@ -180,7 +212,7 @@ void LoginWindow::load()
 {
     Q_D(LoginWindow);
     qDebug() << d->url;
-    d->webView->load(QUrl(d->url));
+    d->page->load(QUrl(d->url));
 }
 
 void LoginWindow::Authorize(const QString &clientID,
@@ -194,6 +226,13 @@ void LoginWindow::Authorize(const QString &clientID,
     d->authMgr.requestAuthorize(AuthorizeRequest{
         clientID, scopes, callback, state
     });
+}
+
+void LoginWindow::onLoadError()
+{
+    Q_D(LoginWindow);
+    qDebug() << "load error page";
+    d->page->load(QUrl("qrc:/web/error.html"));
 }
 
 void LoginWindow::Register(const QString &clientID,
