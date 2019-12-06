@@ -226,4 +226,11 @@ void SyncClient::setSession()
     qDebug() << "set token with reply:" << reply.error();
 }
 
+void SyncClient::cleanSession()
+{
+    Q_D(SyncClient);
+    auto reply = d->daemonIf->Set(QVariantMap());
+    qDebug() << "clean token with reply:" << reply.error();
+}
+
 }

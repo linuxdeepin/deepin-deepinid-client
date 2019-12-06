@@ -48,6 +48,8 @@ public:
             // if need login,clean cookie;
             this->page->runJavaScript(
                 "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
+            this->client.cleanSession();
+
             url = utils::authCodeURL(
                 authReq.clientID,
                 authReq.scopes,

@@ -16,6 +16,7 @@ public:
 
     QString machineID() const;
     void setSession();
+    void cleanSession();
 
 Q_SIGNALS:
     void prepareClose();
