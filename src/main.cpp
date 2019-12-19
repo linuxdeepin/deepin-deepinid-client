@@ -20,25 +20,18 @@ const char DBusPath[] = "/com/deepin/deepinid/Client";
 
 int main(int argc, char **argv)
 {
-    qputenv("DXCB_FAKE_PLATFORM_NAME_XCB", "true");
-    qputenv("DXCB_REDIRECT_CONTENT", "true");
+    Dtk::Widget::DApplication::loadDXcbPlugin();
+    Dtk::Widget::DApplication app(argc, argv);
+
+    app.setAttribute(Qt::AA_ForceRasterWidgets, false);
+    app.setOrganizationName("deepin");
 
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
 
-
-    Dtk::Widget::DApplication::loadDXcbPlugin();
-    Dtk::Widget::DApplication app(argc, argv);
-
-    Dtk::Widget::DApplication::setOrganizationName("deepin");
-
     if (!DGuiApplicationHelper::setSingleInstance("com.deepin.deepinid.Client")) {
         qWarning() << "another client is running";
         return 0;
-    }
-
-    if (!Dtk::Widget::DPlatformWindowHandle::pluginVersion().isEmpty()) {
-        Dtk::Widget::DApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings, true);
     }
 
     QCommandLineParser parser;
@@ -66,14 +59,17 @@ int main(int argc, char **argv)
         return -2;
     }
 
-    if (parser.isSet(bootstrap)) {
-        lw.setURL(parser.value(bootstrap));
-    }
 
     if (parser.isSet(daemon)) {
         Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
     }
 
+    if (parser.isSet(bootstrap)) {
+        lw.setURL(parser.value(bootstrap));
+        lw.load();
+        lw.show();
+    }
+    
     auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
     Dtk::Widget::DApplication::setWindowIcon(QIcon(iconPath));
     lw.setWindowIcon(QIcon(iconPath));
