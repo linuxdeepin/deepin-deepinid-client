@@ -43,6 +43,14 @@ public:
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
 
+        QDBusInterface activate("com.deepin.license.activator",
+                                "/com/deepin/license/activator",
+                                "com.deepin.license.activator",
+                                QDBusConnection::sessionBus());
+
+        reply = activate.call(QDBus::AutoDetect,
+                              "GetIndicatorData");
+
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
@@ -134,6 +142,8 @@ public:
 
     LoginWindow *q_ptr;
     Q_DECLARE_PUBLIC(LoginWindow)
+
+    QDBusReply<quint32> reply;
 };
 
 LoginWindow::LoginWindow(QWidget *parent)
@@ -239,11 +249,21 @@ void LoginWindow::Authorize(const QString &clientID,
                             const QString &state)
 {
     Q_D(LoginWindow);
+    qDebug() << "d->reply:" << d->reply;
 
-    qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
-    d->authMgr.requestAuthorize(AuthorizeRequest{
-        clientID, scopes, callback, state
-    });
+    quint32 ret =   AuthorizationState::Notauthorized == d->reply ||
+                    AuthorizationState::Expired == d->reply ||
+                    AuthorizationState::TrialExpired == d->reply;
+    if(ret)
+    {
+        d->page->load(QUrl("qrc:/web/authorize.html"));
+        show();
+    }else{
+        qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
+        d->authMgr.requestAuthorize(AuthorizeRequest{
+            clientID, scopes, callback, state
+        });
+    }
 }
 
 void LoginWindow::onLoadError()
