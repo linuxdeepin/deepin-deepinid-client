@@ -105,6 +105,7 @@ bool AuthenticationManager::hasRequest() const
 void AuthenticationManager::cancel()
 {
     Q_D(AuthenticationManager);
+    qDebug() << "clean auth queue";
     d->authQueue.clear();
 }
 

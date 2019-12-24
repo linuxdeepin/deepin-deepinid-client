@@ -208,7 +208,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     });
     connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
     {
-        qDebug() << progress;
+//        qDebug() << progress;
     });
 
 

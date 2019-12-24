@@ -87,7 +87,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("Logout"), argumentList);
     }
 
-    inline QDBusPendingReply<QVariantMap> Get()
+    inline QDBusPendingReply<QByteArray> Get()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QStringLiteral("Get"), argumentList);
