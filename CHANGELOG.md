@@ -1,3 +1,18 @@
+<a name="5.1.0.3"></a>
+## 5.1.0.3 (2019-12-25)
+
+
+#### Features
+
+*  add D-Bus interface and show anth info ([6d0ef441](6d0ef441))
+*  add D-Bus interface and show anth info ([7601499c](7601499c))
+
+#### Bug Fixes
+
+*  delete close pushbutton ([bc65184a](bc65184a))
+
+
+
 <a name="5.0.9"></a>
 ## 5.0.9 (2019-12-12)
 
