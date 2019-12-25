@@ -48,8 +48,9 @@ public:
                                 "com.deepin.license.activator",
                                 QDBusConnection::sessionBus());
 
-        reply = activate.call(QDBus::AutoDetect,
+        QDBusReply<quint32> reply = activate.call(QDBus::AutoDetect,
                               "GetIndicatorData");
+        authorizationState = reply.value();
 
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
@@ -143,7 +144,7 @@ public:
     LoginWindow *q_ptr;
     Q_DECLARE_PUBLIC(LoginWindow)
 
-    QDBusReply<quint32> reply;
+    unsigned int authorizationState;
 };
 
 LoginWindow::LoginWindow(QWidget *parent)
@@ -249,12 +250,12 @@ void LoginWindow::Authorize(const QString &clientID,
                             const QString &state)
 {
     Q_D(LoginWindow);
-    qDebug() << "d->reply:" << d->reply;
+    qDebug() << "d->reply:" << d->authorizationState;
 
-    quint32 ret =   AuthorizationState::Notauthorized == d->reply ||
-                    AuthorizationState::Expired == d->reply ||
-                    AuthorizationState::TrialExpired == d->reply;
-    if(ret)
+    bool isNotAuthorized =  AuthorizationState::Notauthorized == d->authorizationState ||
+                    AuthorizationState::Expired == d->authorizationState ||
+                    AuthorizationState::TrialExpired == d->authorizationState;
+    if(isNotAuthorized)
     {
         d->page->load(QUrl("qrc:/web/authorize.html"));
         show();
