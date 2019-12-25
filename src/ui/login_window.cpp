@@ -252,18 +252,17 @@ void LoginWindow::Authorize(const QString &clientID,
     Q_D(LoginWindow);
     qDebug() << "d->reply:" << d->authorizationState;
 
-    bool isNotAuthorized =  AuthorizationState::Notauthorized == d->authorizationState ||
-                    AuthorizationState::Expired == d->authorizationState ||
-                    AuthorizationState::TrialExpired == d->authorizationState;
-    if(isNotAuthorized)
+    bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
+                    AuthorizationState::TrialAuthorized == d->authorizationState;
+    if(authorized)
     {
-        d->page->load(QUrl("qrc:/web/authorize.html"));
-        show();
-    }else{
         qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
         d->authMgr.requestAuthorize(AuthorizeRequest{
             clientID, scopes, callback, state
         });
+    }else{
+        d->page->load(QUrl("qrc:/web/authorize.html"));
+        show();
     }
 }
 
