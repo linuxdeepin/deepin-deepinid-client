@@ -6,5 +6,6 @@
         <file>web/di18n.min.js</file>
         <file>web/com.deepin.deepinid.Client.svg</file>
         <file>web/error.js</file>
+        <file>web/authorize.html</file>
     </qresource>
 </RCC>
