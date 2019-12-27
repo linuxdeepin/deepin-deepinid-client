@@ -130,7 +130,7 @@ public:
 
         if (!ddeLicenseDialog.waitForStarted(-1)) {
             qWarning() << "start dde-license-dialog failed" << ddeLicenseDialog.state();
-            sendDBusNotify(SyncClient::tr("Login failed"));
+            //sendDBusNotify(SyncClient::tr("Login failed"));
             return false;
         }
 
@@ -188,7 +188,7 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
     auto syncUserID = tokenInfo.value("uid").toString();
 
     if (code.isEmpty()) {
-        sendDBusNotify(SyncClient::tr("Login failed"));
+        //sendDBusNotify(SyncClient::tr("Login failed"));
         Q_EMIT
         this->onCancel(clientID);
         return;
@@ -196,12 +196,12 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
 
     d->session = tokenInfo;
     if (d->confirmPrivacyPolicy(syncUserID, region)) {
-        sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
+        //sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
         Q_EMIT
         this->onLogin(sessionID, clientID, code, state);
     }
     else {
-        sendDBusNotify(tr("Login failed"));
+        //sendDBusNotify(tr("Login failed"));
         Q_EMIT
         this->onCancel(clientID);
     }
