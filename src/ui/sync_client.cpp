@@ -114,8 +114,8 @@ public:
         }
 
         QProcess ddeLicenseDialog;
-        QString title = QObject::tr("Deepin ID Privacy Policy");
-        QString allowHint = QObject::tr("Agree and Turn On Cloud Sync");
+        QString title = QObject::tr("Network Account Privacy Policy");
+        QString allowHint = QObject::tr("Agree and Turn On Network Account Sync");
         ddeLicenseDialog.setProgram("dde-license-dialog");
         QStringList args;
         args << "-t" << title
