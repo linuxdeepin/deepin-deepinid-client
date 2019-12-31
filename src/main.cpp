@@ -59,10 +59,7 @@ int main(int argc, char **argv)
         return -2;
     }
 
-
-    if (parser.isSet(daemon)) {
-        Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
-    }
+    Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
 
     if (parser.isSet(bootstrap)) {
         lw.setURL(parser.value(bootstrap));
