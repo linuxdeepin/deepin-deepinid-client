@@ -57,9 +57,6 @@ QString getLang(const QString &region)
 
 QString getRegionLang(const QString &region, const QString &lang)
 {
-    if (region == "CN") {
-        return "zh_CN";
-    }
     return lang;
 }
 
@@ -119,8 +116,8 @@ public:
         ddeLicenseDialog.setProgram("dde-license-dialog");
         QStringList args;
         args << "-t" << title
-             << "-c" << privacyPolicyPathZH
              << "-e" << privacyPolicyPathEN
+             << "-c" << privacyPolicyPathZH
              << "-a" << allowHint;
 
         ddeLicenseDialog.setArguments(args);
