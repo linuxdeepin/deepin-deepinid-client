@@ -111,6 +111,7 @@ public:
         if (!hasLogin) {
             for (const auto &id: megs.keys()) {
                 cancel(id);
+                megs.remove(id);
             }
         }
         q->hide();
@@ -251,7 +252,9 @@ void LoginWindow::Authorize(const QString &clientID,
 
     bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
                     AuthorizationState::TrialAuthorized == d->authorizationState;
-    if(authorized)
+    QString activatorClientID = "73560e1f5fcecea6af107d7aa638e3be8b8aa97f";
+
+    if(authorized || clientID == activatorClientID)
     {
         qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
         d->authMgr.requestAuthorize(AuthorizeRequest{
