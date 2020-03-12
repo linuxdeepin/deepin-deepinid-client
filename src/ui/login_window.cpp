@@ -43,14 +43,11 @@ public:
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
 
-        QDBusInterface activate("com.deepin.license.activator",
-                                "/com/deepin/license/activator",
-                                "com.deepin.license.activator",
-                                QDBusConnection::sessionBus());
-
-        QDBusReply<quint32> reply = activate.call(QDBus::AutoDetect,
-                              "GetIndicatorData");
-        authorizationState = reply.value();
+        QDBusInterface activate("com.deepin.license",
+                                "/com/deepin/license/Info",
+                                "com.deepin.license.Info",
+                                QDBusConnection::systemBus());
+        authorizationState = activate.property("AuthorizationState").toUInt();
 
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
