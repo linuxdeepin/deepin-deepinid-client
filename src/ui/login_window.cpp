@@ -93,7 +93,9 @@ public:
             qDebug() << "on login";
             this->hasLogin = true;
             this->authMgr.onLogin(sessionID, clientID, code, state);
-            this->client.setSession();
+            if(activatorClientID != clientID){
+                this->client.setSession();
+            }
         }, Qt::QueuedConnection);
 
         QObject::connect(&client, &SyncClient::onCancel, parent, [=](
@@ -143,6 +145,8 @@ public:
     Q_DECLARE_PUBLIC(LoginWindow)
 
     unsigned int authorizationState;
+
+    const QString activatorClientID = "73560e1f5fcecea6af107d7aa638e3be8b8aa97f";
 };
 
 LoginWindow::LoginWindow(QWidget *parent)
@@ -252,9 +256,8 @@ void LoginWindow::Authorize(const QString &clientID,
 
     bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
                     AuthorizationState::TrialAuthorized == d->authorizationState;
-    QString activatorClientID = "73560e1f5fcecea6af107d7aa638e3be8b8aa97f";
 
-    if(authorized || clientID == activatorClientID)
+    if(authorized || clientID == d->activatorClientID)
     {
         qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
         d->authMgr.requestAuthorize(AuthorizeRequest{
