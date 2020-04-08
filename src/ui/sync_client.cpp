@@ -64,7 +64,7 @@ QString getPrivacyPolicyPathByLang(const QString &region, const QString &lang)
 {
     const auto defaultRegion = "Other";
     auto prefix = "/usr/share/deepin-deepinid-client/privacy";
-    auto privacyPolicyPath = QString("%1/deepinid-%2-%3.txt").
+    auto privacyPolicyPath = QString("%1/deepinid-%2-%3.md").
         arg(prefix).
         arg(region).
         arg(getRegionLang(region, lang));
