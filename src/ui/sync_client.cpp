@@ -111,14 +111,18 @@ public:
         }
 
         QProcess ddeLicenseDialog;
-        QString title = QObject::tr("Network Account Privacy Policy");
-        QString allowHint = QObject::tr("Agree and Turn On Network Account Sync");
+        QString titleZH = "网络账户隐私政策";
+        QString titleEN = "Network Account Privacy Policy";
+        QString allowHintZH = "同意并开启网络账户同步功能";
+        QString allowHintEN = "Agree and Turn On Network Account Sync";
         ddeLicenseDialog.setProgram("dde-license-dialog");
         QStringList args;
-        args << "-t" << title
+        args << "-u" << titleEN
+             << "-t" << titleZH
              << "-e" << privacyPolicyPathEN
              << "-c" << privacyPolicyPathZH
-             << "-a" << allowHint;
+             << "-b" << allowHintEN
+             << "-a" << allowHintZH;
 
         ddeLicenseDialog.setArguments(args);
         qDebug() << ddeLicenseDialog.program() << ddeLicenseDialog.arguments().join(" ");
