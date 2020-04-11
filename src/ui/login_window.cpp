@@ -147,6 +147,7 @@ public:
     unsigned int authorizationState;
 
     const QString activatorClientID = "73560e1f5fcecea6af107d7aa638e3be8b8aa97f";
+    const QString controlCenterClientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
 };
 
 LoginWindow::LoginWindow(QWidget *parent)
@@ -257,7 +258,7 @@ void LoginWindow::Authorize(const QString &clientID,
     bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
                     AuthorizationState::TrialAuthorized == d->authorizationState;
 
-    if(authorized || clientID == d->activatorClientID)
+    if(authorized || clientID == d->activatorClientID || clientID == d->controlCenterClientID)
     {
         qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
         d->authMgr.requestAuthorize(AuthorizeRequest{
