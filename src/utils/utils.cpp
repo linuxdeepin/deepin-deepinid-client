@@ -22,7 +22,7 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
 
-    QString oauthURI = "https://login.chinauos.com";
+    QString oauthURI = "https://login.deepinid.deepin.com";
     QString locale = QLocale().name().split("_").value(0);
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
@@ -55,7 +55,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
-    QString oauthURI = "https://login.chinauos.com";
+    QString oauthURI = "https://login.deepinid.deepin.com";
     QString locale = QLocale().name().split("_").value(0);
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
