@@ -48,6 +48,8 @@ public:
                                 "com.deepin.license.Info",
                                 QDBusConnection::systemBus());
         authorizationState = activate.property("AuthorizationState").toUInt();
+        // FIXME: only for community
+        authorizationState = AuthorizationState::Authorized;
 
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
