@@ -287,7 +287,10 @@ void LoginWindow::Register(const QString &clientID,
     // TODO: memory leak
     qDebug() << "register" << clientID << service << path << interface;
     auto dbusIfc = new QDBusInterface(service, path, interface);
-    d->megs.insert(clientID, dbusIfc);
+
+    if(!d->megs.contains(clientID)){
+        d->megs.insert(clientID, dbusIfc);
+    }
 }
 
 void LoginWindow::closeEvent(QCloseEvent *event)

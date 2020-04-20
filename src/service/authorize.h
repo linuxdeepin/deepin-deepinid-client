@@ -12,6 +12,13 @@ public:
     QStringList scopes;
     QString callback;
     QString state;
+
+    bool operator==(const AuthorizeRequest &ps) const
+    {
+      if (this->clientID==ps.clientID)
+         return true;
+      return false;
+    }
 };
 
 class AuthorizeResponse

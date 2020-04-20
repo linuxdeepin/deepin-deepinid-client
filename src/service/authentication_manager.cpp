@@ -65,7 +65,9 @@ void AuthenticationManager::requestAuthorize(const AuthorizeRequest &authReq)
     // push req to queue, and deal when login
     Q_D(AuthenticationManager);
 //    QMutexLocker locker(&d->mutex);
-    d->authQueue.push_back(authReq);
+    if(!d->authQueue.contains(authReq)){
+        d->authQueue.push_back(authReq);
+    }
 
     qDebug() << "queue length" << d->authQueue.length();
     // first req, call authorize
