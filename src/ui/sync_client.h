@@ -2,9 +2,11 @@
 
 #include <QObject>
 #include <QScopedPointer>
+#include <QLoggingCategory>
 
 namespace ddc
 {
+Q_DECLARE_LOGGING_CATEGORY(deepinid_client)
 
 class SyncClientPrivate;
 class SyncClient: public QObject

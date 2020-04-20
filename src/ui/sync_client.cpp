@@ -16,7 +16,7 @@
 
 namespace ddc
 {
-
+Q_LOGGING_CATEGORY(deepinid_client, "ui.sync_client")
 
 void sendDBusNotify(const QString &message)
 {
@@ -176,7 +176,7 @@ QString SyncClient::gettext(const QString &str)
 void SyncClient::authCallback(const QVariantMap &tokenInfo)
 {
     Q_D(SyncClient);
-    qDebug() << tokenInfo;
+    qCDebug(deepinid_client) << tokenInfo;
     auto sessionID = tokenInfo.value("session_id").toString();
     auto clientID = tokenInfo.value("client_id").toString();
     auto code = tokenInfo.value("code").toString();

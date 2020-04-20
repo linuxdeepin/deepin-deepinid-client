@@ -37,8 +37,10 @@ int main(int argc, char **argv)
     QCommandLineParser parser;
     QCommandLineOption bootstrap({"b", "bootstrap"}, "start up url", "url", "");
     QCommandLineOption daemon({"d", "daemon"}, "run in background");
+    QCommandLineOption verbose("verbose", "debug switch");
     parser.addOption(bootstrap);
     parser.addOption(daemon);
+    parser.addOption(verbose);
     parser.addHelpOption();
 
     parser.process(app);
@@ -67,6 +69,12 @@ int main(int argc, char **argv)
         lw.show();
     }
     
+    QLoggingCategory::setFilterRules(QLatin1String("*.*.debug=false"));
+
+    if (parser.isSet(verbose)) {
+        QLoggingCategory::setFilterRules(QLatin1String("ui.sync_client.debug=true"));
+    }
+
     auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
     Dtk::Widget::DApplication::setWindowIcon(QIcon(iconPath));
     lw.setWindowIcon(QIcon(iconPath));
