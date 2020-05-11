@@ -25,7 +25,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void requestAuthorize(const AuthorizeRequest &authReq);
-    void onLogin(const QString &sessionID,
+    bool onLogin(const QString &sessionID,
                  const QString &clientID,
                  const QString &code,
                  const QString &state);

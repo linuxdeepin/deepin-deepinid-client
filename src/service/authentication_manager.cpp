@@ -76,7 +76,7 @@ void AuthenticationManager::requestAuthorize(const AuthorizeRequest &authReq)
     }
 }
 
-void AuthenticationManager::onLogin(const QString &sessionID,
+bool AuthenticationManager::onLogin(const QString &sessionID,
                                     const QString &clientID,
                                     const QString &code,
                                     const QString &state)
@@ -86,6 +86,13 @@ void AuthenticationManager::onLogin(const QString &sessionID,
     // TODO: need crypt
 
 //    QMutexLocker locker(&d->mutex);
+
+    if(d->authQueue.isEmpty())
+    {
+        qDebug() << "authQueue is empty";
+        return false;
+    }
+
     auto authReq = d->authQueue.first();
     if (authReq.clientID != clientID) {
         qCritical() << "error id" << authReq.clientID << clientID;
@@ -96,6 +103,8 @@ void AuthenticationManager::onLogin(const QString &sessionID,
     resp.state = authReq.state;
     resp.code = code;
     Q_EMIT d->sess.authorizeFinished(resp);
+
+    return true;
 }
 
 bool AuthenticationManager::hasRequest() const
