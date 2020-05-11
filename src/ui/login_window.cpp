@@ -42,13 +42,13 @@ public:
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
-
+        /*
         QDBusInterface activate("com.deepin.license",
                                 "/com/deepin/license/Info",
                                 "com.deepin.license.Info",
                                 QDBusConnection::systemBus());
         authorizationState = activate.property("AuthorizationState").toUInt();
-
+        */
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
@@ -144,8 +144,7 @@ public:
     LoginWindow *q_ptr;
     Q_DECLARE_PUBLIC(LoginWindow)
 
-    unsigned int authorizationState;
-
+    //unsigned int authorizationState;
     const QString activatorClientID = "73560e1f5fcecea6af107d7aa638e3be8b8aa97f";
 };
 
@@ -252,6 +251,7 @@ void LoginWindow::Authorize(const QString &clientID,
                             const QString &state)
 {
     Q_D(LoginWindow);
+    /*
     qDebug() << "d->reply:" << d->authorizationState;
 
     bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
@@ -259,14 +259,17 @@ void LoginWindow::Authorize(const QString &clientID,
 
     if(authorized || clientID == d->activatorClientID)
     {
-        qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
-        d->authMgr.requestAuthorize(AuthorizeRequest{
-            clientID, scopes, callback, state
-        });
+    */
+    qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
+    d->authMgr.requestAuthorize(AuthorizeRequest{
+                                    clientID, scopes, callback, state
+                                });
+    /*
     }else{
         d->page->load(QUrl("qrc:/web/authorize.html"));
         show();
     }
+    */
 }
 
 void LoginWindow::onLoadError()
