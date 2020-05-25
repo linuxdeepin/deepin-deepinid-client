@@ -96,11 +96,11 @@ You can register your UOSID in [www.chinauos.com](http://www.chinauos.com) and l
 
 1.3.1   UOSID Registration:
 
-To realize the service feature and meet the relevant regulatory requirement in mainland China, ***personal mobile number** is needed to complete the UOSID registration. Due to the regulatory requirements of mainland China, it will be unavailable for us to provide you with UOSID services if you refuse to provide your mobile number.
+To realize the service feature and meet the relevant regulatory requirement in mainland China, **personal mobile number** is needed to complete the UOSID registration. Due to the regulatory requirements of mainland China, it will be unavailable for us to provide you with UOSID services if you refuse to provide your mobile number.
 
 1.3.2   Address Book Synchronization Service
 
-You can log into your UOSID to synchronize the ***address book information** between different devices under the same UOSID, including ***friend information** and ***meeting information**, including but not limited to your friend list, friend relationship, friend account and remarks information, friend grouping information, friend group information, meeting attendance records and meeting management information. For this purpose, your ***address book information** will be read, including your ***friend information** and ***meeting information**. Your refusal to provide the forging information will not affect the normal operation of other services in the UOS system.
+You can log into your UOSID to synchronize the **address book information** between different devices under the same UOSID, including **friend information** and **meeting information**, including but not limited to your friend list, friend relationship, friend account and remarks information, friend grouping information, friend group information, meeting attendance records and meeting management information. For this purpose, your **address book information** will be read, including your **friend information** and **meeting information**. Your refusal to provide the forging information will not affect the normal operation of other services in the UOS system.
 
 1.3.3   System Configuration Synchronization Service
 
@@ -108,7 +108,7 @@ You can log into the UOSID through the cloud synchronization module of the UOS s
 
 1.3.4   Application Software Synchronization Service
 
-You can log into the UOSID through the cloud synchronization module of the UOS system control center to synchronize the UOS application software between different devices under the same UOSID. For this synchronization purpose, the application software synchronization service will read your **application software information**, ***application software purchase information** (including your **real-name authentication information** and **bank account information** necessary to complete the payment), **history application review data** and ***history reward data**. Your refusal to provide the foregoing information will not affect the normal operation of other services in the UOS system.
+You can log into the UOSID through the cloud synchronization module of the UOS system control center to synchronize the UOS application software between different devices under the same UOSID. For this synchronization purpose, the application software synchronization service will read your **application software information**, **application software purchase information** (including your **real-name authentication information** and **bank account information** necessary to complete the payment), **history application review data** and **history reward data**. Your refusal to provide the foregoing information will not affect the normal operation of other services in the UOS system.
 
 1.3.5   Browser Service
 
