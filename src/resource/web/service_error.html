@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" lang="zh-cn">
+    <link href="style.css" rel="stylesheet">
+    <title>ServiceConnection</title>
+</head>
+
+<body>
+<div id="service_connection_main">
+    <img id="cloud_offline" src="cloud_offline.svg" alt="offline">
+
+    <div class="service_connection_title" i18n-content="Network account login">
+    </div>
+
+    <div class="service_connection_content" i18n-content="Unable to connect to the remote server, please check the network and related configuration and try again!">
+    </div>
+
+    <div class="submit_bt">
+        <button type="submit" id="submit_bt" i18n-content="Close"></button>
+    </div>
+</div>
+
+<script src="di18n.min.js"></script>
+<script>
+    var language;
+    if (window.navigator.languages) {
+        language = window.navigator.languages[0];
+    } else {
+        language = window.navigator.userLanguage || window.navigator.language;
+    }
+
+    var chineseList = ['zh', 'zh_CN', 'zh-CN'];
+    if (chineseList.includes(language)) {
+        language = 'zh-CN';
+    } else {
+        language = 'en';
+    }
+
+    const di18n = new DI18n({
+        locale: language,
+        isReplace: true,
+        messages: {
+            'en': {
+                "Network account login": "Network account login",
+                "Unable to connect to the remote server, please check the network and related configuration and try again!": "Unable to connect to the remote server, please check the network and related configuration and try again!",
+                "Close": "Close",
+            },
+            'zh-CN': {
+                "Network account login": "网络帐号登录",
+                "Unable to connect to the remote server, please check the network and related configuration and try again!": "无法连接到远程服务器，请检查网络及相关配置后重试！",
+                "Close": "关闭",
+            }
+        }
+    });
+
+    function nativeExec(handler, data) {
+        if (window['QWebChannel'] && window['qt']) {
+            window['QWebChannel'](window['qt'].webChannelTransport, channel => {
+                handler(channel, data);
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        console.log("DOM fully loaded and parsed");
+
+        var register = document.getElementById('submit_bt');
+        register.addEventListener('click', function (e) {
+            var targetWindow = window.opener || window.parent;
+            if (targetWindow) {
+                nativeExec(function (channel, data) {
+                    channel.objects.client.close();
+                }, "");
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

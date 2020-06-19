@@ -215,7 +215,18 @@ LoginWindow::LoginWindow(QWidget *parent)
     {
         qDebug() << ok;
         if (!ok) {
-            d->page->load(QUrl("qrc:/web/error.html"));
+            QNetworkConfigurationManager mgr;
+            QString oauthURI = "https://login.chinauos.com";
+
+            if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
+                oauthURI = qgetenv("DEEPINID_OAUTH_URI");
+            }
+
+            if(!mgr.isOnline()) {
+                d->page->load(QUrl("qrc:/web/network_error.html"));
+            }else {
+                QHostInfo::lookupHost(oauthURI,this,SLOT(onLookupHost(QHostInfo)));
+            }
         }
     });
     connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
@@ -236,6 +247,19 @@ void LoginWindow::setURL(const QString &url)
 {
     Q_D(LoginWindow);
     d->url = url;
+}
+
+void LoginWindow::onLookupHost(QHostInfo host)
+{
+    Q_D(LoginWindow);
+    if (host.error() != QHostInfo::NoError) {
+        qDebug() << "Lookup failed:" << host.errorString();
+        //Remote server error
+        d->page->load(QUrl("qrc:/web/service_error.html"));
+    }else {
+        //If the local network and remote server connection is normal ,but QWebEnginePage::loadFinished is not ok.
+        d->page->load(QUrl("qrc:/web/unknow_error.html"));
+    }
 }
 
 void LoginWindow::load()

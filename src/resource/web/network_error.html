@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" lang="zh-cn">
+    <link href="style.css" rel="stylesheet">
+    <title>Error</title>
+</head>
+
+<body>
+<div id="error_main">
+    <img id="cloud_offline" src="cloud_offline.svg" alt="offline">
+
+    <div class="error_title" i18n-content="Network account login">
+    </div>
+
+    <div class="error_content" i18n-content="Network connection error, please check the network settings or try again later!">
+    </div>
+
+    <div class="submit_bt">
+        <button type="submit" id="submit_bt" i18n-content="Close"></button>
+    </div>
+</div>
+
+<script src="di18n.min.js"></script>
+<script>
+    var language;
+    if (window.navigator.languages) {
+        language = window.navigator.languages[0];
+    } else {
+        language = window.navigator.userLanguage || window.navigator.language;
+    }
+
+    var chineseList = ['zh', 'zh_CN', 'zh-CN'];
+    if (chineseList.includes(language)) {
+        language = 'zh-CN';
+    } else {
+        language = 'en';
+    }
+
+    const di18n = new DI18n({
+        locale: language,
+        isReplace: true,
+        messages: {
+            'en': {
+                "Network account login": "Network account login",
+                "Network connection error, please check the network settings or try again later!": "Network connection error, please check the network settings or try again later!",
+                "Close": "Close",
+            },
+            'zh-CN': {
+                "Network account login": "网络帐号登录",
+                "Network connection error, please check the network settings or try again later!": "网络连接错误，请检查网络配置或稍后重试！",
+                "Close": "关闭",
+            }
+        }
+    });
+
+    function nativeExec(handler, data) {
+        if (window['QWebChannel'] && window['qt']) {
+            window['QWebChannel'](window['qt'].webChannelTransport, channel => {
+                handler(channel, data);
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        console.log("DOM fully loaded and parsed");
+
+        var register = document.getElementById('submit_bt');
+        register.addEventListener('click', function (e) {
+            var targetWindow = window.opener || window.parent;
+            if (targetWindow) {
+                nativeExec(function (channel, data) {
+                    channel.objects.client.close();
+                }, "");
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

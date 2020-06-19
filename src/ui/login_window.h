@@ -2,6 +2,8 @@
 
 #include <QtCore/qglobal.h>
 #include <QDBusContext>
+#include <QHostInfo>
+#include <QNetworkConfigurationManager>
 #include <DMainWindow>
 
 namespace ddc
@@ -44,6 +46,9 @@ public Q_SLOTS:
                                 const QStringList &scopes,
                                 const QString &callback,
                                 const QString &state);
+
+protected Q_SLOTS:
+    void onLookupHost(QHostInfo host);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
