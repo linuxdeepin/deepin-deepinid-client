@@ -113,8 +113,8 @@ public:
         QProcess ddeLicenseDialog;
         QString titleZH = "网络账户隐私政策";
         QString titleEN = "Network Account Privacy Policy";
-        QString allowHintZH = "同意并开启网络账户同步功能";
-        QString allowHintEN = "Agree and Turn On Network Account Sync";
+        QString allowHintZH = "我已阅读并同意《隐私政策》";
+        QString allowHintEN = "I have read and agree to the Privacy Policy";
         ddeLicenseDialog.setProgram("dde-license-dialog");
         QStringList args;
         args << "-u" << titleEN
