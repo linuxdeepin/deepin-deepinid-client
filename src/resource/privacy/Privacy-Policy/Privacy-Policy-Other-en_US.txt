@@ -1,6 +1,6 @@
 UnionTech Software Privacy Policy
 
-Latest update date: July 14, 2020
+Latest update date: July 23, 2020
 
 The Privacy Policy sets forth the personal information processed by UnionTech Software as well as its affiliates (including but not limited to Wuhan Deepin Technology Co., Ltd. (hereinafter referred to as “UnionTech Software”or“We”) as well as the way and purpose for processing the personal information. The Privacy Policy applies to the UnionTech OS and the related applications (“UnionTech OS products and services”) that UnionTech Software provides to you, which will be listed and described one by one.
 
@@ -89,6 +89,9 @@ When you use some features of the UnionTech OS products and services, we will au
 
 2.1.Desktop AI Assistant/Voice Notepad
 The desktop AI assistant service is integrated into the UnionTech OS and co-provided by our partners and us. When you input texts via the desktop AI assistant or use the voice notepad feature, our partner will directly collect your voice content to conduct technical analysis and convert it to texts. As for the detailed description for the information shared to the partners, please refer to [Part III] “How We Share, Transfer and Disclose Your Personal Information” in Privacy Policy in detail.
+
+2.2.System Upgrade
+When you upgrade the UnionTech OS products and services, we will collect your device ID, system mainline version, system version number and other information for us to clarify your system information, so as to help you update accurately. The collected information will be anonymized.
 
 3.Conducting Internal Audit, Big Data Analysis and Research
 

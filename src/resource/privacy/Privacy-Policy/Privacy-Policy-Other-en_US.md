@@ -1,14 +1,14 @@
 ## UnionTech Software Privacy Policy
 
-Latest update date: July 14, 2020
+Latest update date: July 23, 2020
 
 The Privacy Policy sets forth the personal information processed by UnionTech Software as well as its affiliates (including but not limited to Wuhan Deepin Technology Co., Ltd. (hereinafter referred to as “UnionTech Software” or “We”) as well as the way and purpose for processing the personal information. The Privacy Policy applies to the UnionTech UOS Operation System and the related applications (“UnionTech UOS products and services”) that UnionTech Software provides to you, which will be listed and described one by one.
 
 **The Privacy Policy only applies to the non-EU people who use the relevant products and services of UnionTech Software. If you are in the EU region, you are obliged to provide extra instructions before using related products and services,and we have the right to refuse your application for using relevant products and services.**
 
-You can contact us through the following ways:   
+You can contact us through the following ways:
 
-UnionTech Software Technology Co., Ltd.       
+UnionTech Software Technology Co., Ltd.
 
 [Address] Floor 18, Building 12, Yard 10, Kegu First Street, Beijing Economic and Technological Development Zone, Beijing City, PRC
 
@@ -22,33 +22,33 @@ We strive to present the Privacy Policy in a concise, clear and understandable m
 
 The Privacy Policy will help you to understand the following:
 
-**I. How we collect and use your personal information**
+**I.How we collect and use your personal information**
 
-**II. How we use Cookies and similar technologies **
+**II.How we use Cookies and similar technologies**
 
-**III. How we share, transfer and disclose to the public your personal information **
+**III.How we share, transfer and disclose to the public your personal information**
 
-**IV. How we protect your personal information **
+**IV.How we protect your personal information**
 
-**V. How we store your personal information **
+**V.How we store your personal information**
 
-**VI. Your rights **
+**VI.Your rights**
 
-**VII. How we process the minor’ s personal information **
+**VII.How we process the minor’ s personal information**
 
-**VIII. How we transfer your personal information globally **
+**VIII.How we transfer your personal information globally**
 
-**IX. How to update the Privacy Policy **
+**IX.How to update the Privacy Policy**
 
-**X.** **Our personal information protection department/specialist**
+**X.Our personal information protection department/specialist**
 
-**XI. Your rights to appeal and sue to the regulatory authority **
+**XI. Your rights to appeal and sue to the regulatory authority**
 
 Before using our products and services, please read and understand carefully the Privacy Policy, in particular the black and bold part, so that you can better understand our products and services and make an appropriate choice.
 
-**I. How We Collect and Use Your Personal Information **
+**I.How We Collect and Use Your Personal Information**
 
-**When you use the UnionTech UOS products and services, your relevant personal information will be recorded and stored automatically in your local devices, including: **
+**When you use the UnionTech UOS products and services, your relevant personal information will be recorded and stored automatically in your local devices, including:**
 
 - **Network Identification Information**
 
@@ -90,7 +90,7 @@ The exception information of the operation system and/or the application during 
 
 You agree that we collect and use your device and system information to bind your device with the genuine UnionTech UOS system purchased so that you can enjoy the full UnionTech UOS services and protect the UnionTech UOS intellectual property rights from malicious infringement at the same time. After the UnionTech UOS system is activated, when the changes of your device and system information make us believe that your device may have changed or our intellectual property rights may be maliciously violated, we have the right to terminate your continual use of the activated UnionTech UOS system. 
 
-**1.3 Union ID Service **
+**1.3 Union ID Service**
 
 You can register your Union ID in [www.chinauos.com](http://www.chinauos.com) and log into the UnionTech UOS system or the products provided by our partners. You can make synchronization of the UnionTech UOS system configuration and application software of the UnionTech UOS system between different devices after login. However, such synchronization will be expired after the Union ID service being disabled by you.
 
@@ -118,13 +118,17 @@ When you browse and visit the website and platform we provide with the pre-insta
 
 We will collect your device information, system information and application information when you download, install and uninstall applications with the pre-installed application store of the UnionTech UOS Operation System. You can comment on and/or rate the applications in the application store after login with your Union ID. The comments and/or rating information will be stored in association with your Union ID.
 
-**2. <u>Collecting Your Personal Information Automatically When You Use UnionTech UOS Products and Services</u> **
+**2.<u>Collecting Your Personal Information Automatically When You Use UnionTech UOS Products and Services</u>**
 
 When you use some features of the UnionTech UOS products and services, we will automatically collect the relevant information, which may include your personal information. Such features include:
 
-2.1. **Desktop AI Assistant/Voice Notepad**
+2.1. Desktop AI Assistant/Voice Notepad
 
 The desktop AI assistant service is integrated into the UnionTech UOS system and co-provided by our partners and us. When you input texts via the desktop AI assistant or use the voice notepad feature, our partner will directly collect your voice content to conduct technical analysis and convert it to texts. As for the detailed description for the information shared to the partners, please refer to [Part III] “How We Share, Transfer and Disclose Your Personal Information” in Privacy Policy in detail.
+
+2.2. System Upgrade
+
+When you upgrade the UnionTech OS products and services, we will collect your device ID, system mainline version, system version number and other information for us to clarify your system information, so as to help you update accurately. The collected information will be anonymized.
 
 **3. <u>Conducting Internal Audit, Big Data Analysis and Research</u>**
 
@@ -136,7 +140,7 @@ The desktop AI assistant service is integrated into the UnionTech UOS system and
 
 We will use your personal information for purposes such as ensuring the security of your personal devices and accounts, the security of our operation as well as fulfilling our legal obligations (for example, saving the information that may involve illegal and criminal activities). 
 
-**5.  <u>Other Usage</u> **
+**5.<u>Other Usage</u>**
 
 5.1. We will seek your explicit consent in advance when using the information collected for a specific purpose for other purposes.
 
@@ -204,7 +208,7 @@ Partner Data Security Capacity Description: National Information Security Level 
 
 1.1.4. It should be specially noted that **when related service providers provide services to you through third-party access such as page jumps to service provider pages, the corresponding service provider will directly reach the corresponding personal information authorization license with you and such information directly collected by the service provider is not within the scope of the information we share with them.** In the case where the service is provided directly by a third party, we will clearly identify the third party information on the specific service page. To avoid ambiguity, you should be aware of and understand that the aforementioned links to websites, applications, products and services operated by independent third parties are provided only for the convenience of users to browse relevant pages. When you visit such third-party websites, applications, products and services, you should agree separately to the privacy policy and personal information protection clauses provided for you. **We and such third-party websites, applications, products and services providers will assume independent personal information protection responsibilities respectively to you within the scope stipulated by law and agreed by both parties.**
 
-**2. <u>Transfer</u> **
+**2.<u>Transfer</u>**
 
 We will not transfer your personal information to any company, organization or individual except for the following circumstances:
 
@@ -344,9 +348,9 @@ Unless otherwise provided by the laws and regulations, you have the right to acc
 
 **IX. How to Update the Privacy Policy**
 
-**1. Our privacy policy may change. We will not reduce your rights under the Privacy Policy without your explicit consent. We will release an updated version of the Privacy P olicy. **
+**1. Our privacy policy may change. We will not reduce your rights under the Privacy Policy without your explicit consent. We will release an updated version of the Privacy P olicy.**
 
-**2. For significant changes, we will also provide more prominent notices (including sending notifications via email for some services and explaining the specific changes to the Privacy Policy). **
+**2. For significant changes, we will also provide more prominent notices (including sending notifications via email for some services and explaining the specific changes to the Privacy Policy).**
 
 **3. Significant changes in Privacy Policy include but not limited to:**
 
