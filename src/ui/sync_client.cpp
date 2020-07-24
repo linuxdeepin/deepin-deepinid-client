@@ -111,8 +111,8 @@ public:
         }
 
         QProcess ddeLicenseDialog;
-        QString titleZH = "网络账户隐私政策";
-        QString titleEN = "Network Account Privacy Policy";
+        QString titleZH = "隐私政策";
+        QString titleEN = "Privacy Policy";
         QString allowHintZH = "我已阅读并同意《隐私政策》";
         QString allowHintEN = "I have read and agree to the Privacy Policy";
         ddeLicenseDialog.setProgram("dde-license-dialog");
