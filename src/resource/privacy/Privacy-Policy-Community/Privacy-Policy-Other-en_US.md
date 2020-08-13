@@ -1,4 +1,4 @@
-## Deepin OS Privacy Policy  
+## Deepin OS Privacy Policy
 
 Latest update date:August 3th, 2020
 
