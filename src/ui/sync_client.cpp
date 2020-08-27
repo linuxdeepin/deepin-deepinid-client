@@ -196,7 +196,7 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
     }
 
     d->session = tokenInfo;
-    if (d->confirmPrivacyPolicy(syncUserID, region)) {
+    if (!callLicenseDialog || d->confirmPrivacyPolicy(syncUserID, region)) {
         //sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
         Q_EMIT
         this->onLogin(sessionID, clientID, code, state);
@@ -218,6 +218,11 @@ void SyncClient::close()
     Q_EMIT
     this->prepareClose();
     qApp->quit();
+}
+
+void SyncClient::setProtocolCall(const bool &needCall)
+{
+    callLicenseDialog = needCall;
 }
 
 void SyncClient::setSession()

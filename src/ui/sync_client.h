@@ -19,6 +19,7 @@ public:
     QString machineID() const;
     void setSession();
     void cleanSession();
+    bool callLicenseDialog = true;
 
 Q_SIGNALS:
     void prepareClose();
@@ -34,6 +35,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void authCallback(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
     Q_SCRIPTABLE void close();
+    Q_SCRIPTABLE void setProtocolCall(const bool &needCall);
 
 private:
     QScopedPointer<SyncClientPrivate> dd_ptr;
