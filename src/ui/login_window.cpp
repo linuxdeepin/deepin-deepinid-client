@@ -171,6 +171,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
     flag |= Qt::WindowStaysOnTopHint;
+    flag |= Qt::FramelessWindowHint;
     setWindowFlags(flag);
     this->titlebar()->setMenuVisible(false);
     this->titlebar()->setMenuDisabled(true);
