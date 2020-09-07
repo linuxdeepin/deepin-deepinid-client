@@ -25,6 +25,9 @@ QString authCodeURL(const QString &clientID,
     QString oauthURI = "https://login.chinauos.com";
     QString locale = QLocale().name().split("_").value(0);
 
+    if(locale != "zh")
+        locale = "en";
+
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
         oauthURI = qgetenv("DEEPINID_OAUTH_URI");
     }
@@ -57,6 +60,9 @@ QString authCodeURL(const QString &path,
     templateURL += "&handle_open_link=true";
     QString oauthURI = "https://login.chinauos.com";
     QString locale = QLocale().name().split("_").value(0);
+
+    if(locale != "zh")
+        locale = "en";
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
         oauthURI = qgetenv("DEEPINID_OAUTH_URI");
