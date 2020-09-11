@@ -20,6 +20,7 @@ const char DBusPath[] = "/com/deepin/deepinid/Client";
 
 int main(int argc, char **argv)
 {
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
     Dtk::Widget::DApplication::loadDXcbPlugin();
     Dtk::Widget::DApplication app(argc, argv);
 

@@ -8,6 +8,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_CXX_FLAGS "-Wl,-as-need -fPIE")
+set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
 add_definitions("-DQT_MESSAGELOGCONTEXT")
 
