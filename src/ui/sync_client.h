@@ -17,6 +17,7 @@ public:
     ~SyncClient() Q_DECL_OVERRIDE;
 
     QString machineID() const;
+    QVariantMap userInfo() const;
     void setSession();
     void cleanSession();
     bool callLicenseDialog = true;

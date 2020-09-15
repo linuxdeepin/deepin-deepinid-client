@@ -168,6 +168,13 @@ QString SyncClient::machineID() const
     return d->daemonIf->property("HardwareID").toString();
 }
 
+QVariantMap SyncClient::userInfo() const
+{
+    Q_D(
+    const SyncClient);
+    return d->daemonIf->property("UserInfo").toMap();
+}
+
 QString SyncClient::gettext(const QString &str)
 {
     return tr(str.toStdString().c_str());

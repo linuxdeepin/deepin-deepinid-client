@@ -110,7 +110,8 @@ public:
     {
         Q_Q(LoginWindow);
         authMgr.cancel();
-        if (!hasLogin) {
+
+        if (client.userInfo().value("UserID").toLongLong() <= 0) {
             for (const auto &id: megs.keys()) {
                 cancel(id);
                 megs.remove(id);
