@@ -172,7 +172,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
     flag |= Qt::WindowStaysOnTopHint;
-    flag |= Qt::FramelessWindowHint;
+    //flag |= Qt::FramelessWindowHint;//特效模式下，设置无边框的时候会让登陆客户端第一次打开的时候显示直角
     setWindowFlags(flag);
     this->titlebar()->setMenuVisible(false);
     this->titlebar()->setMenuDisabled(true);
