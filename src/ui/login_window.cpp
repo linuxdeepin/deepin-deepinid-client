@@ -82,6 +82,7 @@ public:
             if (!authMgr.hasRequest()) {
                 parent->close();
             }
+            q_ptr->windowloadingEnd = true;
         }, Qt::QueuedConnection);
 
         QObject::connect(&client, &SyncClient::onLogin, parent, [=](
@@ -103,6 +104,7 @@ public:
         {
             qDebug() << "onCancel";
             cancelAll();
+            q_ptr->windowloadingEnd = true;
         });
     }
 
@@ -197,11 +199,13 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(&d->client, &SyncClient::prepareClose, this, [&]()
     {
         this->close();
+        this->windowloadingEnd = true;
     });
 
     connect(&d->client, &SyncClient::requestHide, this, [&]()
     {
         this->hide();
+        this->windowloadingEnd = true;
     });
 
     auto view = new LoginView(this);
@@ -230,6 +234,7 @@ LoginWindow::LoginWindow(QWidget *parent)
                 QHostInfo::lookupHost(oauthURI,this,SLOT(onLookupHost(QHostInfo)));
             }
         }
+        this->windowloadingEnd = true;
     });
     connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
     {
@@ -262,6 +267,7 @@ void LoginWindow::onLookupHost(QHostInfo host)
         //If the local network and remote server connection is normal ,but QWebEnginePage::loadFinished is not ok.
         d->page->load(QUrl("qrc:/web/unknow_error.html"));
     }
+    this->windowloadingEnd = true;
 }
 
 void LoginWindow::load()
@@ -276,6 +282,12 @@ void LoginWindow::Authorize(const QString &clientID,
                             const QString &callback,
                             const QString &state)
 {
+    if(this->windowloadingEnd == true){
+        this->windowloadingEnd = false;
+    }else {
+        return;
+    }
+
     Q_D(LoginWindow);
     /*
     qDebug() << "d->reply:" << d->authorizationState;

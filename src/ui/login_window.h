@@ -52,6 +52,7 @@ protected Q_SLOTS:
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
+    bool windowloadingEnd = true;
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;
