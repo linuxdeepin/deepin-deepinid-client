@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
     app.setOrganizationName("deepin");
+    app.setApplicationDisplayName(QObject::tr("Union ID"));
 
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
