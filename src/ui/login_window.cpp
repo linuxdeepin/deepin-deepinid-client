@@ -119,6 +119,9 @@ public:
                 megs.remove(id);
             }
         }
+
+        //页面隐藏前界面刷为空白： 1. 再次打开时，避免show登录界面然后再刷新一遍的效果；2. 避免show出来时,显示之前界面中用户名密码记录，再刷新登录界面
+        this->page->load(QUrl("about:blank"));
         q->hide();
     }
 
