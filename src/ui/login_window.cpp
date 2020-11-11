@@ -42,13 +42,6 @@ public:
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
-        /*
-        QDBusInterface activate("com.deepin.license",
-                                "/com/deepin/license/Info",
-                                "com.deepin.license.Info",
-                                QDBusConnection::systemBus());
-        authorizationState = activate.property("AuthorizationState").toUInt();
-        */
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
@@ -326,25 +319,10 @@ void LoginWindow::Authorize(const QString &clientID,
     }
 
     Q_D(LoginWindow);
-    /*
-    qDebug() << "d->reply:" << d->authorizationState;
-
-    bool authorized =  AuthorizationState::Authorized == d->authorizationState ||
-                    AuthorizationState::TrialAuthorized == d->authorizationState;
-
-    if(authorized || clientID == d->activatorClientID)
-    {
-    */
     qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
     d->authMgr.requestAuthorize(AuthorizeRequest{
                                     clientID, scopes, callback, state
                                 });
-    /*
-    }else{
-        d->page->load(QUrl("qrc:/web/authorize.html"));
-        show();
-    }
-    */
 }
 
 void LoginWindow::onLoadError()
