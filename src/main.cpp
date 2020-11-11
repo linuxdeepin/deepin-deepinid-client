@@ -63,7 +63,6 @@ int main(int argc, char **argv)
     }
 
     Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
-    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::ColorType::LightType);//打开应用程序，默认只显示light主题,不跟随系统主题变化
 
     if (parser.isSet(bootstrap)) {
         lw.setURL(parser.value(bootstrap));

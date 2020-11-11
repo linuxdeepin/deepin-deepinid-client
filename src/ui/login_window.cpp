@@ -106,6 +106,15 @@ public:
             cancelAll();
             q_ptr->windowloadingEnd = true;
         });
+
+        QObject::connect(&client, &SyncClient::JSIsReady, parent, [=]()
+        {
+            qDebug() << "JS is Ready";
+            this->page->runJavaScript(
+                QString("changeThemeType('%1')").arg(utils::getThemeName()));
+            this->page->runJavaScript(
+                QString("changeActiveColor('%1')").arg(utils::getActiveColor()));
+        });
     }
 
     void cancelAll()
@@ -198,6 +207,20 @@ LoginWindow::LoginWindow(QWidget *parent)
     d->page = new LoginPage(this);
     d->page->setWebChannel(channel);
 
+    connect(Dtk::Gui::DGuiApplicationHelper::instance(),&Dtk::Gui::DGuiApplicationHelper::themeTypeChanged,
+        this, [=](Dtk::Gui::DGuiApplicationHelper::ColorType themeType) {
+        Q_UNUSED(themeType)
+        d->page->runJavaScript(
+            QString("changeThemeType('%1')").arg(utils::getThemeName()));
+    });
+
+    QDBusConnection::sessionBus().connect(
+        "com.deepin.daemon.Appearance",
+        "/com/deepin/daemon/Appearance",
+        "org.freedesktop.DBus.Properties",
+        QLatin1String("PropertiesChanged"),
+        this,
+        SLOT(syncActiveColor(QString,QMap<QString,QVariant>,QStringList)));
 
     connect(&d->client, &SyncClient::prepareClose, this, [&]()
     {
@@ -244,7 +267,6 @@ LoginWindow::LoginWindow(QWidget *parent)
 //        qDebug() << progress;
     });
 
-
     connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
 
     setFixedSize(380, 550 + this->titlebar()->height());
@@ -271,6 +293,19 @@ void LoginWindow::onLookupHost(QHostInfo host)
         d->page->load(QUrl("qrc:/web/unknow_error.html"));
     }
     this->windowloadingEnd = true;
+}
+
+void LoginWindow::syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list)
+{
+    Q_D(LoginWindow);
+    Q_UNUSED(str);
+    Q_UNUSED(list);
+
+    if(!map.contains("QtActiveColor"))
+        return;
+
+    d->page->runJavaScript(
+        QString("changeActiveColor('%1')").arg(map.value("QtActiveColor").toString()));
 }
 
 void LoginWindow::load()

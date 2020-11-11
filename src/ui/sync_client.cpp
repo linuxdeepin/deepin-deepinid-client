@@ -232,6 +232,12 @@ void SyncClient::setProtocolCall(const bool &needCall)
     callLicenseDialog = needCall;
 }
 
+void SyncClient::JSLoadState(const bool isReady)
+{
+    if(isReady)
+        Q_EMIT JSIsReady();
+}
+
 void SyncClient::setSession()
 {
     Q_D(SyncClient);

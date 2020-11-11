@@ -3,6 +3,8 @@
 #include <QtCore/qglobal.h>
 #include <QDBusContext>
 #include <QHostInfo>
+#include <QDBusInterface>
+
 #include <QNetworkConfigurationManager>
 #include <DMainWindow>
 
@@ -47,12 +49,16 @@ public Q_SLOTS:
                                 const QString &callback,
                                 const QString &state);
 
+     Q_SCRIPTABLE  void syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list);
+
 protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
+
     bool windowloadingEnd = true;
+    QDBusInterface *appearance_ifc_;
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;

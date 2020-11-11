@@ -2,6 +2,11 @@
 #include "utils.h"
 
 #include <QLocale>
+#include <QDBusInterface>
+#include <QDebug>
+#include <QRegExp>
+
+#include <DGuiApplicationHelper>
 
 namespace utils
 {
@@ -18,6 +23,8 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&scope=%5";
     templateURL += "&state=%6";
     templateURL += "&lang=%7";
+    templateURL += "&theme=%8";
+    templateURL += "&color=%9";
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
@@ -38,8 +45,10 @@ QString authCodeURL(const QString &clientID,
         arg(callback).
         arg(scopes.join(",")).
         arg(state).
-        arg(locale);
-    return url;
+        arg(locale).
+        arg(getThemeName()).
+        arg(getActiveColor());
+    return url.remove(QRegExp("#"));
 }
 
 QString authCodeURL(const QString &path,
@@ -55,6 +64,8 @@ QString authCodeURL(const QString &path,
     templateURL += "&scope=%5";
     templateURL += "&state=%6";
     templateURL += "&lang=%7";
+    templateURL += "&theme=%8";
+    templateURL += "&color=%9";
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
@@ -75,7 +86,35 @@ QString authCodeURL(const QString &path,
         arg(callback).
         arg(scopes.join(",")).
         arg(state).
-        arg(locale);
-    return url;
+        arg(locale).
+        arg(getThemeName()).
+        arg(getActiveColor());
+    return url.remove(QRegExp("#"));
+}
+
+QString getThemeName()
+{
+    auto themeType = Dtk::Gui::DGuiApplicationHelper::instance()->themeType();
+
+    switch (themeType) {
+    case Dtk::Gui::DGuiApplicationHelper::DarkType:
+        return "dark";
+    case Dtk::Gui::DGuiApplicationHelper::LightType:
+    case Dtk::Gui::DGuiApplicationHelper::UnknownType:
+    default:
+        return "light";
+    }
+}
+
+QString getActiveColor()
+{
+    QDBusInterface appearance_ifc_(
+                "com.deepin.daemon.Appearance",
+                "/com/deepin/daemon/Appearance",
+                "com.deepin.daemon.Appearance",
+                QDBusConnection::sessionBus()
+                );
+    qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
+    return appearance_ifc_.property("QtActiveColor").toString();
 }
 };
