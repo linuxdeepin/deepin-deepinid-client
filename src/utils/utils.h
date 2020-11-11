@@ -1,4 +1,4 @@
-#pragma onec
+#pragma once
 
 #include <QStringList>
 
@@ -19,4 +19,8 @@ QString authCodeURL(const QString &path,
 QString getThemeName();
 
 QString getActiveColor();
+
+void sendDBusNotify(const QString &message);
+
+QString getLang(const QString &region);
 }

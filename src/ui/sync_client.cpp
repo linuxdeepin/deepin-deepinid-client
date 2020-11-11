@@ -18,63 +18,6 @@ namespace ddc
 {
 Q_LOGGING_CATEGORY(deepinid_client, "ui.sync_client")
 
-void sendDBusNotify(const QString &message)
-{
-    QStringList actions = QStringList() << "_open" << QObject::tr("View");
-    QVariantMap hints;
-    hints["x-deepin-action-_open"] = "dde-control-center,-m,cloudsync";
-
-    QList<QVariant> argumentList;
-    argumentList << "deepin-deepinid-client";
-    argumentList << static_cast<uint>(0);
-    argumentList << "com.deepin.deepinid.Client";
-    argumentList << "";
-    argumentList << message;
-    argumentList << actions;
-    argumentList << hints;
-    argumentList << static_cast<int>(5000);
-
-    static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                    "/org/freedesktop/Notifications",
-                                    "org.freedesktop.Notifications");
-    notifyApp.callWithArgumentList(QDBus::Block, "Notify", argumentList);
-}
-
-// QLocale::system().name(): zh_CN/en_US
-// zh/en is lang
-QString getLang(const QString &region)
-{
-    if (region == "CN") {
-        return "zh_CN";
-    }
-
-    auto locale = QLocale::system().name();
-    if (locale.startsWith("zh_")) {
-        return "zh_CN";
-    }
-    return "en_US";
-}
-
-QString getRegionLang(const QString &region, const QString &lang)
-{
-    return lang;
-}
-
-QString getPrivacyPolicyPathByLang(const QString &region, const QString &lang)
-{
-    const auto defaultRegion = "Other";
-    auto prefix = "/usr/share/deepin-deepinid-client/privacy/Privacy-Policy";
-    auto privacyPolicyPath = QString("%1/Privacy-Policy-%2-%3.md").
-        arg(prefix).
-        arg(region).
-        arg(getRegionLang(region, lang));
-
-    if (!QFile::exists(privacyPolicyPath) && region != defaultRegion) {
-        privacyPolicyPath = getPrivacyPolicyPathByLang(defaultRegion, getRegionLang(region, lang));
-    }
-    return privacyPolicyPath;
-}
-
 class SyncClientPrivate
 {
 public:
@@ -85,64 +28,6 @@ public:
         daemonIf = new DeepinIDInterface(Const::SyncDaemonService,
                                          Const::SyncDaemonPath,
                                          QDBusConnection::sessionBus());
-    }
-
-    bool confirmPrivacyPolicy(const QString &id, QString region)
-    {
-        QDBusReply<bool> reply = daemonIf->HasConfirmPrivacy(id);
-        if (!reply.error().isValid() && reply.value()) {
-            qWarning() << "HasConfirmPrivacy" << reply.error();
-            return true;
-        }
-
-        if (region.isEmpty()) {
-            region = "CN";
-        }
-
-        QString privacyPolicyPathZH = getPrivacyPolicyPathByLang(region, "zh_CN");
-        QString privacyPolicyPathEN = getPrivacyPolicyPathByLang(region, "en_US");
-
-        if (!QFile::exists(privacyPolicyPathZH)) {
-            qCritical() << "can not find policy text" << privacyPolicyPathZH;
-        }
-
-        if (!QFile::exists(privacyPolicyPathEN)) {
-            qCritical() << "can not find policy text" << privacyPolicyPathEN;
-        }
-
-        QProcess ddeLicenseDialog;
-        QString titleZH = "隐私政策";
-        QString titleEN = "Privacy Policy";
-        QString allowHintZH = "我已阅读并同意《隐私政策》";
-        QString allowHintEN = "I have read and agree to the Privacy Policy";
-        ddeLicenseDialog.setProgram("dde-license-dialog");
-        QStringList args;
-        args << "-u" << titleEN
-             << "-t" << titleZH
-             << "-e" << privacyPolicyPathEN
-             << "-c" << privacyPolicyPathZH
-             << "-b" << allowHintEN
-             << "-a" << allowHintZH;
-
-        ddeLicenseDialog.setArguments(args);
-        qDebug() << ddeLicenseDialog.program() << ddeLicenseDialog.arguments().join(" ");
-
-        ddeLicenseDialog.start();
-
-        if (!ddeLicenseDialog.waitForStarted(-1)) {
-            qWarning() << "start dde-license-dialog failed" << ddeLicenseDialog.state();
-            //sendDBusNotify(SyncClient::tr("Login failed"));
-            return false;
-        }
-
-        ddeLicenseDialog.waitForFinished(-1);
-
-        auto userConfirm = (ddeLicenseDialog.exitCode() == 96);
-
-        if (userConfirm) {
-            daemonIf->ConfirmPrivacy(id);
-        }
-        return userConfirm;
     }
 
     DeepinIDInterface *daemonIf;
@@ -196,23 +81,14 @@ void SyncClient::authCallback(const QVariantMap &tokenInfo)
     auto syncUserID = tokenInfo.value("uid").toString();
 
     if (code.isEmpty()) {
-        //sendDBusNotify(SyncClient::tr("Login failed"));
         Q_EMIT
         this->onCancel(clientID);
         return;
     }
 
     d->session = tokenInfo;
-    if (!callLicenseDialog || d->confirmPrivacyPolicy(syncUserID, region)) {
-        //sendDBusNotify(tr("Login successful, please go to Cloud Sync to view the settings"));
-        Q_EMIT
-        this->onLogin(sessionID, clientID, code, state);
-    }
-    else {
-        //sendDBusNotify(tr("Login failed"));
-        Q_EMIT
-        this->onCancel(clientID);
-    }
+    Q_EMIT
+    this->onLogin(sessionID, clientID, code, state);
 }
 
 void SyncClient::open(const QString &url)

@@ -117,4 +117,41 @@ QString getActiveColor()
     qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
     return appearance_ifc_.property("QtActiveColor").toString();
 }
+
+void sendDBusNotify(const QString &message)
+{
+    QStringList actions = QStringList() << "_open" << QObject::tr("View");
+    QVariantMap hints;
+    hints["x-deepin-action-_open"] = "dde-control-center,-m,cloudsync";
+
+    QList<QVariant> argumentList;
+    argumentList << "deepin-deepinid-client";
+    argumentList << static_cast<uint>(0);
+    argumentList << "com.deepin.deepinid.Client";
+    argumentList << "";
+    argumentList << message;
+    argumentList << actions;
+    argumentList << hints;
+    argumentList << static_cast<int>(5000);
+
+    static QDBusInterface notifyApp("org.freedesktop.Notifications",
+                                    "/org/freedesktop/Notifications",
+                                    "org.freedesktop.Notifications");
+    notifyApp.callWithArgumentList(QDBus::Block, "Notify", argumentList);
+}
+
+// QLocale::system().name(): zh_CN/en_US
+// zh/en is lang
+QString getLang(const QString &region)
+{
+    if (region == "CN") {
+        return "zh_CN";
+    }
+
+    auto locale = QLocale::system().name();
+    if (locale.startsWith("zh_")) {
+        return "zh_CN";
+    }
+    return "en_US";
+}
 };

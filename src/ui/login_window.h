@@ -49,10 +49,9 @@ public Q_SLOTS:
                                 const QString &callback,
                                 const QString &state);
 
-     Q_SCRIPTABLE  void syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list);
-
 protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
+    void syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
