@@ -1,6 +1,6 @@
 Deepin OS Privacy Policy
 
-Latest update date: August 3th, 2020
+Latest update date:December 8th, 2020
 
 The Privacy Policy sets forth the personal information processed by UnionTech Software as well as its affiliates (including but not limited to Wuhan Deepin Technology Co., Ltd. (hereinafter referred to as “UnionTech Software” or “We”) as well as the way and purpose for processing the personal information. The Privacy Policy applies to the Deepin OS and the related applications (“the software”) that we provides to you, which will be listed and described one by one.
 
@@ -52,7 +52,7 @@ The exception information of the operation system and/or the application during 
 1.2Deepin ID Service
 You can register your Deepin ID in www.deepin.com and log into the software or the products provided by our partners. You can make synchronization of the software configuration and application software of the software between different devices after login. However, such synchronization will be expired after the Deepin ID service being disabled by you.
 1.2.1.Deepin ID Registration
-To realize the service feature and meet the relevant regulatory requirement in mainland China, personal mobile number is needed to complete the Deepin ID registration. Due to the regulatory requirements of mainland China, it will be unavailable for us to provide you with Deepin ID services if you refuse to provide your mobile number.If you are located outside the mainland of China, you need to provide your personal email address to complete the Deepin ID registration.
+To realize the service feature and meet the relevant regulatory requirement in the P.R.C, personal mobile number is needed to complete the Deepin ID registration. Due to the regulatory requirements of the P.R.C, it will be unavailable for us to provide you with Deepin ID services if you refuse to provide your mobile number. If you are located outside the P.R.C, you need to provide your personal email address to complete the Deepin ID registration.
 1.2.2.System Configuration Synchronization Service
 You can log into the Deepin ID through the cloud synchronization module of the software control center and authorize to enable the "cloud synchronization" service to synchronize the software configuration between different devices under the same Deepin ID. For this synchronization purpose, the cloud synchronization service will read your device information and system information. Your refusal to provide the foregoing information will not affect the normal operation of other services in the software.
 1.2.3.Application Software Synchronization Service

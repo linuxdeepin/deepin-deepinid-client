@@ -1,6 +1,6 @@
-## Deepin OS Privacy Policy  
+# Deepin OS Privacy Policy  
 
-Latest update date:August 3th, 2020
+Latest update date:December 8th, 2020
 
 The Privacy Policy sets forth the personal information processed by UnionTech Software as well as its affiliates (including but not limited to Wuhan Deepin Technology Co., Ltd. (hereinafter referred to as “UnionTech Software” or “We”) as well as the way and purpose for processing the personal information. The Privacy Policy applies to the Deepin OS and the related applications (“the software”) that we provides to you, which will be listed and described one by one.
 
@@ -86,11 +86,11 @@ The exception information of the operation system and/or the application during 
 
 **1.2 Deepin ID Service**
 
-You can register your Deepin ID in [www.deepin.com] and log into the software system or the products provided by our partners. You can make synchronization of the software system configuration and application software of the software system between different devices after login. However, such synchronization will be expired after the Deepin ID service being disabled by you.
+You can register your Deepin ID in [[www.deepin.com](www.deepin.com)] and log into the software system or the products provided by our partners. You can make synchronization of the software system configuration and application software of the software system between different devices after login. However, such synchronization will be expired after the Deepin ID service being disabled by you.
 
 1.2.1. Deepin ID Registration
 
-To realize the service feature and meet the relevant regulatory requirement in mainland China, **personal mobile number** is needed to complete the Deepin ID registration. Due to the regulatory requirements of mainland China, it will be unavailable for us to provide you with Deepin ID services if you refuse to provide your mobile number.If you are located outside the mainland of China, you need to provide your personal email address to complete the Deepin ID registration.
+To realize the service feature and meet the relevant regulatory requirement in the P.R.C, **personal mobile number** is needed to complete the Deepin ID registration. Due to the regulatory requirements of the P.R.C, it will be unavailable for us to provide you with Deepin ID services if you refuse to provide your mobile number. If you are located outside the P.R.C, you need to provide your personal email address to complete the Deepin ID registration.
 
 1.2.2. System Configuration Synchronization Service
 
@@ -369,7 +369,7 @@ Address: [Floor 18, Building 12, Yard 10, Kegu First Street, Beijing Economic an
 
 Tel: [010-62669253]
 
-Email: [privacy@uniontech.com]
+Email:[【privacy@uniontech.com】](mailto:[lihe@uniontech.com])
 
 **XI. Complaining and Suing to the Regulatory Department**
 

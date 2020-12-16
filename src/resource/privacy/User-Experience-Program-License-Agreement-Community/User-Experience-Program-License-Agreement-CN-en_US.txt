@@ -1,6 +1,6 @@
 User Experience Program License Agreement for Deepin OS
 
-Update Date：August 3th, 2020
+Update Date：December 8th, 2020
 
 Welcome to the User Experience Program. The User Experience Program (hereinafter referred to as the “Program”) is a network service developed and operated by UnionTech Software Technology Co., Ltd. ("UnionTech Software") and its affiliated companies (especially Wuhan Deepin Technology Co., Ltd. ("Deepin Technology") ) to facilitate the improvement of user experiences of the Deepin OS. 
 
@@ -10,7 +10,7 @@ Please read all rights and limitations stated in this User Experience Program Li
 
 Unless being replaced by a new version, the Agreement applies to any version of the User Experience Program and its related updates regardless the way how the software is delivered.
 
-1.Privacy Policy. UnionTech Software has formulated strict privacy policies for protecting the user’s personal data and attaches great importance on the protection of the user’s personal information. Only when you agree with both the License Agreement and Privacy Policy, can you participate in the Program. In participating in the Program, we will collect the data on your device in accordance with the Agreement and Privacy Policy. Please refer to the details of Privacy Policy on 【https://www.uniontech.com/agreement/deepin-privacy-en】.
+1.Privacy Policy. UnionTech Software has formulated strict privacy policies for protecting the user’s personal data and attaches great importance on the protection of the user’s personal information. Only when you agree with both the License Agreement and Privacy Policy, can you participate in the Program. In participating in the Program, we will collect the data on your device in accordance with the Agreement and Privacy Policy. Please refer to the details of Privacy Policy on [https://www.deepin.org/en/agreement/privacy].
 
 2.Participating in the Program. You can manually enable “User Experience Program” in the process of installing the Deepin OS or in “Control Center-General Settings-User Experience Program” in the Deepin OS. After enabling the Program, UnionTech Software will collect the data defined in the Agreement and Privacy Policy. You can close the “User Experience Program” at any time unconditionally. UnionTech Software will no longer collect your information after closing the Program.  
 

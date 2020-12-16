@@ -1,6 +1,6 @@
-## End User License Agreement for Deepin OS
+#   End User License Agreement for Deepin OS
 
-Updated date:  August 3th, 2020
+Updated date: December 8th, 2020
 
 Welcome to use Deepin OS (“the software”),  which is maintained and issued by Deepin Community. 
 
@@ -22,17 +22,17 @@ Compared with their previous version in any components of the software, any part
 
 **4.** **Specification**. The use of this software is subject to the laws and this EULA. You are not entitled to perform, including but not limited to, the following activities by using the software:
 
-1)to publish, deliver, transmit or store any content that contravenes the laws and regulations belongs to the country where the user resides, or threatens the social security, social stability, or anything that is inappropriate, insulting, defamatory, obscene, violent and against the laws, regulations and policies belongs to the country where the user resides;
+1) to publish, deliver, transmit or store any content that contravenes the laws and regulations belongs to the country where the user resides, or threatens the social security, social stability, or anything that is inappropriate, insulting, defamatory, obscene, violent and against the laws, regulations and policies belongs to the country where the user resides;
 
-2)to publish, deliver, transmit or store content that infringes others intellectual property rights or trade secrets;
+2) to publish, deliver, transmit or store content that infringes others intellectual property rights or trade secrets;
 
-3)to issue, deliver or transmit bulk advertisements or spam;
+3) to issue, deliver or transmit bulk advertisements or spam;
 
-4)to publish, transmit or distribute images, pictures, software or other materials (including but not limited to copyright, trademarks, patents, trade secrets, privacy and related personality rights) that infringe on third parties, unless you have obtained the necessary and effective authorization from the right holder in advance;
+4) to publish, transmit or distribute images, pictures, software or other materials (including but not limited to copyright, trademarks, patents, trade secrets, privacy and related personality rights) that infringe on third parties, unless you have obtained the necessary and effective authorization from the right holder in advance;
 
-5)to take any actions to threaten the security of the network, including but not limited to, using data or entering the server/account without permission; entering public networks or private computers and deleting, copying, amending or adding stored information without permission; without permission, attempting to detect, scan or test the weakness of the Software system or the network or attempt to conduct any other activities to damage the network security system; attempting to intervene with, affect the normal operation of, the Software or the network; intentionally spreading malicious programs or viruses, and taking other actions to damage or intervene with the normal information service of the network; forging part or all of the titles of TCP/IP packages.
+5) to take any actions to threaten the security of the network, including but not limited to, using data or entering the server/account without permission; entering public networks or private computers and deleting, copying, amending or adding stored information without permission; without permission, attempting to detect, scan or test the weakness of the Software system or the network or attempt to conduct any other activities to damage the network security system; attempting to intervene with, affect the normal operation of, the Software or the network; intentionally spreading malicious programs or viruses, and taking other actions to damage or intervene with the normal information service of the network; forging part or all of the titles of TCP/IP packages.
 
-6)to use other services provided by the software and UnionTech Software in any illegal way, for any illegal purpose, or in any inconsistent way with the EULA.
+6) to use other services provided by the software and UnionTech Software in any illegal way, for any illegal purpose, or in any inconsistent way with the EULA.
 
 **If you fail to comply with the above provisions, Deepin Community does not take any liability, and has the right, in its sole discretion, to terminate, completely or partially suspend, or limit its normal function of the software, and reserves all rights to pursue your actions.**
 
