@@ -7,12 +7,12 @@
 </head>
 
 <body>
-<div id="unknow_error_main">
-    <img id="cloud_offline" src="cloud_offline.svg" alt="offline">
+<div id="unknow_error_main"  class="main_body">
 
     <div class="unknow_error_title" i18n-content="Network account login">
     </div>
 
+    <img id="cloud_offline" src="cloud_offline.svg" alt="offline">
     <div class="unknow_error_content" i18n-content="Unknown error, please try again later!">
     </div>
 
@@ -24,6 +24,10 @@
 <script src="di18n.min.js"></script>
 <script>
     var language;
+    var  channelObj = {
+        theme: 'light', // 主题
+        activateColor: '#0081FF' // 活动色
+    };
     if (window.navigator.languages) {
         language = window.navigator.languages[0];
     } else {
@@ -42,12 +46,12 @@
         isReplace: true,
         messages: {
             'en': {
-                "Network account login": "Network account login",
+                "Network account login": "Union ID Sign In",
                 "Unknown error, please try again later!": "Unknown error, please try again later!",
                 "Close": "Close",
             },
             'zh-CN': {
-                "Network account login": "网络帐号登录",
+                "Network account login": "Union ID登录",
                 "Unknown error, please try again later!": "未知错误，请稍后重试！",
                 "Close": "关闭",
             }
@@ -76,6 +80,51 @@
             }
         });
     });
+        
+    window.onload = function() {
+        if (document.documentElement.clientHeight > 500) {
+            console.log(document.getElementsByClassName('main_body')[0].classList);
+            document.getElementsByClassName('main_body')[0].classList.add('isOldPage');
+        }
+        nativeExec(function (channel, data) {
+            channel.objects.client.JSLoadState(true);
+        }, "");
+    }
+    window.onresize = function() {
+        if (document.documentElement.clientHeight > 500) {
+            console.log(document.getElementsByClassName('main_body')[0].classList);
+            document.getElementsByClassName('main_body')[0].classList.add('isOldPage');
+        }
+    }
+    switchTheme(channelObj.theme);
+    window.changeThemeType = function(theme) {
+        switchTheme(theme);
+    }
+    window.changeActiveColor = function(activateColor) {
+        switchActivateColor(activateColor);
+    }
+    
+    /**
+     * 切换主题
+     */
+     function switchTheme(theme) {
+        switch (theme) {
+        case 'light':
+            document.body.className = 'light';
+            break;
+        case 'dark':
+            document.body.className = 'dark';
+            break;
+        default:
+            break;
+        }
+    }
+    /**
+     * 切换活动色
+     */
+    function switchActivateColor(activateColor) {
+        document.getElementsByTagName('body')[0].style.setProperty('--activateColor', activateColor);
+    }
 </script>
 </body>
 
