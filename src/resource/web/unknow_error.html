@@ -103,7 +103,12 @@
     window.changeActiveColor = function(activateColor) {
         switchActivateColor(activateColor);
     }
-    
+    var params = {};
+    params = GetRequest();
+    console.log(params);
+    if(params && params.display === 'tablet') {
+        document.getElementsByClassName('main_body')[0].classList.add('is_pod');
+    }
     /**
      * 切换主题
      */
@@ -125,6 +130,21 @@
     function switchActivateColor(activateColor) {
         document.getElementsByTagName('body')[0].style.setProperty('--activateColor', activateColor);
     }
+    /**
+     * 获取url参数
+     */
+     function getRequest() {
+		var url = location.search; //获取url中"?"符后的字串
+		var theRequest = new Object();
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			for(var i = 0; i < strs.length; i ++) {
+				theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+			}
+		}
+		return theRequest;
+	}
 </script>
 </body>
 
