@@ -23,4 +23,9 @@ QString getActiveColor();
 void sendDBusNotify(const QString &message);
 
 QString getLang(const QString &region);
+
+bool isTablet();
+
+QString getDeviceType();
+
 }

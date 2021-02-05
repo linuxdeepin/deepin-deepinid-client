@@ -146,4 +146,19 @@ QString getLang(const QString &region)
     }
     return "en_US";
 }
+
+bool isTablet(){
+    //DGuiApplicationHelper::instance()->isTabletEnvironment();
+    return false;
+}
+
+QString getDeviceType()
+{
+    if(isTablet()){
+        return "display=tablet";    //识别为平板模式
+    }else {
+        return "display=sync";      //识别为PC模式
+    }
+}
+
 };
