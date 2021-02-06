@@ -45,6 +45,10 @@ set(CLIENT_FILES
         ipc/const.h
         ipc/deepinid_interface.h
         ipc/deepinid_interface.cpp
+        ipc/dbuslogin1manager.h
+        ipc/dbuslogin1manager.cpp
+        ipc/dbusvariant.h
+        ipc/dbusvariant.cpp
         service/session.h
         service/session.cpp
         service/authentication_manager.cpp

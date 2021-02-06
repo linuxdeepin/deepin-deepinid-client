@@ -4,9 +4,11 @@
 #include <QDBusContext>
 #include <QHostInfo>
 #include <QDBusInterface>
-
 #include <QNetworkConfigurationManager>
+
 #include <DMainWindow>
+
+#include "ipc/dbuslogin1manager.h"
 
 namespace ddc
 {
@@ -52,12 +54,14 @@ public Q_SLOTS:
 protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
     void syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list);
+    void onSystemDown(bool isReady);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
     bool windowloadingEnd = true;
     QDBusInterface *appearance_ifc_;
+    DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;

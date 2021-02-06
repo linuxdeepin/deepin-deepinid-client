@@ -15,6 +15,7 @@
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QWebEngineScriptCollection>
+#include <DApplication>
 
 #include <DTitlebar>
 #include <DWidgetUtil>
@@ -264,6 +265,14 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
 
+    login1_Manager_ifc_ = new DBusLogin1Manager(
+        "org.freedesktop.login1",
+        "/org/freedesktop/login1",
+        QDBusConnection::systemBus(), this);
+
+    connect(login1_Manager_ifc_, &DBusLogin1Manager::PrepareForShutdown,
+            this, &LoginWindow::onSystemDown);
+
     setFixedSize(380, 550 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
 }
@@ -304,6 +313,14 @@ void LoginWindow::syncActiveColor(QString str, QMap<QString, QVariant> map, QStr
 
     d->page->runJavaScript(
         QString("changeActiveColor('%1')").arg(map.value("QtActiveColor").toString()));
+}
+
+void LoginWindow::onSystemDown(bool isReady)
+{
+    if(isReady){
+        qWarning() << "The operating system prepare for shutdown !";
+        Dtk::Widget::DApplication::quit();
+    }
 }
 
 void LoginWindow::load()
