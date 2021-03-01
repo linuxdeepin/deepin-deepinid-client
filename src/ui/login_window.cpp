@@ -97,7 +97,7 @@ public:
             const QString &clientID)
         {
             qDebug() << "onCancel";
-            cancelAll();
+            cancelAll(ErrCode::Err_Authorize);
             q_ptr->windowloadingEnd = true;
         });
 
@@ -111,7 +111,7 @@ public:
         });
     }
 
-    void cancelAll()
+    void cancelAll(const int errCode)
     {
         Q_Q(LoginWindow);
         authMgr.cancel();
@@ -119,6 +119,7 @@ public:
         if (client.userInfo().value("UserID").toLongLong() <= 0) {
             for (const auto &id: megs.keys()) {
                 cancel(id);
+                cancel1(id,errCode);
                 megs.remove(id);
             }
         }
@@ -138,6 +139,20 @@ public:
         }
 
         clientCallback->call(QDBus::Block, "OnCancel");
+        qDebug() << "call" << clientCallback;
+
+    }
+
+    void cancel1(const QString &clientID,const int errCode)
+    {
+        auto clientCallback = megs.value(clientID);
+        qDebug() << clientID << clientCallback;
+        if (nullptr == clientCallback) {
+            qWarning() << "empty clientID" << clientID;
+            return;
+        }
+
+        clientCallback->call(QDBus::Block, "OnCancel",QVariant(errCode));
         qDebug() << "call" << clientCallback;
 
     }
@@ -234,11 +249,14 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     connect(d->page, &QWebEnginePage::loadStarted, this, [=]()
     {
+        this->pageLoadOK = true;
         qDebug() << "ok";
     });
     connect(d->page, &QWebEnginePage::loadFinished, this, [=](bool ok)
     {
+        Q_D(LoginWindow);
         qDebug() << ok;
+
         if (!ok) {
             QNetworkConfigurationManager mgr;
             QString oauthURI = "https://login.chinauos.com";
@@ -255,7 +273,10 @@ LoginWindow::LoginWindow(QWidget *parent)
             }else {
                 QHostInfo::lookupHost(oauthURI,this,SLOT(onLookupHost(QHostInfo)));
             }
+            this->pageLoadOK = false;
+            d->cancelAll(ErrCode::Err_LoginPageLoad);
         }
+
         this->windowloadingEnd = true;
     });
     connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
@@ -375,7 +396,8 @@ void LoginWindow::Register(const QString &clientID,
 void LoginWindow::closeEvent(QCloseEvent *event)
 {
     Q_D(LoginWindow);
-    d->cancelAll();
+    if(this->pageLoadOK)
+        d->cancelAll(ErrCode::Err_CloseLoginWindow);
     QWidget::closeEvent(event);
 }
 

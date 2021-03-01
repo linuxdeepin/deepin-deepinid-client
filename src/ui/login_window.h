@@ -21,6 +21,14 @@ enum AuthorizationState
     TrialExpired        //试用期已过期
 };
 
+enum ErrCode
+{
+    Err_no,
+    Err_Authorize,
+    Err_LoginPageLoad,
+    Err_CloseLoginWindow,
+};
+
 class LoginWindowPrivate;
 class LoginWindow: public Dtk::Widget::DMainWindow,
                    protected QDBusContext
@@ -60,6 +68,7 @@ protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
     bool windowloadingEnd = true;
+    bool pageLoadOK = true;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
 
