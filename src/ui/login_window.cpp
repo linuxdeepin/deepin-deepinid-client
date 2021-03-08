@@ -309,15 +309,14 @@ void LoginWindow::setURL(const QString &url)
 void LoginWindow::onLookupHost(QHostInfo host)
 {
     Q_D(LoginWindow);
-    QString url = QString("qrc:/web/error.html?%1").arg(utils::getDeviceType());
 
     if (host.error() != QHostInfo::NoError) {
         qDebug() << "Lookup failed:" << host.errorString();
         //Remote server error
-        d->page->load(QUrl("qrc:/web/service_error.html?" + url));
+        d->page->load(QUrl("qrc:/web/service_error.html?" + utils::getDeviceType()));
     }else {
         //If the local network and remote server connection is normal ,but QWebEnginePage::loadFinished is not ok.
-        d->page->load(QUrl("qrc:/web/unknow_error.html?" + url));
+        d->page->load(QUrl("qrc:/web/unknow_error.html?" + utils::getDeviceType()));
     }
 
     this->windowloadingEnd = true;
@@ -373,10 +372,7 @@ void LoginWindow::onLoadError()
 {
     Q_D(LoginWindow);
     qDebug() << "load error page";
-    d->page->load(QUrl(
-                      QString("qrc:/web/error.html?%1").
-                      arg(utils::getDeviceType()))
-                  );
+    d->page->load(QUrl("qrc:/web/unknow_error.html?" + utils::getDeviceType()));
 }
 
 void LoginWindow::Register(const QString &clientID,

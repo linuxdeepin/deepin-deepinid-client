@@ -13,7 +13,7 @@
     </div>
 
     <img id="cloud_offline" src="cloud_offline.svg" alt="offline">
-    <div class="unknow_error_content" i18n-content="Unknown error, please try again later!">
+    <div class="unknow_error_content" i18n-content="Unknown error, please try later!">
     </div>
 
     <div class="submit_bt">
@@ -35,8 +35,21 @@
     }
 
     var chineseList = ['zh', 'zh_CN', 'zh-CN'];
+    var chineseHKList = ['HK','zh_HK', 'zh-HK'];
+    var chineseTWList = ['TW','zh_TW', 'zh-TW'];
+    var chineseBOList = ['bo','bo_CN', 'bo-CN'];
+    var chineseUGList = ['ug','ug_CN', 'ug-CN'];
+
     if (chineseList.includes(language)) {
         language = 'zh-CN';
+    }else if(chineseHKList.includes(language)){
+        language = 'zh-HK';
+    }else if(chineseTWList.includes(language)){
+        language = 'zh-TW';
+    }else if(chineseBOList.includes(language)){
+        language = 'bo-CN';
+    }else if(chineseUGList.includes(language)){
+        language = 'ug-CN';
     } else {
         language = 'en';
     }
@@ -47,13 +60,33 @@
         messages: {
             'en': {
                 "Network account login": "Union ID Sign In",
-                "Unknown error, please try again later!": "Unknown error, please try again later!",
+                "Unknown error, please try later!": "Unknown error, please try later!",
                 "Close": "Close",
             },
             'zh-CN': {
                 "Network account login": "Union ID登录",
-                "Unknown error, please try again later!": "未知错误，请稍后重试！",
+                "Unknown error, please try later!": "未知错误，请稍后重试！",
                 "Close": "关闭",
+                },
+            'zh-HK': {
+                "Network account login": "Union ID登錄",
+                "Unknown error, please try later!": "未知錯誤，請稍後再試！",
+                "Close": "關閉",
+            },
+            'zh-TW': {
+                "Network account login": "Union ID登入",
+                "Unknown error, please try later!": "未知錯誤，請稍後再試！",
+                "Close": "關閉",
+            },
+            'bo-CN': {
+                "Network account login": "Union IDཐོ་འཇུག",
+                "Unknown error, please try later!": "རྒྱུས་མེད་པའི་ནོར་འཁྲུལ། ཏོག་ཙམ་ནས་ཡང་བསྐྱར་ཚོད་ལྟ་བྱོས།！",
+                "Close": "སྒོ་རྒྱག།",
+            },
+            'ug-CN': {
+                "Network account login": "Union ID دا تىزىملىتىش",
+                "Unknown error, please try later!": "نامەلۇم خاتالىق كۆرۈلدى، سەل تۇرۇپ قايتا سىناڭ！",
+                "Close": "تاقاش",
             }
         }
     });
