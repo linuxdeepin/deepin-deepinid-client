@@ -21,6 +21,8 @@
 #include <DTitlebar>
 #include <DWidgetUtil>
 
+#include <string>
+
 #include "sync_client.h"
 #include "service/authentication_manager.h"
 #include "utils/utils.h"
@@ -388,6 +390,24 @@ void LoginWindow::Authorize(const QString &clientID,
     d->authMgr.requestAuthorize(AuthorizeRequest{
                                     clientID, scopes, callback, state
                                 });
+}
+
+void LoginWindow::AuthTerm(const QString &clientID)
+{
+    Q_D(LoginWindow);
+
+    if(!d->megs.contains(clientID) || (clientID == ""))
+        return;
+
+    std::string curClientID = d->megs.firstKey().toStdString();
+    std::string reqClientID = clientID.toStdString();
+
+    if(curClientID == reqClientID){
+        d->cancelAll(ErrCode::Err_no);
+    }else{
+        d->megs.remove(clientID);
+        d->authMgr.delAuthReq(clientID);
+    }
 }
 
 void LoginWindow::onLoadError()

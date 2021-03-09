@@ -120,6 +120,18 @@ void AuthenticationManager::cancel()
     d->authQueue.clear();
 }
 
+void AuthenticationManager::delAuthReq(const QString &clientID)
+{
+    Q_D(AuthenticationManager);
+    int size = d->authQueue.size();
+
+    for (int pos = 0; pos < size; pos++) {
+        if(d->authQueue.at(pos).clientID == clientID){
+            d->authQueue.removeAt(pos);
+        }
+    }
+}
+
 AuthenticationManager::~AuthenticationManager() = default;
 
 }

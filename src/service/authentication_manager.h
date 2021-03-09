@@ -18,6 +18,7 @@ public:
 
     bool hasRequest() const;
     void cancel();
+    void delAuthReq(const QString &clientID);
 
 Q_SIGNALS:
     void authorizeFinished(const AuthorizeResponse &);
