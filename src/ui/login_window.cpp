@@ -15,8 +15,9 @@
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QWebEngineScriptCollection>
-#include <DApplication>
 
+#include <DGuiApplicationHelper>
+#include <DApplication>
 #include <DTitlebar>
 #include <DWidgetUtil>
 
@@ -248,6 +249,20 @@ LoginWindow::LoginWindow(QWidget *parent)
     view->setPage(d->page);
     this->setCentralWidget(view);
     view->setFocus();
+
+    connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::themeTypeChanged,
+            this, [=](DGuiApplicationHelper::ColorType themeType) {
+        switch (themeType) {
+        case DGuiApplicationHelper::DarkType:
+            view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            break;
+        case DGuiApplicationHelper::UnknownType:
+        case DGuiApplicationHelper::LightType:
+        default:
+            view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            break;
+        }
+    });
 
     connect(view, &QWebEngineView::renderProcessTerminated,
             [&]{QTimer::singleShot(0, [&] {
