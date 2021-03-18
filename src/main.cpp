@@ -1,6 +1,7 @@
 #include <QIcon>
 #include <QDBusError>
 #include <QDBusConnection>
+#include <QSurfaceFormat>
 
 #include <DApplication>
 #include <DLog>
@@ -20,7 +21,24 @@ const char DBusPath[] = "/com/deepin/deepinid/Client";
 
 int main(int argc, char **argv)
 {
+    Dtk::Widget::DApplication::loadDXcbPlugin();
+    //Disable function: Qt::AA_ForceRasterWidgets, solve the display problem of domestic platform (loongson mips)
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu");
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-web-security");
+    qputenv("DXCB_FAKE_PLATFORM_NAME_XCB", "true");
+
+    //龙芯机器配置,使得DApplication能正确加载QTWEBENGINE
+    qputenv("DTK_FORCE_RASTER_WIDGETS", "FALSE");
+
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
+    qputenv("_d_disableDBusFileDialog", "true");
+    setenv("PULSE_PROP_media.role", "video", 1);
+    QSurfaceFormat format;
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
+    format.setDefaultFormat(format);
+
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
+
     Dtk::Widget::DApplication app(argc, argv);
 
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);

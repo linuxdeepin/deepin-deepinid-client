@@ -249,6 +249,11 @@ LoginWindow::LoginWindow(QWidget *parent)
     this->setCentralWidget(view);
     view->setFocus();
 
+    connect(view, &QWebEngineView::renderProcessTerminated,
+            [&]{QTimer::singleShot(0, [&] {
+            perror("page crashed");
+            view->reload(); }); }); //捕获renderProcessTerminated信号，重启render
+
     connect(d->page, &QWebEnginePage::loadStarted, this, [=]()
     {
         this->pageLoadOK = true;
