@@ -233,7 +233,7 @@ LoginWindow::LoginWindow(QWidget *parent)
         "org.freedesktop.DBus.Properties",
         QLatin1String("PropertiesChanged"),
         this,
-        SLOT(syncActiveColor(QString,QMap<QString,QVariant>,QStringList)));
+        SLOT(syncAppearanceProperties(QString,QMap<QString,QVariant>,QStringList)));
 
     connect(&d->client, &SyncClient::prepareClose, this, [&]()
     {
@@ -346,17 +346,19 @@ void LoginWindow::onLookupHost(QHostInfo host)
     this->windowloadingEnd = true;
 }
 
-void LoginWindow::syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list)
+void LoginWindow::syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list)
 {
     Q_D(LoginWindow);
     Q_UNUSED(str);
     Q_UNUSED(list);
 
-    if(!map.contains("QtActiveColor"))
-        return;
+    if(map.contains("QtActiveColor"))
+        d->page->runJavaScript(
+                    QString("changeActiveColor('%1')").arg(map.value("QtActiveColor").toString()));
 
-    d->page->runJavaScript(
-        QString("changeActiveColor('%1')").arg(map.value("QtActiveColor").toString()));
+    if(map.contains("StandardFont"))
+        d->page->runJavaScript(
+                    QString("changeStandardFont('%1')").arg(map.value("StandardFont").toString()));
 }
 
 void LoginWindow::onSystemDown(bool isReady)

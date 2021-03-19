@@ -20,6 +20,8 @@ QString getThemeName();
 
 QString getActiveColor();
 
+QString getStandardFont();
+
 void sendDBusNotify(const QString &message);
 
 QString getLang(const QString &region);

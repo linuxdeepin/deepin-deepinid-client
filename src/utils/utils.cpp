@@ -25,6 +25,7 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&lang=%7";
     templateURL += "&theme=%8";
     templateURL += "&color=%9";
+    templateURL += "&font_family=%10";
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
@@ -43,7 +44,8 @@ QString authCodeURL(const QString &clientID,
         arg(state).
         arg(QLocale().name()).
         arg(getThemeName()).
-        arg(getActiveColor());
+        arg(getActiveColor()).
+        arg(getStandardFont());
     return url.remove(QRegExp("#"));
 }
 
@@ -62,6 +64,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&lang=%7";
     templateURL += "&theme=%8";
     templateURL += "&color=%9";
+    templateURL += "&font_family=%10";
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
@@ -80,7 +83,8 @@ QString authCodeURL(const QString &path,
         arg(state).
         arg(QLocale().name()).
         arg(getThemeName()).
-        arg(getActiveColor());
+        arg(getActiveColor()).
+        arg(getStandardFont());
     return url.remove(QRegExp("#"));
 }
 
@@ -108,6 +112,17 @@ QString getActiveColor()
                 );
     qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
     return appearance_ifc_.property("QtActiveColor").toString();
+}
+
+QString getStandardFont(){
+    QDBusInterface appearance_ifc_(
+                "com.deepin.daemon.Appearance",
+                "/com/deepin/daemon/Appearance",
+                "com.deepin.daemon.Appearance",
+                QDBusConnection::sessionBus()
+                );
+    qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
+    return appearance_ifc_.property("StandardFont").toString();
 }
 
 void sendDBusNotify(const QString &message)

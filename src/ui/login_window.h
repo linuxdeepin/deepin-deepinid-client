@@ -63,7 +63,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
-    void syncActiveColor(QString str, QMap<QString, QVariant> map, QStringList list);
+    void syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list);
     void onSystemDown(bool isReady);
 
 protected:
