@@ -152,15 +152,19 @@ public:
     {
         auto clientCallback = megs.value(clientID);
         qDebug() << clientID << clientCallback;
+
         if (nullptr == clientCallback) {
             qWarning() << "empty clientID" << clientID;
             return;
         }
 
-        clientCallback->call(QDBus::Block, "OnCancel",QVariant(errCode));
-        qDebug() << "call" << clientCallback;
-
+        //当client主动关闭 （AuthTerm）的时候，不再回调应用的OnCancel，以免client关闭后又被重新拉起，复杂化处理逻辑
+        if(ErrCode::Err_CloseClient != errCode){
+            clientCallback->call(QDBus::Block, "OnCancel",QVariant(errCode));
+            qDebug() << "call" << clientCallback;
+        }
     }
+
     QString url;
     LoginPage *page;
 
@@ -405,7 +409,7 @@ void LoginWindow::AuthTerm(const QString &clientID)
     std::string reqClientID = clientID.toStdString();
 
     if(curClientID == reqClientID){
-        d->cancelAll(ErrCode::Err_no);
+        d->cancelAll(ErrCode::Err_CloseClient);
     }else{
         d->megs.remove(clientID);
         d->authMgr.delAuthReq(clientID);

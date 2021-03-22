@@ -27,6 +27,7 @@ enum ErrCode
     Err_Authorize,
     Err_LoginPageLoad,
     Err_CloseLoginWindow,
+    Err_CloseClient,
 };
 
 class LoginWindowPrivate;
