@@ -157,7 +157,7 @@ public:
 
         //当client主动关闭 （AuthTerm）的时候，不再回调应用的OnCancel，以免client关闭后又被重新拉起，复杂化处理逻辑
         if(ErrCode::Err_CloseClient != errCode){
-            clientCallback->call(QDBus::Block, "OnCancel",QVariant(errCode));
+            clientCallback->call(QDBus::Block, "OnCancelCode",QVariant(errCode));
             qDebug() << "call" << clientCallback;
         }
     }
