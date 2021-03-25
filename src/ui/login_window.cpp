@@ -76,9 +76,6 @@ public:
 
             this->hasLogin = true;
             parent->hide();
-            if (!authMgr.hasRequest()) {
-                parent->close();
-            }
             q_ptr->windowloadingEnd = true;
         }, Qt::QueuedConnection);
 
