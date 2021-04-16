@@ -51,7 +51,9 @@ public:
             // if need login,clean cookie;
             this->page->runJavaScript(
                 "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
-            this->client.cleanSession();
+
+            // sync-daemon在logout时会讲session清空，这里可以不做处理，不然第三方授权登录时会退出系统unionid
+//            this->client.cleanSession();
 
             url = utils::authCodeURL(
                 authReq.clientID,
