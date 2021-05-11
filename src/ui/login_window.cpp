@@ -80,6 +80,7 @@ public:
             qDebug() << "call" << clientCallback << resp.code << resp.state;
 
             this->hasLogin = true;
+            page->load(QUrl());
             parent->hide();
             if (!authMgr.hasRequest()) {
                 parent->close();
