@@ -29,6 +29,9 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
+    templateURL += "&client_version=%11";
+
+    qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
     QString oauthURI = "https://login.chinauos.com";
 
@@ -45,7 +48,8 @@ QString authCodeURL(const QString &clientID,
         arg(QLocale().name()).
         arg(getThemeName()).
         arg(getActiveColor()).
-        arg(getStandardFont());
+        arg(getStandardFont()).
+        arg(qApp->applicationVersion());
     return url.remove(QRegExp("#"));
 }
 
@@ -68,7 +72,10 @@ QString authCodeURL(const QString &path,
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
+    templateURL += "&client_version=%11";
     QString oauthURI = "https://login.chinauos.com";
+
+    qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
         oauthURI = qgetenv("DEEPINID_OAUTH_URI");
@@ -84,7 +91,8 @@ QString authCodeURL(const QString &path,
         arg(QLocale().name()).
         arg(getThemeName()).
         arg(getActiveColor()).
-        arg(getStandardFont());
+        arg(getStandardFont()).
+        arg(qApp->applicationVersion());
     return url.remove(QRegExp("#"));
 }
 

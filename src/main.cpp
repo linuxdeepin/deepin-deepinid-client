@@ -48,6 +48,15 @@ int main(int argc, char **argv)
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
 
+#ifdef CVERSION
+    QString verstr(CVERSION);
+    if (verstr.isEmpty())
+        verstr = "4.1";
+    app.setApplicationVersion(verstr);
+#else
+    app.setApplicationVersion("4.0");
+#endif
+
     if (!DGuiApplicationHelper::setSingleInstance("com.deepin.deepinid.Client")) {
         qWarning() << "another client is running";
         return 0;

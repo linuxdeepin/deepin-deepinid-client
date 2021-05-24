@@ -12,6 +12,7 @@ set(CMAKE_CXX_FLAGS "-Wl,-as-need -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
 add_definitions("-DQT_MESSAGELOGCONTEXT")
+add_compile_definitions(CVERSION="${CVERSION}")
 
 # Qt Config
 find_package(PkgConfig REQUIRED)

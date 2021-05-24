@@ -13,10 +13,15 @@
 # package maintainers to append LDFLAGS
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+include /usr/share/dpkg/default.mk
 
+export QT_SELECT = qt5
+DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 %:
-	dh $@
+	dh $@ --parallel
 
+override_dh_auto_configure:
+	dh_auto_configure -- -DCVERSION=$(DEB_VERSION_UPSTREAM)
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
