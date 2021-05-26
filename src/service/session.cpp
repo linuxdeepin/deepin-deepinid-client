@@ -55,11 +55,21 @@ void Session::authorize(const AuthorizeRequest &authReq)
     auto sessionID = session.value("SessionID").toString();
     QNetworkRequest req(url);
     req.setRawHeader("X-DeepinID-SessionID", sessionID.toLatin1());
+    QTimer *timer = new QTimer(this);
     auto reply = manager.get(req);
+    timer->start(3000);
+    timer->setSingleShot(true);
+    connect(timer, &QTimer::timeout, this, [=] {
+        qDebug() << "timeout";
+        if (reply->isRunning()) {
+            reply->abort();
+        }
+    });
 
     qDebug() << "get" << req.url();
     connect(reply, &QNetworkReply::finished, this, [=]()
     {
+        timer->stop();
         AuthorizeResponse resp;
         resp.success = true;
         resp.req = authReq;
