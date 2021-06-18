@@ -396,7 +396,9 @@ void LoginWindow::Authorize(const QString &clientID,
     d->authMgr.requestAuthorize(AuthorizeRequest{
                                     clientID, scopes, callback, state
                                 });
-    this->show();
+
+    if (!d->hasLogin)
+        this->show();
 }
 
 void LoginWindow::AuthTerm(const QString &clientID)
