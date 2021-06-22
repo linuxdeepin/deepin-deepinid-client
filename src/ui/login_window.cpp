@@ -28,6 +28,8 @@
 #include "utils/utils.h"
 #include "login_view.h"
 #include "login_page.h"
+#include "ipc/deepinid_interface.h"
+#include "ipc/const.h"
 
 namespace ddc
 {
@@ -41,6 +43,10 @@ public:
         Q_Q(LoginWindow);
         qRegisterMetaType<AuthorizeRequest>("AuthorizeRequest");
         qRegisterMetaType<AuthorizeResponse>("AuthorizeResponse");
+
+        DeepinIDInterface daemonIf(Const::SyncDaemonService, Const::SyncDaemonPath, QDBusConnection::sessionBus());
+        QVariantMap userinfo = daemonIf.userInfo();
+        this->hasLogin = !userinfo.value("Username").toString().isEmpty();
 
         QString clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
