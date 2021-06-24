@@ -66,7 +66,7 @@ void Session::authorize(const AuthorizeRequest &authReq)
         }
     });
 
-    qDebug() << "get" << req.url();
+    qDebug() << "get" << req.url() << sessionID;
     connect(reply, &QNetworkReply::finished, this, [=]()
     {
         timer->stop();

@@ -46,7 +46,7 @@ public:
 
         DeepinIDInterface daemonIf(Const::SyncDaemonService, Const::SyncDaemonPath, QDBusConnection::sessionBus());
         QVariantMap userinfo = daemonIf.userInfo();
-        this->hasLogin = !userinfo.value("Username").toString().isEmpty();
+        this->hasLogin = !userinfo.value("UserID").toString().isEmpty();
 
         QString clientID = "163296859db7ff8d72010e715ac06bdf6a2a6f87";
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
@@ -403,8 +403,8 @@ void LoginWindow::Authorize(const QString &clientID,
                                     clientID, scopes, callback, state
                                 });
 
-    if (!d->hasLogin)
-        this->show();
+//    if (!d->hasLogin)
+//        this->show();
 }
 
 void LoginWindow::AuthTerm(const QString &clientID)
