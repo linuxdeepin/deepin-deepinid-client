@@ -33,7 +33,7 @@ QString authCodeURL(const QString &clientID,
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
-    QString oauthURI = "https://login.chinauos.com";
+    QString oauthURI = "https://login.uniontech.com";
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
         oauthURI = qgetenv("DEEPINID_OAUTH_URI");
@@ -73,7 +73,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
     templateURL += "&client_version=%11";
-    QString oauthURI = "https://login.chinauos.com";
+    QString oauthURI = "https://login.uniontech.com";
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 

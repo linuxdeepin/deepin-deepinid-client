@@ -293,7 +293,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
         if (!ok) {
             QNetworkConfigurationManager mgr;
-            QString oauthURI = "https://login.chinauos.com";
+            QString oauthURI = "https://login.uniontech.com";
 
             if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
                 oauthURI = qgetenv("DEEPINID_OAUTH_URI");
