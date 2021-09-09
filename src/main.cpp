@@ -50,11 +50,11 @@ int main(int argc, char **argv)
 
 #ifdef CVERSION
     QString verstr(CVERSION);
-    if (verstr.isEmpty())
-        verstr = "4.1";
+    if (verstr.isEmpty() || verstr.contains("1.0.0"))
+        verstr = "5.3.1.1";
     app.setApplicationVersion(verstr);
 #else
-    app.setApplicationVersion("4.0");
+    app.setApplicationVersion("5.3.1.2");
 #endif
 
     if (!DGuiApplicationHelper::setSingleInstance("com.deepin.deepinid.Client")) {
@@ -76,7 +76,6 @@ int main(int argc, char **argv)
     app.loadTranslator();
 
     ddc::LoginWindow lw;
-
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
         qDebug() << "register service failed" << sessionBus.lastError();
