@@ -80,6 +80,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&device_kernel=%12";
     templateURL += "&device_processor=%13";
     templateURL += "&os_version=%14";
+    templateURL += "&device_code=%15";
     QString oauthURI = "https://login.uniontech.com";
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
@@ -102,7 +103,8 @@ QString authCodeURL(const QString &path,
         arg(qApp->applicationVersion()).
         arg(getDeviceKernel()).
         arg(getDeviceProcessor()).
-        arg(getOsVersion());
+        arg(getOsVersion()).
+        arg(getDeviceCode());
     return url.remove(QRegExp("#"));
 }
 
@@ -246,6 +248,18 @@ QString getDeviceProcessor()
                                   .arg(cpuMaxMhz / 1000);
         }
     }
+}
+
+QString getDeviceCode()
+{
+    QDBusInterface Interface("com.deepin.deepinid",
+                             "/com/deepin/deepinid",
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::sessionBus());
+    QDBusMessage reply = Interface.call("Get", "com.deepin.deepinid", "HardwareID");
+    QList<QVariant> outArgs = reply.arguments();
+    QString deviceCode = outArgs.at(0).value<QDBusVariant>().variant().toString();
+    return deviceCode;
 }
 
 };

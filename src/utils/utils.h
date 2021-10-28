@@ -28,6 +28,8 @@ QString getDeviceProcessor();
 
 QString getOsVersion();
 
+QString getDeviceCode();
+
 void sendDBusNotify(const QString &message);
 
 QString getLang(const QString &region);
