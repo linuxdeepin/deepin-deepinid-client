@@ -22,6 +22,12 @@ QString getActiveColor();
 
 QString getStandardFont();
 
+QString getDeviceKernel();
+
+QString getDeviceProcessor();
+
+QString getOsVersion();
+
 void sendDBusNotify(const QString &message);
 
 QString getLang(const QString &region);

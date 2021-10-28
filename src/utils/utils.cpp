@@ -5,8 +5,12 @@
 #include <QDBusInterface>
 #include <QDebug>
 #include <QRegExp>
+#include <QProcess>
+#include <dsysinfo.h>
 
 #include <DGuiApplicationHelper>
+
+DCORE_USE_NAMESPACE
 
 namespace utils
 {
@@ -73,6 +77,9 @@ QString authCodeURL(const QString &path,
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
     templateURL += "&client_version=%11";
+    templateURL += "&device_kernel=%12";
+    templateURL += "&device_processor=%13";
+    templateURL += "&os_version=%14";
     QString oauthURI = "https://login.uniontech.com";
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
@@ -92,7 +99,10 @@ QString authCodeURL(const QString &path,
         arg(getThemeName()).
         arg(getActiveColor()).
         arg(getStandardFont()).
-        arg(qApp->applicationVersion());
+        arg(qApp->applicationVersion()).
+        arg(getDeviceKernel()).
+        arg(getDeviceProcessor()).
+        arg(getOsVersion());
     return url.remove(QRegExp("#"));
 }
 
@@ -181,6 +191,60 @@ QString getDeviceType()
         return "display=tablet";    //识别为平板模式
     }else {
         return "display=sync";      //识别为PC模式
+    }
+}
+
+QString getDeviceKernel()
+{
+    QProcess process;
+    process.start("uname -r");
+    process.waitForFinished();
+    QByteArray output = process.readAllStandardOutput();
+    int idx = output.indexOf('\n');
+    if ( -1 != idx) {
+        output.remove(idx, 1);
+    }
+    return output.data();
+}
+
+QString getOsVersion()
+{
+    QString version;
+    if (DSysInfo::uosType() == DSysInfo::UosServer || DSysInfo::uosEditionType() == DSysInfo::UosEuler) {
+        version = QString("%1%2").arg(DSysInfo::minorVersion())
+                                  .arg(DSysInfo::uosEditionName());
+    } else if (DSysInfo::isDeepin()) {
+        version = QString("%1 (%2)").arg(DSysInfo::uosEditionName())
+                                  .arg(DSysInfo::minorVersion());
+    } else {
+        version = QString("%1 %2").arg(DSysInfo::productVersion())
+                                  .arg(DSysInfo::productTypeString());
+    }
+    return version;
+}
+
+QString getDeviceProcessor()
+{
+    QDBusInterface Interface("com.deepin.daemon.SystemInfo",
+                             "/com/deepin/daemon/SystemInfo",
+                             "org.freedesktop.DBus.Properties",
+                             QDBusConnection::sessionBus());
+    QDBusMessage reply = Interface.call("Get", "com.deepin.daemon.SystemInfo", "CPUMaxMHz");
+    QList<QVariant> outArgs = reply.arguments();
+    double cpuMaxMhz = outArgs.at(0).value<QDBusVariant>().variant().toDouble();
+    if (DSysInfo::cpuModelName().contains("Hz")) {
+        return DSysInfo::cpuModelName();
+    } else {
+        if (DSysInfo::cpuModelName().isEmpty()){
+            QDBusMessage replyCpuInfo = Interface.call("Get", "com.deepin.daemon.SystemInfo", "Processor");
+            QList<QVariant> outArgsCpuInfo = replyCpuInfo.arguments();
+            QString processor = outArgsCpuInfo.at(0).value<QDBusVariant>().variant().toString();
+            return QString("%1 @ %2GHz").arg(processor)
+                                  .arg(cpuMaxMhz / 1000);
+        } else {
+            return QString("%1 @ %2GHz").arg(DSysInfo::cpuModelName())
+                                  .arg(cpuMaxMhz / 1000);
+        }
     }
 }
 
