@@ -32,15 +32,21 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 pkg_search_module(DtkWidget REQUIRED dtkwidget)
 include_directories(${DtkWidget_INCLUDE_DIRS})
 
+# dbus_Frame
+pkg_search_module(DFrameworkDBus REQUIRED dframeworkdbus)
+include_directories(${DFrameworkDBus_INCLUDE_DIRS})
+
 set(CLIENT_FILES
         ui/login_window.h
         ui/login_window.cpp
         ui/sync_client.h
         ui/sync_client.cpp
-		ui/login_page.h
-		ui/login_page.cpp
-		ui/login_view.h
-		ui/login_view.cpp
+        ui/login_page.h
+        ui/login_page.cpp
+        ui/login_view.h
+        ui/login_view.cpp
+        ui/update_client.h
+        ui/update_client.cpp
         utils/utils.cpp
         utils/utils.h
         ipc/const.h
@@ -88,10 +94,11 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
 
 target_link_libraries(deepin-deepinid-client
               Qt5::Widgets
-		      Qt5::WebChannel
-		      Qt5::DBus
-		      Qt5::WebEngineWidgets
-		      ${DtkWidget_LDFLAGS})
+              Qt5::WebChannel
+              Qt5::DBus
+              Qt5::WebEngineWidgets
+              ${DtkWidget_LDFLAGS}
+              ${DFrameworkDBus_LIBRARIES})
 
 add_dependencies(deepin-deepinid-client update-qm)
 

@@ -23,6 +23,7 @@
 
 #include <string>
 
+#include "update_client.h"
 #include "sync_client.h"
 #include "service/authentication_manager.h"
 #include "utils/utils.h"
@@ -261,6 +262,10 @@ LoginWindow::LoginWindow(QWidget *parent)
     view->setPage(d->page);
     this->setCentralWidget(view);
     view->setFocus();
+
+    UpdateClient* updateClient = new UpdateClient(this);
+    updateClient->moveToThread(QCoreApplication::instance()->thread());
+    updateClient->checkForUpdate();
 
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::themeTypeChanged,
             this, [=](DGuiApplicationHelper::ColorType themeType) {
