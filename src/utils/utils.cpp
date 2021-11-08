@@ -7,8 +7,11 @@
 #include <QRegExp>
 #include <QProcess>
 #include <dsysinfo.h>
+#include <QDBusReply>
 
 #include <DGuiApplicationHelper>
+
+#include <com_deepin_deepinid.h>
 
 DCORE_USE_NAMESPACE
 
@@ -81,7 +84,11 @@ QString authCodeURL(const QString &path,
     templateURL += "&device_processor=%13";
     templateURL += "&os_version=%14";
     templateURL += "&device_code=%15";
+    templateURL += "&user_name=%16";
+    templateURL += "&device_name=%17";
+
     QString oauthURI = "https://login.uniontech.com";
+    QStringList deviceInfo = getDeviceInfo();
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
@@ -104,7 +111,10 @@ QString authCodeURL(const QString &path,
         arg(getDeviceKernel()).
         arg(getDeviceProcessor()).
         arg(getOsVersion()).
-        arg(getDeviceCode());
+        arg(getDeviceCode()).
+        arg(deviceInfo.at(0)).
+        arg(deviceInfo.at(1));
+
     return url.remove(QRegExp("#"));
 }
 
@@ -260,6 +270,30 @@ QString getDeviceCode()
     QList<QVariant> outArgs = reply.arguments();
     QString deviceCode = outArgs.at(0).value<QDBusVariant>().variant().toString();
     return deviceCode;
+}
+
+QStringList getDeviceInfo()
+{
+    qDBusRegisterMetaType<HardwareInfo>();
+    QDBusInterface licenseInfo("com.deepin.sync.Helper",
+                               "/com/deepin/sync/Helper",
+                               "com.deepin.sync.Helper",
+                               QDBusConnection::systemBus());
+
+    QDBusReply<HardwareInfo> hardwareInfo = licenseInfo.call(QDBus::AutoDetect, "GetHardware");
+    QJsonObject jsonObject;
+    auto hardwareInfoValue = hardwareInfo.value();
+    auto hardwareDMIValue = hardwareInfo.value().dmi;
+
+    qDebug() << hardwareInfo.error();
+    // -pc
+    QString userName = hardwareInfoValue.hostName;
+    QString Vendor = hardwareDMIValue.boardVendor;
+
+    QStringList deviceInfo;
+    deviceInfo.append(userName);
+    deviceInfo.append(Vendor);
+    return deviceInfo;
 }
 
 };

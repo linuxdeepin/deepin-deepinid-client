@@ -38,4 +38,6 @@ bool isTablet();
 
 QString getDeviceType();
 
+QStringList getDeviceInfo();
+
 }
