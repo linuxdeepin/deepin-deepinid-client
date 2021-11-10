@@ -4,10 +4,12 @@
 #include <QObject>
 
 #include <com_deepin_lastore_jobmanager.h>
+#include <com_deepin_lastore_updater.h>
 #include <com_deepin_lastore_job.h>
 
 using ManagerInter = com::deepin::lastore::Manager;
 using JobInter = com::deepin::lastore::Job;
+using UpdaterInter = com::deepin::lastore::Updater;
 
 namespace ddc
 {
@@ -22,13 +24,16 @@ public:
     void checkForUpdate();
 
 Q_SIGNALS:
-    void updateFailed();
+    void updateFinish();
+    void instartPackages();
 
-public Q_SLOTS:
+private Q_SLOTS:
     void onInstallPackage();
+    void checkUpdatebleApps();
 
 private:
     ManagerInter *m_managerInter = nullptr;
+    UpdaterInter *m_updaterInter = nullptr;
 };
 }
 #endif // UPDATECLIENT_H

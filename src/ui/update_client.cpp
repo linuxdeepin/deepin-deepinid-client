@@ -9,8 +9,13 @@ UpdateClient::UpdateClient(QObject *parent)
                                        "/com/deepin/lastore",
                                        QDBusConnection::systemBus(),
                                        this))
+    , m_updaterInter(new UpdaterInter("com.deepin.lastore",
+                                      "/com/deepin/lastore",
+                                      QDBusConnection::systemBus(),
+                                      this))
 {
-    connect(this, &UpdateClient::updateFailed, this, &UpdateClient::onInstallPackage, Qt::QueuedConnection);
+    connect(this, &UpdateClient::updateFinish, this, &UpdateClient::checkUpdatebleApps, Qt::QueuedConnection);
+    connect(this, &UpdateClient::instartPackages, this, &UpdateClient::onInstallPackage, Qt::QueuedConnection);
 }
 
 UpdateClient::~UpdateClient()
@@ -41,7 +46,7 @@ void UpdateClient::checkForUpdate()
                 }
             } else if (status == "success" || status == "succeed") {
                 qDebug() << " ++ Client check Succeed";
-                Q_EMIT this->updateFailed();
+                Q_EMIT this->updateFinish();
                 if (checkUpdateJob) {
                     delete checkUpdateJob.data();
                 }
@@ -75,7 +80,7 @@ void UpdateClient::onInstallPackage()
                 qDebug() << " --  Client Install Failed!" << installJob.data();
 
                 if (m_tryAgainCun <= 5) {
-                    Q_EMIT this->updateFailed();
+                    Q_EMIT this->instartPackages();
                     m_tryAgainCun++;
                 }
 
@@ -91,4 +96,18 @@ void UpdateClient::onInstallPackage()
             }
         });
     });
+}
+
+/**
+ * @brief UpdateClient::checkUpdatebleApps
+ */
+void UpdateClient::checkUpdatebleApps()
+{
+    QList<QString> needUpdateApps = m_updaterInter->updatablePackages();
+    for (int i = 0; i <= needUpdateApps.count(); i++) {
+        if (needUpdateApps.at(i).contains("deepin-deepinid-client")) {
+            qDebug() << " ++ need Instart Client ";
+            Q_EMIT this->instartPackages();
+        }
+    }
 }
