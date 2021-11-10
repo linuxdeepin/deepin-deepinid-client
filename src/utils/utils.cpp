@@ -37,9 +37,16 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&version=2.0";
     templateURL += "&handle_open_link=true";
     templateURL += "&client_version=%11";
+    templateURL += "&device_kernel=%12";
+    templateURL += "&device_processor=%13";
+    templateURL += "&os_version=%14";
+    templateURL += "&device_code=%15";
+    templateURL += "&user_name=%16";
+    templateURL += "&device_name=%17";
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
+    QStringList deviceInfo = getDeviceInfo();
     QString oauthURI = "https://login.uniontech.com";
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
@@ -56,7 +63,13 @@ QString authCodeURL(const QString &clientID,
         arg(getThemeName()).
         arg(getActiveColor()).
         arg(getStandardFont()).
-        arg(qApp->applicationVersion());
+        arg(qApp->applicationVersion()).
+        arg(getDeviceKernel()).
+        arg(getDeviceProcessor()).
+        arg(getOsVersion()).
+        arg(getDeviceCode()).
+        arg(deviceInfo.at(0)).
+        arg(deviceInfo.at(1));
     return url.remove(QRegExp("#"));
 }
 
