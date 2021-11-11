@@ -73,8 +73,7 @@ void UpdateClient::onInstallPackage()
 
         connect(installJob, &JobInter::StatusChanged, [installJob, this](const QString &status){
             if (status == "failed") {
-                qDebug() << " --  Client Install Failed!" << installJob.data();
-
+                qDebug() << " --  Client Install Failed!" << installJob.data() << installJob->description();
                 if (installJob) {
                     delete installJob.data();
                 }
@@ -94,12 +93,14 @@ void UpdateClient::onInstallPackage()
  */
 void UpdateClient::checkUpdatebleApps()
 {
+    bool haveClient = false;
     QList<QString> needUpdateApps = m_updaterInter->updatablePackages();
     for (int i = 0; i < needUpdateApps.count(); i++) {
         if (needUpdateApps.at(i).contains("deepin-deepinid-client")) {
-            m_isInstartSuccess = false;
+            haveClient = false;
             qDebug() << " ++ need Instart Client ";
             Q_EMIT this->instartPackages();
         }
     }
+    m_isInstartSuccess = !haveClient;
 }

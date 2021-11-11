@@ -71,7 +71,6 @@ QString authCodeURL(const QString &clientID,
         arg(deviceInfo.at(0)).
         arg(deviceInfo.at(1));
 
-    QUrl::toPercentEncoding(url);
     return url.remove(QRegExp("#"));
 }
 

@@ -53,6 +53,7 @@ public:
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
+        QUrl::toPercentEncoding(url);
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;

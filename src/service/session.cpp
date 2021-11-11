@@ -53,6 +53,7 @@ void Session::authorize(const AuthorizeRequest &authReq)
     auto doc = QJsonDocument::fromJson(sessionJson);
     auto session = doc.object();
     auto sessionID = session.value("SessionID").toString();
+    QUrl::toPercentEncoding(url);
     QNetworkRequest req(url);
     req.setRawHeader("X-DeepinID-SessionID", sessionID.toLatin1());
     QTimer *timer = new QTimer(this);
