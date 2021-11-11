@@ -10,6 +10,8 @@
 
 #include "ipc/dbuslogin1manager.h"
 
+#include "update_client.h"
+
 namespace ddc
 {
 enum AuthorizationState
@@ -74,6 +76,7 @@ protected:
     bool pageLoadOK = true;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
+    UpdateClient* updateClient = nullptr;
 
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;

@@ -21,6 +21,8 @@ public:
     explicit UpdateClient(QObject* parent = nullptr);
     ~UpdateClient();
 
+    inline  bool isInstartSuccess() { return m_isInstartSuccess; }
+
     void checkForUpdate();
 
 Q_SIGNALS:
@@ -32,6 +34,7 @@ private Q_SLOTS:
     void checkUpdatebleApps();
 
 private:
+    bool m_isInstartSuccess;
     ManagerInter *m_managerInter = nullptr;
     UpdaterInter *m_updaterInter = nullptr;
 };

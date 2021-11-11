@@ -5,6 +5,7 @@ static int m_tryAgainCun = 0;
 
 UpdateClient::UpdateClient(QObject *parent)
     : QObject (parent)
+    , m_isInstartSuccess(false)
     , m_managerInter(new ManagerInter("com.deepin.lastore",
                                        "/com/deepin/lastore",
                                        QDBusConnection::systemBus(),
@@ -88,6 +89,7 @@ void UpdateClient::onInstallPackage()
                     delete installJob.data();
                 }
             } else if (status == "success" || status == "succeed") {
+                m_isInstartSuccess = true;
                 qDebug() << " ++ Client Install Succeed";
                 m_tryAgainCun = 0;
                 if (installJob) {
@@ -106,6 +108,7 @@ void UpdateClient::checkUpdatebleApps()
     QList<QString> needUpdateApps = m_updaterInter->updatablePackages();
     for (int i = 0; i < needUpdateApps.count(); i++) {
         if (needUpdateApps.at(i).contains("deepin-deepinid-client")) {
+            m_isInstartSuccess = false;
             qDebug() << " ++ need Instart Client ";
             Q_EMIT this->instartPackages();
         }

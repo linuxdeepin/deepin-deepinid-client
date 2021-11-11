@@ -265,7 +265,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     this->setCentralWidget(view);
     view->setFocus();
 
-    UpdateClient* updateClient = new UpdateClient(this);
+    updateClient = new UpdateClient(this);
     updateClient->moveToThread(QCoreApplication::instance()->thread());
     updateClient->checkForUpdate();
 
@@ -410,6 +410,10 @@ void LoginWindow::Authorize(const QString &clientID,
                                     clientID, scopes, callback, state
                                 });
 
+    if (!this->updateClient->isInstartSuccess()) {
+        qDebug() << " INSTART FAIL TRY AGAIN ";
+        this->updateClient->checkForUpdate();
+    }
 //    if (!d->hasLogin)
 //        this->show();
 }
