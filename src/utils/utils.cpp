@@ -65,7 +65,7 @@ QString authCodeURL(const QString &clientID,
         arg(getStandardFont()).
         arg(qApp->applicationVersion()).
         arg(getDeviceKernel()).
-        arg(getDeviceProcessor()).
+        arg(deviceInfo.at(2)).
         arg(getOsVersion()).
         arg(getDeviceCode()).
         arg(deviceInfo.at(0)).
@@ -124,13 +124,12 @@ QString authCodeURL(const QString &path,
         arg(getStandardFont()).
         arg(qApp->applicationVersion()).
         arg(getDeviceKernel()).
-        arg(getDeviceProcessor()).
+        arg(deviceInfo.at(2)).
         arg(getOsVersion()).
         arg(getDeviceCode()).
         arg(deviceInfo.at(0)).
         arg(deviceInfo.at(1));
 
-    QUrl::toPercentEncoding(url);
     return url.remove(QRegExp("#"));
 }
 
@@ -251,31 +250,6 @@ QString getOsVersion()
     return version;
 }
 
-QString getDeviceProcessor()
-{
-    QDBusInterface Interface("com.deepin.daemon.SystemInfo",
-                             "/com/deepin/daemon/SystemInfo",
-                             "org.freedesktop.DBus.Properties",
-                             QDBusConnection::sessionBus());
-    QDBusMessage reply = Interface.call("Get", "com.deepin.daemon.SystemInfo", "CPUMaxMHz");
-    QList<QVariant> outArgs = reply.arguments();
-    double cpuMaxMhz = outArgs.at(0).value<QDBusVariant>().variant().toDouble();
-    if (DSysInfo::cpuModelName().contains("Hz")) {
-        return DSysInfo::cpuModelName();
-    } else {
-        if (DSysInfo::cpuModelName().isEmpty()){
-            QDBusMessage replyCpuInfo = Interface.call("Get", "com.deepin.daemon.SystemInfo", "Processor");
-            QList<QVariant> outArgsCpuInfo = replyCpuInfo.arguments();
-            QString processor = outArgsCpuInfo.at(0).value<QDBusVariant>().variant().toString();
-            return QString("%1 @ %2GHz").arg(processor)
-                                  .arg(cpuMaxMhz / 1000);
-        } else {
-            return QString("%1 @ %2GHz").arg(DSysInfo::cpuModelName())
-                                  .arg(cpuMaxMhz / 1000);
-        }
-    }
-}
-
 QString getDeviceCode()
 {
     QDBusInterface Interface("com.deepin.deepinid",
@@ -305,10 +279,12 @@ QStringList getDeviceInfo()
     // -pc
     QString userName = hardwareInfoValue.hostName;
     QString Vendor = hardwareDMIValue.boardVendor;
+    QString cpu = hardwareInfoValue.cpu;
 
     QStringList deviceInfo;
     deviceInfo.append(userName);
     deviceInfo.append(Vendor);
+    deviceInfo.append(cpu);
     return deviceInfo;
 }
 

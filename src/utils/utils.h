@@ -24,8 +24,6 @@ QString getStandardFont();
 
 QString getDeviceKernel();
 
-QString getDeviceProcessor();
-
 QString getOsVersion();
 
 QString getDeviceCode();

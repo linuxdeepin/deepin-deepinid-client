@@ -104,7 +104,7 @@ void UpdateClient::onInstallPackage()
 void UpdateClient::checkUpdatebleApps()
 {
     QList<QString> needUpdateApps = m_updaterInter->updatablePackages();
-    for (int i = 0; i <= needUpdateApps.count(); i++) {
+    for (int i = 0; i < needUpdateApps.count(); i++) {
         if (needUpdateApps.at(i).contains("deepin-deepinid-client")) {
             qDebug() << " ++ need Instart Client ";
             Q_EMIT this->instartPackages();

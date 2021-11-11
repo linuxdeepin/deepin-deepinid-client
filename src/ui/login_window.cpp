@@ -67,6 +67,8 @@ public:
                 authReq.scopes,
                 authReq.callback,
                 authReq.state);
+
+            QUrl::toPercentEncoding(url);
             q->load();
             q->show();
         }, Qt::QueuedConnection);
