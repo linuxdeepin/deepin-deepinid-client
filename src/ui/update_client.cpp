@@ -1,7 +1,6 @@
 #include "update_client.h"
 
 using namespace ddc;
-static int m_tryAgainCun = 0;
 
 UpdateClient::UpdateClient(QObject *parent)
     : QObject (parent)
@@ -26,7 +25,7 @@ UpdateClient::~UpdateClient()
 
 void UpdateClient::checkForUpdate()
 {
-    qDebug() << " ++ Start update Client! " << m_tryAgainCun;
+    qDebug() << " ++ Start update Client! ";
     QDBusPendingCall call = m_managerInter->UpdateSource();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this, call] {
@@ -59,16 +58,12 @@ void UpdateClient::checkForUpdate()
 
 void UpdateClient::onInstallPackage()
 {
-    qDebug() << " ++ Install client! " << m_tryAgainCun;
+    qDebug() << " ++ Install client! ";
     QDBusPendingCall call = this->m_managerInter->InstallPackage("client","deepin-deepinid-client");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this, call] {
         if (call.isError()) {
             qDebug() << " -- lient Install Error!" << call.error();
-            if (m_tryAgainCun < 5) {
-                checkForUpdate();
-                m_tryAgainCun++;
-            }
             return ;
         }
 
@@ -80,18 +75,12 @@ void UpdateClient::onInstallPackage()
             if (status == "failed") {
                 qDebug() << " --  Client Install Failed!" << installJob.data();
 
-                if (m_tryAgainCun <= 5) {
-                    Q_EMIT this->instartPackages();
-                    m_tryAgainCun++;
-                }
-
                 if (installJob) {
                     delete installJob.data();
                 }
             } else if (status == "success" || status == "succeed") {
                 m_isInstartSuccess = true;
                 qDebug() << " ++ Client Install Succeed";
-                m_tryAgainCun = 0;
                 if (installJob) {
                     delete installJob.data();
                 }
