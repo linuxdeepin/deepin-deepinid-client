@@ -235,17 +235,7 @@ QString getDeviceKernel()
 
 QString getOsVersion()
 {
-    QString version;
-    if (DSysInfo::uosType() == DSysInfo::UosServer || DSysInfo::uosEditionType() == DSysInfo::UosEuler) {
-        version = QString("%1%2").arg(DSysInfo::minorVersion())
-                                  .arg(DSysInfo::uosEditionName());
-    } else if (DSysInfo::isDeepin()) {
-        version = QString("%1 (%2)").arg(DSysInfo::uosEditionName())
-                                  .arg(DSysInfo::minorVersion());
-    } else {
-        version = QString("%1 %2").arg(DSysInfo::productVersion())
-                                  .arg(DSysInfo::productTypeString());
-    }
+    QString version = QString("%1 %2").arg(DSysInfo::productVersion()).arg(DSysInfo::productTypeString());
     return version;
 }
 
