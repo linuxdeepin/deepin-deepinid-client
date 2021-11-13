@@ -14,8 +14,8 @@ UpdateClient::UpdateClient(QObject *parent)
                                       QDBusConnection::systemBus(),
                                       this))
 {
-    connect(this, &UpdateClient::updateFinish, this, &UpdateClient::checkUpdatebleApps, Qt::QueuedConnection);
-    connect(this, &UpdateClient::instartPackages, this, &UpdateClient::onInstallPackage, Qt::QueuedConnection);
+    connect(this, &UpdateClient::updateFinish, this, &UpdateClient::checkUpdatebleApps, Qt::UniqueConnection);
+    connect(this, &UpdateClient::instartPackages, this, &UpdateClient::onInstallPackage, Qt::UniqueConnection);
 }
 
 UpdateClient::~UpdateClient()
@@ -59,7 +59,7 @@ void UpdateClient::checkForUpdate()
 void UpdateClient::onInstallPackage()
 {
     qDebug() << " ++ Install client! ";
-    QDBusPendingCall call = this->m_managerInter->InstallPackage("client","deepin-deepinid-client");
+    QDBusPendingCall call = this->m_managerInter->InstallPackage("deepin-deepinid-client","deepin-deepinid-client");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [this, call] {
         if (call.isError()) {
