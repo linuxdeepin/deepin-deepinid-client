@@ -11,6 +11,10 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_FLAGS "-Wl,-as-need -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
+# 怎加安全编译参数
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fsanitize=undefined,address -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize=undefined,address -O2")
+
 add_definitions("-DQT_MESSAGELOGCONTEXT")
 add_compile_definitions(CVERSION="${CVERSION}")
 
