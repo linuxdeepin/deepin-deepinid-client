@@ -265,6 +265,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     view->setPage(d->page);
     this->setCentralWidget(view);
     view->setFocus();
+    view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
 
     updateClient = new UpdateClient(this);
     updateClient->moveToThread(QCoreApplication::instance()->thread());
