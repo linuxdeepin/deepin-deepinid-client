@@ -267,8 +267,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     view->setFocus();
     view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
 
-    updateClient = new UpdateClient(this);
-    updateClient->moveToThread(QCoreApplication::instance()->thread());
+//    updateClient = new UpdateClient(this);
+//    updateClient->moveToThread(QCoreApplication::instance()->thread());
 
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::themeTypeChanged,
             this, [=](DGuiApplicationHelper::ColorType themeType) {
@@ -406,7 +406,7 @@ void LoginWindow::Authorize(const QString &clientID,
     }
 
     // 打开客户端直接监测更新
-    this->updateClient->checkForUpdate();
+//    this->updateClient->checkForUpdate();
 
     Q_D(LoginWindow);
     qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
@@ -414,9 +414,9 @@ void LoginWindow::Authorize(const QString &clientID,
                                     clientID, scopes, callback, state
                                 });
 
-    if (!this->updateClient->isInstartSuccess()) {
-        qDebug() << " INSTART FAIL TRY AGAIN ";
-    }
+//    if (!this->updateClient->isInstartSuccess()) {
+//        qDebug() << " INSTART FAIL TRY AGAIN ";
+//    }
 //    if (!d->hasLogin)
 //        this->show();
 }
