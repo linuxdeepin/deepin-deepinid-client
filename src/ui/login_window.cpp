@@ -42,6 +42,7 @@ public:
         QString redirectURI = "https://sync.deepinid.deepin.com/oauth/callback";
         QStringList scopes = {"base", "user:read", "sync", "dstore"};
         url = utils::authCodeURL(clientID, scopes, redirectURI, "");
+        QUrl::toPercentEncoding(url);
 
         QDBusInterface activate("com.deepin.license",
                                 "/com/deepin/license/Info",
@@ -107,6 +108,16 @@ public:
             qDebug() << "onCancel";
             cancelAll();
         });
+
+        QObject::connect(&client, &SyncClient::JSIsReady, parent, [=]()
+        {
+            qDebug() << "JS is Ready";
+            this->page->runJavaScript(
+                QString("changeThemeType('%1')").arg(utils::getThemeName()));
+            this->page->runJavaScript(
+                QString("changeActiveColor('%1')").arg(utils::getActiveColor()));
+        });
+
     }
 
     void cancelAll()
@@ -196,6 +207,21 @@ LoginWindow::LoginWindow(QWidget *parent)
     d->page = new LoginPage(this);
     d->page->setWebChannel(channel);
 
+    // DTK Tema
+    connect(Dtk::Gui::DGuiApplicationHelper::instance(),&Dtk::Gui::DGuiApplicationHelper::themeTypeChanged,
+        this, [=](Dtk::Gui::DGuiApplicationHelper::ColorType themeType) {
+        Q_UNUSED(themeType)
+        d->page->runJavaScript(
+            QString("changeThemeType('%1')").arg(utils::getThemeName()));
+    });
+
+    QDBusConnection::sessionBus().connect(
+        "com.deepin.daemon.Appearance",
+        "/com/deepin/daemon/Appearance",
+        "org.freedesktop.DBus.Properties",
+        QLatin1String("PropertiesChanged"),
+        this,
+        SLOT(syncAppearanceProperties(QString,QMap<QString,QVariant>,QStringList)));
 
     connect(&d->client, &SyncClient::prepareClose, this, [&]()
     {
@@ -299,6 +325,21 @@ void LoginWindow::closeEvent(QCloseEvent *event)
     Q_D(LoginWindow);
     d->cancelAll();
     QWidget::closeEvent(event);
+}
+
+void LoginWindow::syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list)
+{
+    Q_D(LoginWindow);
+    Q_UNUSED(str);
+    Q_UNUSED(list);
+
+    if(map.contains("QtActiveColor"))
+        d->page->runJavaScript(
+                    QString("changeActiveColor('%1')").arg(map.value("QtActiveColor").toString()));
+
+    if(map.contains("StandardFont"))
+        d->page->runJavaScript(
+                    QString("changeStandardFont('%1')").arg(map.value("StandardFont").toString()));
 }
 
 }

@@ -48,6 +48,9 @@ public Q_SLOTS:
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
+protected Q_SLOTS:
+    void syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list);
+
 private:
     QScopedPointer<LoginWindowPrivate> dd_ptr;
     Q_DECLARE_PRIVATE_D(qGetPtrHelper(dd_ptr), LoginWindow)

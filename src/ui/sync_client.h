@@ -28,12 +28,14 @@ Q_SIGNALS:
                  const QString &code,
                  const QString &state);
     void onCancel(const QString &clientID);
+    void JSIsReady();
 
 public Q_SLOTS:
     Q_SCRIPTABLE QString gettext(const QString &str);
     Q_SCRIPTABLE void authCallback(const QVariantMap &tokenInfo);
     Q_SCRIPTABLE void open(const QString &url);
     Q_SCRIPTABLE void close();
+    Q_SCRIPTABLE void JSLoadState(const bool isReady);
 
 private:
     QScopedPointer<SyncClientPrivate> dd_ptr;

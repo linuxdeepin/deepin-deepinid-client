@@ -220,6 +220,12 @@ void SyncClient::close()
     qApp->quit();
 }
 
+void SyncClient::JSLoadState(const bool isReady)
+{
+    if(isReady)
+        Q_EMIT JSIsReady();
+}
+
 void SyncClient::setSession()
 {
     Q_D(SyncClient);
