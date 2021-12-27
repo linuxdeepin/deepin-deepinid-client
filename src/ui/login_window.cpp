@@ -465,6 +465,8 @@ void LoginWindow::closeEvent(QCloseEvent *event)
     Q_D(LoginWindow);
     if(this->pageLoadOK)
         d->cancelAll(ErrCode::Err_CloseLoginWindow);
+    else
+        d->cancelAll(ErrCode::Err_CloseClient);
     QWidget::closeEvent(event);
 }
 

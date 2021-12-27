@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         return -2;
     }
 
-    Dtk::Widget::DApplication::setQuitOnLastWindowClosed(false);
+    Dtk::Widget::DApplication::setQuitOnLastWindowClosed(true);
 
     if (parser.isSet(bootstrap)) {
         lw.setURL(parser.value(bootstrap));
