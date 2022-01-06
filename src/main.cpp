@@ -21,6 +21,10 @@ const char DBusPath[] = "/com/deepin/deepinid/Client";
 
 int main(int argc, char **argv)
 {
+#ifdef __sw_64__
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
+#endif
+
     Dtk::Widget::DApplication::loadDXcbPlugin();
     //Disable function: Qt::AA_ForceRasterWidgets, solve the display problem of domestic platform (loongson mips)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu");
