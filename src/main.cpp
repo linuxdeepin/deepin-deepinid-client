@@ -37,8 +37,12 @@ int main(int argc, char **argv)
     qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
     qputenv("_d_disableDBusFileDialog", "true");
     setenv("PULSE_PROP_media.role", "video", 1);
+
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGLES);
+#ifdef __sw_64__
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+#endif
     format.setDefaultFormat(format);
 
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
