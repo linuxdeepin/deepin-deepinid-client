@@ -43,6 +43,11 @@ int main(int argc, char **argv)
 #ifdef __sw_64__
     format.setRenderableType(QSurfaceFormat::OpenGL);
 #endif
+
+#ifdef __mips64
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+#endif
+
     format.setDefaultFormat(format);
 
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
