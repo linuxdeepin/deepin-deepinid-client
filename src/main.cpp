@@ -8,7 +8,6 @@
 #include <DPlatformWindowHandle>
 #include <DStandardPaths>
 #include <DGuiApplicationHelper>
-#include <QOpenGLContext>
 
 #include "ui/login_window.h"
 
@@ -26,19 +25,7 @@ int main(int argc, char **argv)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
 #endif
 
-
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    Dtk::Widget::DApplication app(argc, argv);
     Dtk::Widget::DApplication::loadDXcbPlugin();
-
-    bool isOpenGL = true;
-    QOpenGLContext ctx;
-    QSurfaceFormat fmt;
-    fmt.setRenderableType(QSurfaceFormat::OpenGL);
-    ctx.setFormat(fmt);
-    if(!ctx.create()) isOpenGL = false;
-    if(!ctx.isValid()) isOpenGL = false;
-
     //Disable function: Qt::AA_ForceRasterWidgets, solve the display problem of domestic platform (loongson mips)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu");
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-web-security");
@@ -52,12 +39,15 @@ int main(int argc, char **argv)
     setenv("PULSE_PROP_media.role", "video", 1);
 
     QSurfaceFormat format;
-    isOpenGL ? format.setRenderableType(QSurfaceFormat::OpenGL) : format.setRenderableType(QSurfaceFormat::OpenGLES);
-    qDebug() <<  "OpenGL ? " << isOpenGL;
+    format.setRenderableType(QSurfaceFormat::OpenGLES);
+#ifdef __sw_64__
+    format.setRenderableType(QSurfaceFormat::OpenGL);
+#endif
     format.setDefaultFormat(format);
 
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
 
+    Dtk::Widget::DApplication app(argc, argv);
 
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
     app.setOrganizationName("deepin");
