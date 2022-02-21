@@ -74,12 +74,6 @@ void AuthenticationManager::requestAuthorize(const AuthorizeRequest &authReq)
     if (d->authQueue.length() == 1) {
         d->sess.authorize(authReq);
     }
-    // 此时需要刷新第二次显示的页面
-    if (d->authQueue.length() > 1) {
-        d->authQueue.pop_front();
-        qDebug() << "session clear";
-        d->sess.authorize(authReq);
-    }
 }
 
 bool AuthenticationManager::onLogin(const QString &sessionID,

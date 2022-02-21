@@ -76,6 +76,7 @@ protected:
     bool pageLoadOK = true;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
+    QString clientID_last;
     // 自更新需求暂时屏蔽
 //    UpdateClient* updateClient = nullptr;
 

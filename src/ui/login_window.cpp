@@ -402,7 +402,10 @@ void LoginWindow::Authorize(const QString &clientID,
     if(this->windowloadingEnd == true){
         this->windowloadingEnd = false;
     }else {
-        return;
+        if (clientID_last == clientID) {
+            qDebug() << " MY_Warning: Same twice Authorize";
+            return;
+        }
     }
 
     // 打开客户端直接监测更新
@@ -413,7 +416,7 @@ void LoginWindow::Authorize(const QString &clientID,
     d->authMgr.requestAuthorize(AuthorizeRequest{
                                     clientID, scopes, callback, state
                                 });
-
+    clientID_last = clientID;
 //    if (!this->updateClient->isInstartSuccess()) {
 //        qDebug() << " INSTART FAIL TRY AGAIN ";
 //    }
