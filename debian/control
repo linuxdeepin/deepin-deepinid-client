@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 10),
  pkg-config,
  qttools5-dev-tools,
  qttools5-dev,
- deepin-deepinid-plugin,
+ dcc-deepinid-plugin,
  libdframeworkdbus-dev,
 Standards-Version: 4.1.2
 Homepage: https://www.deepin.org
