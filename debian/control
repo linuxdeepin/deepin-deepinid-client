@@ -11,7 +11,6 @@ Build-Depends: debhelper (>= 10),
  pkg-config,
  qttools5-dev-tools,
  qttools5-dev,
- dcc-deepinid-plugin,
  libdframeworkdbus-dev,
 Standards-Version: 4.1.2
 Homepage: https://www.deepin.org
@@ -20,6 +19,6 @@ Homepage: https://www.deepin.org
 
 Package: deepin-deepinid-client
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libdframeworkdbus2
+Depends: ${shlibs:Depends}, ${misc:Depends}, libdframeworkdbus2, dcc-deepinid-plugin
 Description: client to login deepin sync account
  Deepin user can login with DeepinID oauth
