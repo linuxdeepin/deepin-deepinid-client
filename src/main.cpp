@@ -24,10 +24,6 @@ int main(int argc, char **argv)
 #ifdef __sw_64__
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
 #endif
-// 3A4000
-#ifdef __mips64
-    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
-#endif
 
     Dtk::Widget::DApplication::loadDXcbPlugin();
     //Disable function: Qt::AA_ForceRasterWidgets, solve the display problem of domestic platform (loongson mips)
