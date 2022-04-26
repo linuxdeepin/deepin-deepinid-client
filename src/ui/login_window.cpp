@@ -87,9 +87,8 @@ public:
             qDebug() << "call" << clientCallback << resp.code << resp.state;
 
             this->hasLogin = true;
-            if (resp.code.isEmpty()) {
-                page->load(QUrl());
-            }
+            // 加载完后重新刷空白页面
+            page->load(QUrl());
             parent->hide();
             q_ptr->windowloadingEnd = true;
         }, Qt::QueuedConnection);
