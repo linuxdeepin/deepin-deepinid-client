@@ -88,7 +88,8 @@ public:
 
             this->hasLogin = true;
             // 加载完后重新刷空白页面
-            page->load(QUrl());
+            qDebug() << " --- LOAD END--- ";
+            page->load(QUrl("about:blank"));
             parent->hide();
             q_ptr->windowloadingEnd = true;
         }, Qt::QueuedConnection);
