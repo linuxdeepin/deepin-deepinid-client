@@ -257,7 +257,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
 
-    setFixedSize(380, 550 + this->titlebar()->height());
+    setFixedSize(360, 390 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
 }
 
