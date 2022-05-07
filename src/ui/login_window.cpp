@@ -15,6 +15,7 @@
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QWebEngineScriptCollection>
+#include <QDBusPendingCallWatcher>
 
 #include <DGuiApplicationHelper>
 #include <DApplication>
@@ -83,15 +84,20 @@ public:
                 return;
             }
 
-            clientCallback->call(QDBus::Block, "OnAuthorized", resp.code, resp.state);
-            qDebug() << "call" << clientCallback << resp.code << resp.state;
+            QDBusPendingCall call = clientCallback->asyncCall("OnAuthorized", resp.code, resp.state);
+            QDBusPendingCallWatcher *watcher =  new QDBusPendingCallWatcher(call);
 
-            this->hasLogin = true;
-            // 加载完后重新刷空白页面
-            qDebug() << " --- LOAD END--- ";
-            page->load(QUrl("about:blank"));
-            parent->hide();
-            q_ptr->windowloadingEnd = true;
+            QObject::connect(watcher, &QDBusPendingCallWatcher::finished, [=] {
+                qDebug() << "call" << clientCallback << resp.code << resp.state;
+
+                this->hasLogin = true;
+                // 加载完后重新刷空白页面
+                page->load(QUrl("about:blank"));
+                parent->hide();
+                q_ptr->windowloadingEnd = true;
+
+                watcher->deleteLater();
+            });
         }, Qt::QueuedConnection);
 
         QObject::connect(&client, &SyncClient::onLogin, parent, [=](
