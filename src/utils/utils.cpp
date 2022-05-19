@@ -25,6 +25,7 @@ QString authCodeURL(const QString &clientID,
     templateURL += "&font_family=%10";
     templateURL += "&display=sync";
     templateURL += "&version=2.0";
+    templateURL += "&handle_open_link=true";
 
 
     QString oauthURI = "https://login.deepin.org";
