@@ -23,8 +23,6 @@
 #include <DWidgetUtil>
 
 #include <string>
-
-#include "update_client.h"
 #include "sync_client.h"
 #include "service/authentication_manager.h"
 #include "utils/utils.h"

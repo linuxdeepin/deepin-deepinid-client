@@ -45,8 +45,6 @@ set(CLIENT_FILES
         ui/login_page.cpp
         ui/login_view.h
         ui/login_view.cpp
-        ui/update_client.h
-        ui/update_client.cpp
         utils/utils.cpp
         utils/utils.h
         ipc/const.h

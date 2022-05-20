@@ -10,8 +10,6 @@
 
 #include "ipc/dbuslogin1manager.h"
 
-#include "update_client.h"
-
 namespace ddc
 {
 enum AuthorizationState
