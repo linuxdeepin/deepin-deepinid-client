@@ -25,7 +25,6 @@ int main(int argc, char **argv)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox");
 #endif
 
-    Dtk::Widget::DApplication::loadDXcbPlugin();
     //Disable function: Qt::AA_ForceRasterWidgets, solve the display problem of domestic platform (loongson mips)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu");
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-web-security");
@@ -49,8 +48,6 @@ int main(int argc, char **argv)
 #endif
 
     format.setDefaultFormat(format);
-
-    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
 
     Dtk::Widget::DApplication app(argc, argv);
 
