@@ -1,3 +1,9 @@
+deepin-deepinid-client (6.0.0.1) UNRELEASED; urgency=medium
+
+  * update changelog
+
+ -- duanhongyu <duanhongyu@uniontech.com>  Thu, 23 Jun 2022 9:17:17 +0800
+
 deepin-deepinid-client (1.0.0-1) unstable; urgency=medium
 
   * Initial release
