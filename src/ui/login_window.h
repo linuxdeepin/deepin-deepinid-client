@@ -7,6 +7,7 @@
 #include <QNetworkConfigurationManager>
 
 #include <DMainWindow>
+#include <QNetworkReply>
 
 #include "ipc/dbuslogin1manager.h"
 
@@ -66,12 +67,16 @@ protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
     void syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list);
     void onSystemDown(bool isReady);
+    void requestFinished(QNetworkReply* reply);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
     bool windowloadingEnd = true;
     bool pageLoadOK = true;
+    int m_width = 380;
+    int m_height = 550;
+    QTimer *m_timer;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
     QString clientID_last;

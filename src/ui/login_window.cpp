@@ -21,6 +21,7 @@
 #include <DApplication>
 #include <DTitlebar>
 #include <DWidgetUtil>
+#include <QNetworkAccessManager>
 
 #include <string>
 #include "sync_client.h"
@@ -198,10 +199,12 @@ public:
 };
 
 LoginWindow::LoginWindow(QWidget *parent)
-    : Dtk::Widget::DMainWindow(parent), dd_ptr(new LoginWindowPrivate(this))
+    : Dtk::Widget::DMainWindow(parent)
+    , dd_ptr(new LoginWindowPrivate(this))
 {
     Q_D(LoginWindow);
 
+    m_timer = new QTimer(this);
     QFile scriptFile(":/qtwebchannel/qwebchannel.js");
     scriptFile.open(QIODevice::ReadOnly);
     QString apiScript = QString::fromLatin1(scriptFile.readAll());
@@ -276,6 +279,25 @@ LoginWindow::LoginWindow(QWidget *parent)
 //    updateClient = new UpdateClient(this);
 //    updateClient->moveToThread(QCoreApplication::instance()->thread());
 
+    // request client size
+    m_timer->setSingleShot(true);
+    QNetworkAccessManager* naManager = new QNetworkAccessManager(this);
+    connect(naManager, &QNetworkAccessManager::finished, this, &LoginWindow::requestFinished);
+    QNetworkReply *reply = naManager->get(QNetworkRequest(QUrl("http://login-dev.uniontech.com/view/client/config.json")));
+
+    auto requestFiald = [this, reply](){
+        m_width = 380;
+        m_height = 550;
+        reply->abort();
+        reply->deleteLater();
+        m_timer->stop();
+        m_timer->deleteLater();
+    };
+    connect(m_timer, &QTimer::timeout, [requestFiald](){
+        requestFiald();
+    });
+    m_timer->start(5000);
+
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::themeTypeChanged,
             this, [=](DGuiApplicationHelper::ColorType themeType) {
         switch (themeType) {
@@ -342,7 +364,6 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(login1_Manager_ifc_, &DBusLogin1Manager::PrepareForShutdown,
             this, &LoginWindow::onSystemDown);
 
-    setFixedSize(380, 550 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
 }
 
@@ -393,9 +414,43 @@ void LoginWindow::onSystemDown(bool isReady)
     }
 }
 
+void LoginWindow::requestFinished(QNetworkReply *reply)
+{
+    m_timer->stop();
+    m_timer->deleteLater();
+    // 获取http状态码
+    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if(statusCode.isValid())
+        qDebug() << "status code=" << statusCode.toInt();
+
+    QVariant reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    if(reason.isValid())
+        qDebug() << "reason=" << reason.toString();
+
+    QNetworkReply::NetworkError err = reply->error();
+    if(err != QNetworkReply::NoError) {
+        qDebug() << "Failed: " << reply->errorString();
+        m_width = 380;
+        m_height = 550;
+    } else {
+        QByteArray barr = reply->readAll();
+        QJsonDocument document = QJsonDocument::fromJson(QString::fromUtf8(barr).toUtf8());
+        qDebug() << document;
+        QJsonObject obj = document.object();
+        if (obj.contains("client") && obj["client"].toObject()["width"].isDouble() && obj["client"].toObject()["height"].isDouble()) {
+            m_height = obj["client"].toObject()["height"].toDouble();
+            m_width = obj["client"].toObject()["width"].toDouble();
+        } else {
+            m_width = 380;
+            m_height = 550;
+        }
+    }
+}
+
 void LoginWindow::load()
 {
     Q_D(LoginWindow);
+    setFixedSize(m_width, m_height + this->titlebar()->height());
     qDebug() << d->url;
     d->page->load(QUrl(d->url));
 }
