@@ -6,6 +6,7 @@
 #include <QQueue>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QApplication>
 
 namespace ddc
 {
@@ -35,6 +36,10 @@ public:
                 if (this->authQueue.length() > 0) {
                     auto authReq = this->authQueue.first();
                     this->sess.authorize(authReq);
+                }
+                else {
+                    qInfo() << "there is no more authorize";
+                    qApp->quit();
                 }
             }
             else {

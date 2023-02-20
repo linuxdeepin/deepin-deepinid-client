@@ -10,6 +10,11 @@
 #include <QNetworkReply>
 
 #include "ipc/dbuslogin1manager.h"
+#include <com_deepin_daemon_display.h>
+#include <com_deepin_dde_daemon_dock.h>
+
+using DisplayInter = com::deepin::daemon::Display;
+using DockInter = com::deepin::dde::daemon::Dock;
 
 namespace ddc
 {
@@ -63,20 +68,21 @@ public Q_SLOTS:
 
     Q_SCRIPTABLE void AuthTerm(const QString &clientID);
 
+    Q_SCRIPTABLE void LoadPage(const QString &pageUrl);
+
 protected Q_SLOTS:
     void onLookupHost(QHostInfo host);
     void syncAppearanceProperties(QString str, QMap<QString, QVariant> map, QStringList list);
     void onSystemDown(bool isReady);
-    void requestFinished(QNetworkReply* reply);
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
     bool windowloadingEnd = true;
     bool pageLoadOK = true;
-    int m_width = 380;
-    int m_height = 550;
-    QTimer *m_timer;
+    DisplayInter *m_displayInter;
+    DockInter *m_dockInter;
+
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
     QString clientID_last;

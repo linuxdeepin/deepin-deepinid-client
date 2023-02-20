@@ -118,6 +118,7 @@ void SyncClient::setSession()
 {
     Q_D(SyncClient);
     auto reply = d->daemonIf->Set(d->session);
+    reply.waitForFinished();
     qDebug() << "set token with reply:" << reply.error();
 }
 

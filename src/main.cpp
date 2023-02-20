@@ -2,6 +2,7 @@
 #include <QDBusError>
 #include <QDBusConnection>
 #include <QSurfaceFormat>
+#include <QProcess>
 
 #include <DApplication>
 #include <DLog>
@@ -30,6 +31,12 @@ int main(int argc, char **argv)
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-web-security");
     qputenv("DXCB_FAKE_PLATFORM_NAME_XCB", "true");
 
+    // 系统使用自动代理时，程序会闪退，不知道原因暂时规避
+    const QString auto_proxy = qgetenv("auto_proxy");
+    if (!auto_proxy.isEmpty()) {
+        qputenv("auto_proxy", "");
+    }
+
     //龙芯机器配置,使得DApplication能正确加载QTWEBENGINE
     qputenv("DTK_FORCE_RASTER_WIDGETS", "FALSE");
 
@@ -37,8 +44,18 @@ int main(int argc, char **argv)
     qputenv("_d_disableDBusFileDialog", "true");
     setenv("PULSE_PROP_media.role", "video", 1);
 
+    // 读取系统
+    QProcess process;
+    process.start("lspci -d 1ed5:");
+    process.waitForFinished(500);
+    bool isMoore = !QString::fromLocal8Bit(process.readAllStandardOutput()).isEmpty();
+
     QSurfaceFormat format;
-    format.setRenderableType(QSurfaceFormat::OpenGLES);
+    if (isMoore) {
+        format.setRenderableType(QSurfaceFormat::OpenGL);
+    } else {
+        format.setRenderableType(QSurfaceFormat::DefaultRenderableType);
+    }
 #ifdef __sw_64__
     format.setRenderableType(QSurfaceFormat::OpenGL);
 #endif
@@ -47,13 +64,36 @@ int main(int argc, char **argv)
     format.setRenderableType(QSurfaceFormat::OpenGL);
 #endif
 
-    format.setDefaultFormat(format);
+    QString glstring = QString::fromLocal8Bit(qgetenv("DEBUG_OPENGL"));
+    if(!glstring.isEmpty())
+    {
+        int gltype = glstring.toInt();
+        qDebug() << "set gltype:" << gltype;
+        if(gltype == 1)
+        {
+            format.setRenderableType(QSurfaceFormat::DefaultRenderableType);
+        }
+        else if (gltype == 2)
+        {
+            format.setRenderableType(QSurfaceFormat::OpenGL);
+        }
+        else if (gltype == 3)
+        {
+            format.setRenderableType(QSurfaceFormat::OpenGLES);
+        }
+    }
+
+    qDebug() << "set surface format:" << format.renderableType();
+    QSurfaceFormat::setDefaultFormat(format);
+
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
 
     Dtk::Widget::DApplication app(argc, argv);
-
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
     app.setOrganizationName("deepin");
-    app.setApplicationDisplayName(QObject::tr("Union ID"));
+    app.setApplicationDisplayName(QObject::tr("UOS ID"));
+    app.setProductIcon(QIcon::fromTheme("uos_id"));
+    app.setWindowIcon(QIcon::fromTheme("uos_id"));
 
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
@@ -86,6 +126,8 @@ int main(int argc, char **argv)
     app.loadTranslator();
 
     ddc::LoginWindow lw;
+    lw.setWindowIcon(QIcon::fromTheme("uos_id"));
+
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
         qDebug() << "register service failed" << sessionBus.lastError();
@@ -105,16 +147,12 @@ int main(int argc, char **argv)
         lw.load();
         lw.show();
     }
-    
+
     QLoggingCategory::setFilterRules(QLatin1String("*.*.debug=false"));
 
     if (parser.isSet(verbose)) {
         QLoggingCategory::setFilterRules(QLatin1String("ui.sync_client.debug=true"));
     }
-
-    auto iconPath = ":/web/com.deepin.deepinid.Client.svg";
-    Dtk::Widget::DApplication::setWindowIcon(QIcon(iconPath));
-    lw.setWindowIcon(QIcon(iconPath));
 
     return Dtk::Widget::DApplication::exec();
 }

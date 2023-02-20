@@ -278,4 +278,20 @@ QStringList getDeviceInfo()
     return deviceInfo;
 }
 
+QString windowSizeURL()
+{
+    static QString windowUrl;
+    if(windowUrl.isEmpty()) {
+        if(qEnvironmentVariableIsEmpty("DEEPIN_PRE")) {
+            windowUrl = QStringLiteral("https://login-pre.uniontech.com/view/client/config.json");
+        }
+        else {
+            windowUrl = QStringLiteral("https://login.uniontech.com/view/client/config.json");
+        }
+    }
+
+    QString timestamp = QString("%1").arg(QDateTime::currentMSecsSinceEpoch());
+    return windowUrl + "?time=" + timestamp;
+}
+
 };

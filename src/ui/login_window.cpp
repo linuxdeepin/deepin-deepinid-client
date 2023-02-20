@@ -16,13 +16,14 @@
 #include <QWebEngineSettings>
 #include <QWebEngineScriptCollection>
 #include <QDBusPendingCallWatcher>
+#include <QApplication>
+#include <QScreen>
 
 #include <DGuiApplicationHelper>
 #include <DApplication>
 #include <DTitlebar>
 #include <DWidgetUtil>
-#include <QNetworkAccessManager>
-
+#include <QNetworkReply>
 #include <string>
 #include "sync_client.h"
 #include "service/authentication_manager.h"
@@ -34,6 +35,8 @@
 
 namespace ddc
 {
+
+extern QNetworkAccessManager manager;
 
 class LoginWindowPrivate
 {
@@ -70,34 +73,40 @@ public:
                 authReq.state);
 
             QUrl::toPercentEncoding(url);
+            if(sizeReply->isRunning()) {
+                sizeReply->abort();
+            }
+
             q->load();
             q->show();
-        }, Qt::QueuedConnection);
+        });
 
         QObject::connect(&authMgr, &AuthenticationManager::authorizeFinished, parent, [=](const AuthorizeResponse &resp)
         {
+            qDebug() << "window authorize finish:";
             auto clientCallback = megs.value(resp.req.clientID);
             qDebug() << resp.req.clientID << clientCallback;
+            // 调用DBUS接口前判断接口是否有效
             if (nullptr == clientCallback) {
                 qWarning() << "empty clientID" << resp.req.clientID;
                 return;
             }
 
-            QDBusPendingCall call = clientCallback->asyncCall("OnAuthorized", resp.code, resp.state);
-            QDBusPendingCallWatcher *watcher =  new QDBusPendingCallWatcher(call);
+            if(!clientCallback->isValid())
+            {
+                qDebug() << "sync daemon is quit, try to restart it";
+                clientCallback = new QDBusInterface(clientCallback->service(),
+                                                clientCallback->path(), clientCallback->interface());
+            }
 
-            QObject::connect(watcher, &QDBusPendingCallWatcher::finished, [=] {
-                qDebug() << "call" << clientCallback << resp.code << resp.state;
-
-                this->hasLogin = true;
-                // 加载完后重新刷空白页面
-                page->load(QUrl("about:blank"));
-                parent->hide();
-                q_ptr->windowloadingEnd = true;
-
-                watcher->deleteLater();
-            });
-        }, Qt::QueuedConnection);
+            qInfo() << "Call OnAuthorized:" << resp.code << resp.state;
+            clientCallback->call("OnAuthorized", resp.code, resp.state);
+            this->hasLogin = true;
+            // 加载完后重新刷空白页面
+            page->load(QUrl("about:blank"));
+            parent->hide();
+            q_ptr->windowloadingEnd = true;
+        });
 
         QObject::connect(&client, &SyncClient::onLogin, parent, [=](
             const QString &sessionID,
@@ -107,11 +116,12 @@ public:
         {
             qDebug() << "on login";
             this->hasLogin = true;
-            this->authMgr.onLogin(sessionID, clientID, code, state);
             if(activatorClientID != clientID){
                 this->client.setSession();
             }
-        }, Qt::QueuedConnection);
+
+            this->authMgr.onLogin(sessionID, clientID, code, state);
+        });
 
         QObject::connect(&client, &SyncClient::onCancel, parent, [=](
             const QString &clientID)
@@ -128,6 +138,35 @@ public:
                 QString("changeThemeType('%1')").arg(utils::getThemeName()));
             this->page->runJavaScript(
                 QString("changeActiveColor('%1')").arg(utils::getActiveColor()));
+        });
+    }
+
+    void getWindowSize()
+    {
+        Q_Q(LoginWindow);
+        QString sizeurl = utils::windowSizeURL();
+        sizeReply = manager.get(QNetworkRequest(QUrl(sizeurl)));
+        QObject::connect(sizeReply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), q,
+              [=](QNetworkReply::NetworkError code){
+            qInfo() << "reply error:" << code << ", " << sizeReply->errorString();
+        });
+        QObject::connect(sizeReply, &QNetworkReply::finished, q, [=]{
+            qInfo() << "size reply finish";
+            QByteArray data = sizeReply->readAll();
+            qInfo() << "read window size:" << data;
+            QJsonParseError error;
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(data, &error);
+            if(jsonDoc.isNull()) {
+                qInfo() << error.errorString();
+            }
+            else {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonObject clientObj = jsonObj["client"].toObject();
+                int width = clientObj["width"].toInt();
+                int height = clientObj["height"].toInt() + q->titlebar()->height();
+                qInfo() << "resize windows:" << width << height;
+                q->resize(width, height);
+            }
         });
     }
 
@@ -154,8 +193,10 @@ public:
     void cancel(const QString &clientID)
     {
         auto clientCallback = megs.value(clientID);
-        qDebug() << clientID << clientCallback;
-        if (nullptr == clientCallback) {
+        qDebug() << "cancel:" << clientID << clientCallback;
+
+        // Interface接口有效时才需要调用OnCancel函数
+        if (nullptr == clientCallback || !clientCallback->isValid()) {
             qWarning() << "empty clientID" << clientID;
             return;
         }
@@ -168,9 +209,10 @@ public:
     void cancel1(const QString &clientID,const int errCode)
     {
         auto clientCallback = megs.value(clientID);
-        qDebug() << clientID << clientCallback;
+        qDebug() << Q_FUNC_INFO << clientID << clientCallback;
 
-        if (nullptr == clientCallback) {
+        // Interface接口有效时才需要调用OnCancel函数
+        if (nullptr == clientCallback || !clientCallback->isValid()) {
             qWarning() << "empty clientID" << clientID;
             return;
         }
@@ -188,6 +230,8 @@ public:
     SyncClient client;
     AuthenticationManager authMgr;
 
+    QNetworkReply *sizeReply;
+
     bool hasLogin = false;
     QMap<QString, QDBusInterface *> megs;
 
@@ -200,11 +244,12 @@ public:
 
 LoginWindow::LoginWindow(QWidget *parent)
     : Dtk::Widget::DMainWindow(parent)
+    , m_displayInter(new DisplayInter("com.deepin.daemon.Display", "/com/deepin/daemon/Display", QDBusConnection::sessionBus(), this))
+    , m_dockInter(new DockInter("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this))
     , dd_ptr(new LoginWindowPrivate(this))
 {
     Q_D(LoginWindow);
 
-    m_timer = new QTimer(this);
     QFile scriptFile(":/qtwebchannel/qwebchannel.js");
     scriptFile.open(QIODevice::ReadOnly);
     QString apiScript = QString::fromLatin1(scriptFile.readAll());
@@ -218,7 +263,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     QWebEngineProfile::defaultProfile()->scripts()->insert(script);
 
     this->titlebar()->setTitle("");
-    setWindowFlags(Qt::Dialog);
+    this->titlebar()->setIcon(QIcon(":/web/com.deepin.deepinid.Client.png"));
+    setWindowFlags(Qt::Window);
 
     auto flag = windowFlags();
     flag &= ~Qt::WindowMinMaxButtonsHint;
@@ -278,25 +324,6 @@ LoginWindow::LoginWindow(QWidget *parent)
 
 //    updateClient = new UpdateClient(this);
 //    updateClient->moveToThread(QCoreApplication::instance()->thread());
-
-    // request client size
-    m_timer->setSingleShot(true);
-    QNetworkAccessManager* naManager = new QNetworkAccessManager(this);
-    connect(naManager, &QNetworkAccessManager::finished, this, &LoginWindow::requestFinished);
-    QNetworkReply *reply = naManager->get(QNetworkRequest(QUrl("http://login-dev.uniontech.com/view/client/config.json")));
-
-    auto requestFiald = [this, reply](){
-        m_width = 380;
-        m_height = 550;
-        reply->abort();
-        reply->deleteLater();
-        m_timer->stop();
-        m_timer->deleteLater();
-    };
-    connect(m_timer, &QTimer::timeout, [requestFiald](){
-        requestFiald();
-    });
-    m_timer->start(5000);
 
     connect(DGuiApplicationHelper::instance(),&DGuiApplicationHelper::themeTypeChanged,
             this, [=](DGuiApplicationHelper::ColorType themeType) {
@@ -364,7 +391,9 @@ LoginWindow::LoginWindow(QWidget *parent)
     connect(login1_Manager_ifc_, &DBusLogin1Manager::PrepareForShutdown,
             this, &LoginWindow::onSystemDown);
 
+    resize(380, 550 + this->titlebar()->height());
     QTimer::singleShot(100, this, SLOT(setFocus()));
+    d->getWindowSize();
 }
 
 LoginWindow::~LoginWindow() = default;
@@ -410,47 +439,13 @@ void LoginWindow::onSystemDown(bool isReady)
 {
     if(isReady){
         qWarning() << "The operating system prepare for shutdown !";
-        Dtk::Widget::DApplication::quit();
-    }
-}
-
-void LoginWindow::requestFinished(QNetworkReply *reply)
-{
-    m_timer->stop();
-    m_timer->deleteLater();
-    // 获取http状态码
-    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    if(statusCode.isValid())
-        qDebug() << "status code=" << statusCode.toInt();
-
-    QVariant reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-    if(reason.isValid())
-        qDebug() << "reason=" << reason.toString();
-
-    QNetworkReply::NetworkError err = reply->error();
-    if(err != QNetworkReply::NoError) {
-        qDebug() << "Failed: " << reply->errorString();
-        m_width = 380;
-        m_height = 550;
-    } else {
-        QByteArray barr = reply->readAll();
-        QJsonDocument document = QJsonDocument::fromJson(QString::fromUtf8(barr).toUtf8());
-        qDebug() << document;
-        QJsonObject obj = document.object();
-        if (obj.contains("client") && obj["client"].toObject()["width"].isDouble() && obj["client"].toObject()["height"].isDouble()) {
-            m_height = obj["client"].toObject()["height"].toDouble();
-            m_width = obj["client"].toObject()["width"].toDouble();
-        } else {
-            m_width = 380;
-            m_height = 550;
-        }
+        qApp->quit();
     }
 }
 
 void LoginWindow::load()
 {
     Q_D(LoginWindow);
-    setFixedSize(m_width, m_height + this->titlebar()->height());
     qDebug() << d->url;
     d->page->load(QUrl(d->url));
 }
@@ -460,6 +455,18 @@ void LoginWindow::Authorize(const QString &clientID,
                             const QString &callback,
                             const QString &state)
 {
+    Q_D(LoginWindow);
+
+    // 界面已显示，请求的验证还未完成
+    if (isVisible()) {
+        // 如果窗口最小化了，则还原显示
+        if (!isActiveWindow()) {
+            activateWindow();
+        }
+        raise();
+        return;
+    }
+
     if(this->windowloadingEnd == true){
         this->windowloadingEnd = false;
     }else {
@@ -471,8 +478,6 @@ void LoginWindow::Authorize(const QString &clientID,
 
     // 打开客户端直接监测更新
 //    this->updateClient->checkForUpdate();
-
-    Q_D(LoginWindow);
     qDebug() << "requestAuthorize" << clientID << scopes << callback << state;
     d->authMgr.requestAuthorize(AuthorizeRequest{
                                     clientID, scopes, callback, state
@@ -503,6 +508,22 @@ void LoginWindow::AuthTerm(const QString &clientID)
     }
 }
 
+void LoginWindow::LoadPage(const QString &pageUrl)
+{
+    setURL(pageUrl);
+    load();
+    if (!isVisible()) {
+        moveToCenter();
+        show();
+        // 如果窗口最小化了，则还原显示
+        if (!isActiveWindow()) {
+            activateWindow();
+        }
+
+        raise();
+    }
+}
+
 void LoginWindow::onLoadError()
 {
     Q_D(LoginWindow);
@@ -519,7 +540,8 @@ void LoginWindow::Register(const QString &clientID,
     qDebug() << "register" << clientID << service << path << interface;
     auto dbusIfc = new QDBusInterface(service, path, interface);
 
-    if(!d->megs.contains(clientID)){
+    // Interface接口有效时才缓存列表
+    if (!d->megs.contains(clientID) && dbusIfc->isValid()) {
         d->megs.insert(clientID, dbusIfc);
     }
 }

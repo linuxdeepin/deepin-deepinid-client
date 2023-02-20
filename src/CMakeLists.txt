@@ -72,6 +72,15 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
+if(EXISTS "/usr/share/icons/hicolor/48x48/apps/uos_id.svg")
+    message(STATUS "app logo exists")
+else()
+    set(UOSID_LOGO ${PROJECT_SOURCE_DIR}/resource/web/uos_id.svg)
+    message(STATUS "app logo not exists")
+    # 安装图标文件
+    install(FILES ${UOSID_LOGO} DESTINATION /usr/share/icons/hicolor/48x48/apps)
+endif()
+
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/translations

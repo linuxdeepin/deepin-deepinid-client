@@ -16,6 +16,8 @@ QString authCodeURL(const QString &path,
                     const QString &callback,
                     const QString &state);
 
+QString windowSizeURL();
+
 QString getThemeName();
 
 QString getActiveColor();
