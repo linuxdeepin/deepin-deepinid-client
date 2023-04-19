@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_FLAGS "-Wl,-as-need -fPIE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -Wl,-as-need -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "-pie")
 
 add_definitions("-DQT_MESSAGELOGCONTEXT")
@@ -72,13 +72,13 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
-if(EXISTS "/usr/share/icons/hicolor/48x48/apps/uos_id.svg")
+if(EXISTS "/usr/share/icons/hicolor/scalable/apps/uos-id.svg")
     message(STATUS "app logo exists")
 else()
-    set(UOSID_LOGO ${PROJECT_SOURCE_DIR}/resource/web/uos_id.svg)
+    set(UOSID_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/uos-id.svg)
     message(STATUS "app logo not exists")
     # 安装图标文件
-    install(FILES ${UOSID_LOGO} DESTINATION /usr/share/icons/hicolor/48x48/apps)
+    install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
 endif()
 
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
@@ -90,9 +90,6 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/translations
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.deepin.deepinid.Client.service
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services/)
-
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/com.deepin.deepinid.Client.svg
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client

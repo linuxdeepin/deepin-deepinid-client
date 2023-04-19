@@ -89,6 +89,7 @@ public:
             // 调用DBUS接口前判断接口是否有效
             if (nullptr == clientCallback) {
                 qWarning() << "empty clientID" << resp.req.clientID;
+                q_ptr->windowloadingEnd = true;
                 return;
             }
 
@@ -166,6 +167,7 @@ public:
                 int height = clientObj["height"].toInt() + q->titlebar()->height();
                 qInfo() << "resize windows:" << width << height;
                 q->resize(width, height);
+                Dtk::Widget::moveToCenter(q);
             }
         });
     }
@@ -512,16 +514,20 @@ void LoginWindow::LoadPage(const QString &pageUrl)
 {
     setURL(pageUrl);
     load();
-    if (!isVisible()) {
-        moveToCenter();
-        show();
-        // 如果窗口最小化了，则还原显示
-        if (!isActiveWindow()) {
-            activateWindow();
-        }
 
-        raise();
+    DTK_NAMESPACE::Widget::moveToCenter(this);
+    if(windowState() == Qt::WindowMinimized) {
+        showNormal();
     }
+    else {
+        show();
+    }
+    // 如果窗口最小化了，则还原显示
+    if (!isActiveWindow()) {
+        activateWindow();
+    }
+
+    raise();
 }
 
 void LoginWindow::onLoadError()

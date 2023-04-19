@@ -37,10 +37,6 @@ public:
                     auto authReq = this->authQueue.first();
                     this->sess.authorize(authReq);
                 }
-                else {
-                    qInfo() << "there is no more authorize";
-                    qApp->quit();
-                }
             }
             else {
                 auto authReq = this->authQueue.first();

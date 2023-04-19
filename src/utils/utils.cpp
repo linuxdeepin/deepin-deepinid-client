@@ -71,6 +71,7 @@ QString authCodeURL(const QString &clientID,
         arg(deviceInfo.at(0)).
         arg(deviceInfo.at(1));
 
+    url += QString("&time=%1").arg(QDateTime::currentMSecsSinceEpoch());
     return url.remove(QRegExp("#"));
 }
 
@@ -129,6 +130,7 @@ QString authCodeURL(const QString &path,
         arg(deviceInfo.at(0)).
         arg(deviceInfo.at(1));
 
+    url += QString("&time=%1").arg(QDateTime::currentMSecsSinceEpoch());
     return url.remove(QRegExp("#"));
 }
 
