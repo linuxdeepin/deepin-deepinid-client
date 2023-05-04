@@ -20,7 +20,6 @@
 #include <QScreen>
 
 #include <DGuiApplicationHelper>
-#include <DApplication>
 #include <DTitlebar>
 #include <DWidgetUtil>
 #include <QNetworkReply>
@@ -78,6 +77,7 @@ public:
             }
 
             q->load();
+            Dtk::Widget::moveToCenter(q);
             q->show();
         });
 
@@ -358,7 +358,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
         if (!ok) {
             QNetworkConfigurationManager mgr;
-            QString oauthURI = "https://login.uniontech.com";
+            QString oauthURI = "https://login.deepin.org";
 
             if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
                 oauthURI = qgetenv("DEEPINID_OAUTH_URI");

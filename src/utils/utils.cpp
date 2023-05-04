@@ -47,7 +47,7 @@ QString authCodeURL(const QString &clientID,
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
 
     QStringList deviceInfo = getDeviceInfo();
-    QString oauthURI = "https://login.uniontech.com";
+    QString oauthURI = "https://login.deepin.org";
 
     if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
         oauthURI = qgetenv("DEEPINID_OAUTH_URI");
@@ -102,7 +102,7 @@ QString authCodeURL(const QString &path,
     templateURL += "&user_name=%16";
     templateURL += "&device_name=%17";
 
-    QString oauthURI = "https://login.uniontech.com";
+    QString oauthURI = "https://login.deepin.org";
     QStringList deviceInfo = getDeviceInfo();
 
     qDebug() << Q_FUNC_INFO << __LINE__ << qApp->applicationVersion();
@@ -285,10 +285,10 @@ QString windowSizeURL()
     static QString windowUrl;
     if(windowUrl.isEmpty()) {
         if(qEnvironmentVariableIsEmpty("DEEPIN_PRE")) {
-            windowUrl = QStringLiteral("https://login-pre.uniontech.com/view/client/config.json");
+            windowUrl = QStringLiteral("https://login-pre.deepin.org/view/client/config.json");
         }
         else {
-            windowUrl = QStringLiteral("https://login.uniontech.com/view/client/config.json");
+            windowUrl = QStringLiteral("https://login.deepin.org/view/client/config.json");
         }
     }
 
