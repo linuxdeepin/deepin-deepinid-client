@@ -8,7 +8,7 @@
 
 #include <DMainWindow>
 #include <QNetworkReply>
-
+#include "login_view.h"
 #include "ipc/dbuslogin1manager.h"
 #include <com_deepin_daemon_display.h>
 #include <com_deepin_dde_daemon_dock.h>
@@ -82,7 +82,7 @@ protected:
     bool pageLoadOK = true;
     DisplayInter *m_displayInter;
     DockInter *m_dockInter;
-
+    LoginView *m_loginView;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;
     QString clientID_last;

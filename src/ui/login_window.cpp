@@ -18,7 +18,7 @@
 #include <QDBusPendingCallWatcher>
 #include <QApplication>
 #include <QScreen>
-
+#include <QVBoxLayout>
 #include <DGuiApplicationHelper>
 #include <DTitlebar>
 #include <DWidgetUtil>
@@ -27,7 +27,6 @@
 #include "sync_client.h"
 #include "service/authentication_manager.h"
 #include "utils/utils.h"
-#include "login_view.h"
 #include "login_page.h"
 #include "ipc/deepinid_interface.h"
 #include "ipc/const.h"
@@ -59,8 +58,8 @@ public:
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
-            this->page->runJavaScript(
-                "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
+            //this->page->runJavaScript(
+            //    "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
 
             // sync-daemon在logout时会讲session清空，这里可以不做处理，不然第三方授权登录时会退出系统unionid
 //            this->client.cleanSession();
@@ -249,6 +248,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     , m_displayInter(new DisplayInter("com.deepin.daemon.Display", "/com/deepin/daemon/Display", QDBusConnection::sessionBus(), this))
     , m_dockInter(new DockInter("com.deepin.dde.daemon.Dock", "/com/deepin/dde/daemon/Dock", QDBusConnection::sessionBus(), this))
     , dd_ptr(new LoginWindowPrivate(this))
+    , m_loginView(new LoginView(this))
 {
     Q_D(LoginWindow);
 
@@ -318,11 +318,19 @@ LoginWindow::LoginWindow(QWidget *parent)
         this->windowloadingEnd = true;
     });
 
-    auto view = new LoginView(this);
-    view->setPage(d->page);
-    this->setCentralWidget(view);
-    view->setFocus();
-    view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+    QWidget *centerWidget = new QWidget;
+    QVBoxLayout *mainlayout = new QVBoxLayout;
+    mainlayout->setMargin(0);
+    centerWidget->setLayout(mainlayout);
+    setCentralWidget(centerWidget);
+
+    m_loginView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainlayout->addWidget(m_loginView);
+    //auto view = new LoginView(this);
+    m_loginView->setPage(d->page);
+    //this->setCentralWidget(view);
+    m_loginView->setFocus();
+    m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
 
 //    updateClient = new UpdateClient(this);
 //    updateClient->moveToThread(QCoreApplication::instance()->thread());
@@ -331,30 +339,29 @@ LoginWindow::LoginWindow(QWidget *parent)
             this, [=](DGuiApplicationHelper::ColorType themeType) {
         switch (themeType) {
         case DGuiApplicationHelper::DarkType:
-            view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
             break;
         case DGuiApplicationHelper::UnknownType:
         case DGuiApplicationHelper::LightType:
         default:
-            view->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
             break;
         }
     });
 
-    connect(view, &QWebEngineView::renderProcessTerminated,
-            [&]{QTimer::singleShot(0, [&] {
-            perror("page crashed");
-            view->reload(); }); }); //捕获renderProcessTerminated信号，重启render
+    connect(m_loginView, &QWebEngineView::renderProcessTerminated, [=](QWebEnginePage::RenderProcessTerminationStatus status, int exitCode){
+        qInfo() << "render process terminated:" << status << exitCode;
+    }); //捕获renderProcessTerminated信号，重启render
 
     connect(d->page, &QWebEnginePage::loadStarted, this, [=]()
     {
         this->pageLoadOK = true;
-        qDebug() << "ok";
+        qDebug() << "load started ok";
     });
     connect(d->page, &QWebEnginePage::loadFinished, this, [=](bool ok)
     {
         Q_D(LoginWindow);
-        qDebug() << ok;
+        qDebug() << "load finished:" << ok;
 
         if (!ok) {
             QNetworkConfigurationManager mgr;
@@ -380,7 +387,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     });
     connect(d->page, &QWebEnginePage::loadProgress, this, [=](int progress)
     {
-//        qDebug() << progress;
+        qDebug() << "load progress:" << progress;
     });
 
     connect(this, &LoginWindow::loadError, this, &LoginWindow::onLoadError, Qt::QueuedConnection);
@@ -449,7 +456,8 @@ void LoginWindow::load()
 {
     Q_D(LoginWindow);
     qDebug() << d->url;
-    d->page->load(QUrl(d->url));
+    //d->page->load(QUrl(d->url));
+    m_loginView->setUrl(d->url);
 }
 
 void LoginWindow::Authorize(const QString &clientID,
@@ -559,6 +567,7 @@ void LoginWindow::closeEvent(QCloseEvent *event)
         d->cancelAll(ErrCode::Err_CloseLoginWindow);
     else
         d->cancelAll(ErrCode::Err_CloseClient);
+
     QWidget::closeEvent(event);
 }
 

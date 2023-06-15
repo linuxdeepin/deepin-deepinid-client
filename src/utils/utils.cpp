@@ -284,7 +284,7 @@ QString windowSizeURL()
 {
     static QString windowUrl;
     if(windowUrl.isEmpty()) {
-        if(qEnvironmentVariableIsEmpty("DEEPIN_PRE")) {
+        if(!qEnvironmentVariableIsEmpty("DEEPIN_PRE")) {
             windowUrl = QStringLiteral("https://login-pre.deepin.org/view/client/config.json");
         }
         else {
