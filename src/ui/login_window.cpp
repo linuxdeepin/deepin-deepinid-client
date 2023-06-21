@@ -58,8 +58,8 @@ public:
         QObject::connect(&authMgr, &AuthenticationManager::requestLogin, parent, [=](const AuthorizeRequest &authReq)
         {
             // if need login,clean cookie;
-            //this->page->runJavaScript(
-            //    "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
+            this->page->runJavaScript(
+                "document.cookie.split(\";\").forEach(function(c) { document.cookie = c.replace(/^ +/, \"\").replace(/=.*/, \"=;expires=\" + new Date().toUTCString() + \";path=/\"); });");
 
             // sync-daemon在logout时会讲session清空，这里可以不做处理，不然第三方授权登录时会退出系统unionid
 //            this->client.cleanSession();
@@ -265,7 +265,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     QWebEngineProfile::defaultProfile()->scripts()->insert(script);
 
     this->titlebar()->setTitle("");
-    this->titlebar()->setIcon(QIcon(":/web/com.deepin.deepinid.Client.png"));
+    this->titlebar()->setIcon(QIcon::fromTheme("uos-id"));
     setWindowFlags(Qt::Window);
 
     auto flag = windowFlags();
@@ -563,6 +563,7 @@ void LoginWindow::Register(const QString &clientID,
 void LoginWindow::closeEvent(QCloseEvent *event)
 {
     Q_D(LoginWindow);
+    m_loginView->close();
     if(this->pageLoadOK)
         d->cancelAll(ErrCode::Err_CloseLoginWindow);
     else

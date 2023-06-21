@@ -79,7 +79,7 @@ int main(int argc, char **argv)
         QSurfaceFormat::setDefaultFormat(format);
     }
 
-    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
+    //qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process");
 
     Dtk::Widget::DApplication app(argc, argv);
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
