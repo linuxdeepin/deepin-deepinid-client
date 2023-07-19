@@ -31,6 +31,8 @@
 #include "ipc/deepinid_interface.h"
 #include "ipc/const.h"
 
+DGUI_USE_NAMESPACE
+
 namespace ddc
 {
 
