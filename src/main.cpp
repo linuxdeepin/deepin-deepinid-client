@@ -87,6 +87,8 @@ int main(int argc, char **argv)
     app.setApplicationDisplayName(QObject::tr("UOS ID"));
     app.setProductIcon(QIcon::fromTheme("uos-id"));
     app.setWindowIcon(QIcon::fromTheme("uos-id"));
+    app.setAttribute(Qt::AA_EnableHighDpiScaling);
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     Dtk::Core::DLogManager::registerConsoleAppender();
     Dtk::Core::DLogManager::registerFileAppender();
