@@ -73,7 +73,7 @@ qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
 
-set(UOSID_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/resource/web/uos-id.svg)
+set(UOSID_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/resource/icons/deepin-id.svg)
 message(STATUS "install logo path:${UOSID_LOGO}")
 # 安装图标文件
 install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)

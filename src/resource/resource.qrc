@@ -11,6 +11,6 @@
         <file>web/network_error.html</file>
         <file>web/service_error.html</file>
         <file>web/unknow_error.html</file>
-        <file>web/uos-id.svg</file>
+        <file>icons/deepin-id.svg</file>
     </qresource>
 </RCC>

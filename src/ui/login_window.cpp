@@ -267,7 +267,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     QWebEngineProfile::defaultProfile()->scripts()->insert(script);
 
     this->titlebar()->setTitle("");
-    this->titlebar()->setIcon(QIcon::fromTheme("uos-id"));
+    this->titlebar()->setIcon(QIcon::fromTheme("deepin-id"));
     setWindowFlags(Qt::Window);
 
     auto flag = windowFlags();

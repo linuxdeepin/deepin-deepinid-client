@@ -85,8 +85,8 @@ int main(int argc, char **argv)
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
     app.setOrganizationName("deepin");
     app.setApplicationDisplayName(QObject::tr("UOS ID"));
-    app.setProductIcon(QIcon::fromTheme("uos-id"));
-    app.setWindowIcon(QIcon::fromTheme("uos-id"));
+    app.setProductIcon(QIcon::fromTheme("deepin-id"));
+    app.setWindowIcon(QIcon::fromTheme("deepin-id"));
     app.setAttribute(Qt::AA_EnableHighDpiScaling);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     app.loadTranslator();
 
     ddc::LoginWindow lw;
-    lw.setWindowIcon(QIcon::fromTheme("uos-id"));
+    lw.setWindowIcon(QIcon::fromTheme("deepin-id"));
 
     auto sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService(Const::DBusService)) {
