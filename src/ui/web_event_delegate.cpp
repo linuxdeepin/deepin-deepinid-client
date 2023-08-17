@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2018-2023 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: LGPL-3.0-or-later
+
 #include "web_event_delegate.h"
 
 #include <QDebug>
