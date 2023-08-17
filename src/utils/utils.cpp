@@ -154,9 +154,9 @@ QString getThemeName()
 QString getActiveColor()
 {
     QDBusInterface appearance_ifc_(
-                "com.deepin.daemon.Appearance",
-                "/com/deepin/daemon/Appearance",
-                "com.deepin.daemon.Appearance",
+                "org.deepin.dde.Appearance1",
+                "/org/deepin/dde/Appearance1",
+                "org.deepin.dde.Appearance1",
                 QDBusConnection::sessionBus()
                 );
     qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
@@ -165,9 +165,9 @@ QString getActiveColor()
 
 QString getStandardFont(){
     QDBusInterface appearance_ifc_(
-                "com.deepin.daemon.Appearance",
-                "/com/deepin/daemon/Appearance",
-                "com.deepin.daemon.Appearance",
+                "org.deepin.dde.Appearance1",
+                "/org/deepin/dde/Appearance1",
+                "org.deepin.dde.Appearance1",
                 QDBusConnection::sessionBus()
                 );
     qDebug() << "connect" << "com.deepin.daemon.Appearance" << appearance_ifc_.isValid();
@@ -228,7 +228,7 @@ QString getDeviceType()
 QString getDeviceKernel()
 {
     QProcess process;
-    process.start("uname -r");
+    process.start("uname", { "-r" });
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     int idx = output.indexOf('\n');
