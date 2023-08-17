@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
 #include "utils.h"
+#include "hardwareinfo.h"
 
 #include <QLocale>
 #include <QDBusInterface>
@@ -13,10 +14,13 @@
 #include <QDBusReply>
 
 #include <DGuiApplicationHelper>
-
-#include <com_deepin_deepinid.h>
+#include <QDateTime>
+#include <QJsonObject>
 
 DCORE_USE_NAMESPACE
+
+#include <QDBusMetaType>
+#include <QDebug>
 
 namespace utils
 {

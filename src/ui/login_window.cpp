@@ -250,8 +250,6 @@ public:
 
 LoginWindow::LoginWindow(QWidget *parent)
     : Dtk::Widget::DMainWindow(parent)
-    , m_displayInter(new DisplayInter("org.deepin.dde.Display1", "/org/deepin/dde/Display1", QDBusConnection::sessionBus(), this))
-    , m_dockInter(new DockInter("org.deepin.dde.daemon.Dock1", "/org/deepin/dde/daemon/Dock1", QDBusConnection::sessionBus(), this))
     , dd_ptr(new LoginWindowPrivate(this))
     , m_loginView(new LoginView(this))
 {

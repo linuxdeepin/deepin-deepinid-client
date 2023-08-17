@@ -20,16 +20,12 @@ add_definitions("-DQT_MESSAGELOGCONTEXT")
 add_compile_definitions(CVERSION="${CVERSION}")
 
 # Qt Config
-find_package(Qt5 REQUIRED COMPONENTS
-  Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets)
 find_package(Qt5LinguistTools REQUIRED)
 
 find_package(Dtk REQUIRED COMPONENTS Widget)
 # DtkConfig
 # dbus_Frame
-
-# TODO: remove it !
-find_package(DFrameworkdbus)
 
 set(CLIENT_FILES
         ui/login_window.h
@@ -42,6 +38,8 @@ set(CLIENT_FILES
         ui/login_view.cpp
         utils/utils.cpp
         utils/utils.h
+        utils/hardwareinfo.h
+        utils/hardwareinfo.cpp
         ipc/const.h
         ipc/deepinid_interface.h
         ipc/deepinid_interface.cpp
@@ -94,8 +92,7 @@ target_link_libraries(deepin-deepinid-client
               Qt5::WebChannel
               Qt5::DBus
               Qt5::WebEngineWidgets
-              Dtk::Widget
-              ${DFrameworkdbus_LIBRARIES})
+              Dtk::Widget)
 
 add_dependencies(deepin-deepinid-client update-qm)
 
