@@ -20,8 +20,7 @@ add_definitions("-DQT_MESSAGELOGCONTEXT")
 add_compile_definitions(CVERSION="${CVERSION}")
 
 # Qt Config
-find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets LinguistTools)
 
 find_package(Dtk REQUIRED COMPONENTS Widget)
 # DtkConfig
