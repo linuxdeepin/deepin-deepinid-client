@@ -14,11 +14,7 @@
 #include <QNetworkReply>
 #include "login_view.h"
 #include "ipc/dbuslogin1manager.h"
-#include <com_deepin_daemon_display.h>
-#include <com_deepin_dde_daemon_dock.h>
 
-using DisplayInter = com::deepin::daemon::Display;
-using DockInter = com::deepin::dde::daemon::Dock;
 
 namespace ddc
 {
@@ -84,8 +80,6 @@ protected:
 
     bool windowloadingEnd = true;
     bool pageLoadOK = true;
-    DisplayInter *m_displayInter;
-    DockInter *m_dockInter;
     LoginView *m_loginView;
     QDBusInterface *appearance_ifc_;
     DBusLogin1Manager *login1_Manager_ifc_ = nullptr;

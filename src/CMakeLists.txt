@@ -8,33 +8,23 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -z noexecstack -Wl,-as-need -fPIE")
-set(CMAKE_EXE_LINKER_FLAGS "-pie")
+
+# Install settings
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX /usr)
+endif ()
+
+include(GNUInstallDirs)
 
 add_definitions("-DQT_MESSAGELOGCONTEXT")
 add_compile_definitions(CVERSION="${CVERSION}")
 
 # Qt Config
-find_package(PkgConfig REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5DBus REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5WebChannel CONFIG REQUIRED)
-find_package(Qt5WebEngine CONFIG REQUIRED)
-find_package(Qt5WebEngineCore CONFIG REQUIRED)
-find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
-find_package(Qt5Widgets CONFIG REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets LinguistTools)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
+find_package(Dtk REQUIRED COMPONENTS Widget)
 # DtkConfig
-pkg_search_module(DtkWidget REQUIRED dtkwidget)
-include_directories(${DtkWidget_INCLUDE_DIRS})
-
 # dbus_Frame
-pkg_search_module(DFrameworkDBus REQUIRED dframeworkdbus)
-include_directories(${DFrameworkDBus_INCLUDE_DIRS})
 
 set(CLIENT_FILES
         ui/login_window.h
@@ -47,6 +37,8 @@ set(CLIENT_FILES
         ui/login_view.cpp
         utils/utils.cpp
         utils/utils.h
+        utils/hardwareinfo.h
+        utils/hardwareinfo.cpp
         ipc/const.h
         ipc/deepinid_interface.h
         ipc/deepinid_interface.cpp
@@ -69,6 +61,7 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
         PROPERTIES
         OUTPUT_LOCATION
         ${CMAKE_BINARY_DIR}/translations)
+
 qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
@@ -76,20 +69,20 @@ add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 set(UOSID_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/resource/icons/deepin-id.svg)
 message(STATUS "install logo path:${UOSID_LOGO}")
 # 安装图标文件
-install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
+install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
-install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/translations
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-deepinid-client
         FILES_MATCHING
         PATTERN "*")
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.deepin.deepinid.Client.service
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dbus-1/services/)
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services/)
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-deepinid-client
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-deepinid-client
         FILES_MATCHING
         PATTERN "*")
 
@@ -98,8 +91,7 @@ target_link_libraries(deepin-deepinid-client
               Qt5::WebChannel
               Qt5::DBus
               Qt5::WebEngineWidgets
-              ${DtkWidget_LDFLAGS}
-              ${DFrameworkDBus_LIBRARIES})
+              Dtk::Widget)
 
 add_dependencies(deepin-deepinid-client update-qm)
 
