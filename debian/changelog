@@ -1,3 +1,10 @@
+deepin-deepinid-client (7.0.1) UNRELEASED; urgency=medium
+
+  * tidy up cmake, remote deprecate interface and lib
+  * fix license to community
+
+ -- chenhongtao <chenhongtao@deepin.org>  Mon, 28 Aug 2023 10:28:17 +0800
+
 deepin-deepinid-client (6.0.1) UNRELEASED; urgency=medium
 
   * update changelog
