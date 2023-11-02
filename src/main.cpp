@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     QString sessionType = qEnvironmentVariable("XDG_SESSION_TYPE");
     if(sessionType == Const::WAYLAND) {
         qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
-        Dtk::Widget::DApplication::loadDXcbPlugin();
 #ifndef __x86_64__
         QSurfaceFormat format;
         format.setRenderableType(QSurfaceFormat::OpenGLES);
@@ -95,7 +94,7 @@ int main(int argc, char **argv)
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     Dtk::Core::DLogManager::registerConsoleAppender();
-    Dtk::Core::DLogManager::registerFileAppender();
+    Dtk::Core::DLogManager::registerJournalAppender();
 
 #ifdef CVERSION
     QString verstr(CVERSION);
