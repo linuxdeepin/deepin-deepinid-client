@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     Dtk::Widget::DApplication app(argc, argv);
     app.setAttribute(Qt::AA_ForceRasterWidgets, false);
     app.setOrganizationName("deepin");
-    app.setApplicationDisplayName(QObject::tr("UOS ID"));
+    app.setApplicationDisplayName(QObject::tr("Deepin ID"));
     app.setProductIcon(QIcon::fromTheme("deepin-id"));
     app.setWindowIcon(QIcon::fromTheme("deepin-id"));
     app.setAttribute(Qt::AA_EnableHighDpiScaling);
