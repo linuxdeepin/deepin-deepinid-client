@@ -1,3 +1,10 @@
+deepin-deepinid-client (7.0.2) UNRELEASED; urgency=medium
+
+  * fix: dialog name should not be uosid
+  * chore: tidyup code
+
+ -- chenhongtao <chenhongtao@deepin.org>  Thu, 16 Nov 2023 17:12:47 +0800
+
 deepin-deepinid-client (7.0.1) UNRELEASED; urgency=medium
 
   * tidy up cmake, remote deprecate interface and lib
