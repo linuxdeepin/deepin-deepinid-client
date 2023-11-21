@@ -9,7 +9,7 @@ Copyright: None
 License: CC0-1.0
 
 # Packaging configuration
-Files: rpm/* debian/* archlinux/*
+Files: rpm/* debian/* archlinux/* **/*.conf
 Copyright: None
 License: CC0-1.0
 
@@ -46,6 +46,11 @@ Copyright: None
 License: CC0-1.0
 
 # sh
-Files: scripts/*
+Files: scripts/* lupdate.py
+Copyright: None
+License: CC0-1.0
+
+# configuration
+Files: .tx/config .tx/deepin.conf
 Copyright: None
 License: CC0-1.0
