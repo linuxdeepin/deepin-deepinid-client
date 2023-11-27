@@ -32,7 +32,7 @@ void App::TestStartAuthorize()
     argumentList << QStringList{};
      // TODO: replace with you own redirect uri
     argumentList << "http://test.com/oauth2";
-    // state must gen by server and verify on recive code on server
+    // state must gen by server and verify on receive code on server
     argumentList << "random_state";
     interface.callWithArgumentList(QDBus::NoBlock, "Authorize", argumentList);
 }
