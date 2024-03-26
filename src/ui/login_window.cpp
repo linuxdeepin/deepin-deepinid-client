@@ -151,7 +151,11 @@ public:
         Q_Q(LoginWindow);
         QString sizeurl = utils::windowSizeURL();
         sizeReply = manager.get(QNetworkRequest(QUrl(sizeurl)));
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QObject::connect(sizeReply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), q,
+    #else
+        QObject::connect(sizeReply, &QNetworkReply::errorOccurred, q,
+    #endif
               [=](QNetworkReply::NetworkError code){
             qInfo() << "reply error:" << code << ", " << sizeReply->errorString();
         });
@@ -286,8 +290,11 @@ LoginWindow::LoginWindow(QWidget *parent)
     wuri->setHeader({
                         {"X-Machine-ID", machineID.toLatin1()}
                     });
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QWebEngineProfile::defaultProfile()->setRequestInterceptor(wuri);
-
+    #else
+    QWebEngineProfile::defaultProfile()->setUrlRequestInterceptor(wuri);
+    #endif
     auto *channel = new QWebChannel(this);
     channel->registerObject("client", &d->client);
 
@@ -323,7 +330,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     QWidget *centerWidget = new QWidget;
     QVBoxLayout *mainlayout = new QVBoxLayout;
-    mainlayout->setMargin(0);
+    mainlayout->setContentsMargins(QMargins(0,0,0,0));
     centerWidget->setLayout(mainlayout);
     setCentralWidget(centerWidget);
 
@@ -333,7 +340,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     m_loginView->setPage(d->page);
     //this->setCentralWidget(view);
     m_loginView->setFocus();
-    m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+    m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().window().color());
 
 //    updateClient = new UpdateClient(this);
 //    updateClient->moveToThread(QCoreApplication::instance()->thread());
@@ -342,12 +349,12 @@ LoginWindow::LoginWindow(QWidget *parent)
             this, [=](DGuiApplicationHelper::ColorType themeType) {
         switch (themeType) {
         case DGuiApplicationHelper::DarkType:
-            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().window().color());
             break;
         case DGuiApplicationHelper::UnknownType:
         case DGuiApplicationHelper::LightType:
         default:
-            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().background().color());
+            m_loginView->page()->setBackgroundColor(DGuiApplicationHelper::instance()->applicationPalette().window().color());
             break;
         }
     });
@@ -367,14 +374,21 @@ LoginWindow::LoginWindow(QWidget *parent)
         qDebug() << "load finished:" << ok;
 
         if (!ok) {
-            QNetworkConfigurationManager mgr;
+
+
             QString oauthURI = "https://login.deepin.org";
 
             if (!qEnvironmentVariableIsEmpty("DEEPINID_OAUTH_URI")) {
                 oauthURI = qgetenv("DEEPINID_OAUTH_URI");
             }
 
+            #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+            QNetworkConfigurationManager mgr;
             if(!mgr.isOnline()) {
+            #else
+            QNetworkInformation *netInfo = QNetworkInformation::instance();
+            if(netInfo->reachability() != QNetworkInformation::Reachability::Online) {
+            #endif
                 d->page->load(QUrl(
                                   QString("qrc:/web/network_error.html?%1").
                                   arg(utils::getDeviceType()))

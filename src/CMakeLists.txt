@@ -20,9 +20,11 @@ add_definitions("-DQT_MESSAGELOGCONTEXT")
 add_compile_definitions(CVERSION="${CVERSION}")
 
 # Qt Config
-find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets LinguistTools)
-
-find_package(Dtk REQUIRED COMPONENTS Widget)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core DBus Gui WebChannel WebEngineCore WebEngineWidgets Widgets LinguistTools)
+if (${ENABLE_QT6})
+  find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core5Compat)
+endif()
+find_package(Dtk${DTK_VERSION_MAJOR} REQUIRED COMPONENTS Widget)
 # DtkConfig
 # dbus_Frame
 
@@ -62,7 +64,12 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
         OUTPUT_LOCATION
         ${CMAKE_BINARY_DIR}/translations)
 
-qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
+if (${ENABLE_QT6})  
+  qt6_add_translations(deepin-deepinid-client ${DMAN_TRANSLATION_TS})
+else() 
+  qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
+endif()
+
 add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 
 
@@ -86,12 +93,17 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resource/privacy
         FILES_MATCHING
         PATTERN "*")
 
-target_link_libraries(deepin-deepinid-client
-              Qt5::Widgets
-              Qt5::WebChannel
-              Qt5::DBus
-              Qt5::WebEngineWidgets
-              Dtk::Widget)
+set(COMMON_LIBS
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::WebChannel
+    Qt${QT_VERSION_MAJOR}::DBus
+    Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+    ${DtkWidget_LIBRARIES}
+)
+if (${ENABLE_QT6})
+  list(APPEND COMMON_LIBS Qt6::Core5Compat)
+endif()
+target_link_libraries(deepin-deepinid-client ${COMMON_LIBS})
 
 add_dependencies(deepin-deepinid-client update-qm)
 
