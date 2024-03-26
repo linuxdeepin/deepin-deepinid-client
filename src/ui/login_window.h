@@ -8,7 +8,11 @@
 #include <QDBusContext>
 #include <QHostInfo>
 #include <QDBusInterface>
-#include <QNetworkConfigurationManager>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  #include <QNetworkConfigurationManager>
+#else
+  #include <QNetworkInformation>
+#endif
 
 #include <DMainWindow>
 #include <QNetworkReply>

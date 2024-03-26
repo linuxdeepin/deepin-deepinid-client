@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <QtWebEngineWidgets/QWebEnginePage>
+#include <QWebEnginePage>
 #include <QWebEngineUrlRequestInterceptor>
 
 
