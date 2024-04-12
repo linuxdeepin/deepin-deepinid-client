@@ -65,7 +65,7 @@ set_source_files_properties(${DMAN_TRANSLATION_TS}
         ${CMAKE_BINARY_DIR}/translations)
 
 if (${ENABLE_QT6})  
-  qt6_add_translations(deepin-deepinid-client ${DMAN_TRANSLATION_TS})
+  qt_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 else() 
   qt5_add_translation(DMAN_TRANSLATION_QM ${DMAN_TRANSLATION_TS})
 endif()
