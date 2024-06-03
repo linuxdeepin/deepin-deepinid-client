@@ -25,6 +25,7 @@
 #include <DGuiApplicationHelper>
 #include <DTitlebar>
 #include <DWidgetUtil>
+#include <DPlatformWindowHandle>
 #include <QNetworkReply>
 #include <string>
 #include "sync_client.h"
@@ -589,4 +590,13 @@ void LoginWindow::closeEvent(QCloseEvent *event)
     QWidget::closeEvent(event);
 }
 
+bool LoginWindow::event(QEvent *event)
+{
+    // FIX #8853 notitlebar not work
+    // QWebEngineView in Qt6 will recreate window handle...
+    if (QEvent::WinIdChange == event->type())
+        Dtk::Widget::DPlatformWindowHandle handle(this);
+
+    return Dtk::Widget::DMainWindow::event(event);
+}
 }

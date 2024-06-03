@@ -81,6 +81,7 @@ protected Q_SLOTS:
 
 protected:
     void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
 
     bool windowloadingEnd = true;
     bool pageLoadOK = true;
