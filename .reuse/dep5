@@ -25,7 +25,7 @@ Copyright: UnionTech Software Technology Co., Ltd.
 License: LGPL-3.0-or-later
 
 # png svg
-Files: src/resource/icons/*.svg src/data/*.svg src/resource/***
+Files: src/resource/icons/*.svg src/data/*.svg src/resource/*** misc/icons/hicolor/128x128/apps/*.png
 Copyright: UnionTech Software Technology Co., Ltd.
 License: LGPL-3.0-or-later
 
