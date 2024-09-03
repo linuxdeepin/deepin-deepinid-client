@@ -387,8 +387,13 @@ LoginWindow::LoginWindow(QWidget *parent)
             QNetworkConfigurationManager mgr;
             if(!mgr.isOnline()) {
             #else
-            QNetworkInformation *netInfo = QNetworkInformation::instance();
-            if(netInfo->reachability() != QNetworkInformation::Reachability::Online) {
+            bool reachable = false;
+            if (QNetworkInformation::loadDefaultBackend()) {
+                qDebug() << "load network information default backend succeeded";
+                QNetworkInformation *netInfo = QNetworkInformation::instance();
+                reachable = netInfo->reachability() == QNetworkInformation::Reachability::Online;
+            }
+            if(!reachable) {
             #endif
                 d->page->load(QUrl(
                                   QString("qrc:/web/network_error.html?%1").
