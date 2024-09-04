@@ -1,3 +1,10 @@
+deepin-deepinid-client (7.0.6) unstable; urgency=medium
+
+  * fix: blank deepinid login dialog and exit abnormally when offline
+    fix: app icon is abscure at dpi 1.5 (#20)
+
+ -- Yutao Meng <mengyutao@deepin.org>  Wed, 04 Sep 2024 16:37:24 +0800
+
 deepin-deepinid-client (7.0.5) unstable; urgency=medium
 
   * chore: add application png icon replace of svg
