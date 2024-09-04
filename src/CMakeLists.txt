@@ -76,8 +76,13 @@ add_custom_target(update-qm DEPENDS ${DMAN_TRANSLATION_QM})
 set(UOSID_LOGO ${CMAKE_CURRENT_SOURCE_DIR}/resource/icons/deepin-id.svg)
 message(STATUS "install logo path:${UOSID_LOGO}")
 # 安装图标文件
-# install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/misc/icons DESTINATION ${CMAKE_INSTALL_DATADIR})
+if (${ENABLE_QT6})
+  # image of svg file display exception in Qt6, so image of png file is used.
+  install(DIRECTORY ${CMAKE_SOURCE_DIR}/misc/icons DESTINATION ${CMAKE_INSTALL_DATADIR})
+else()
+  # png file isn't support scale in Qt5, so svg file is used.
+  install(FILES ${UOSID_LOGO} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+endif()
 
 install(TARGETS deepin-deepinid-client DESTINATION ${CMAKE_INSTALL_BINDIR})
 
