@@ -1,3 +1,9 @@
+deepin-deepinid-client (7.0.7) unstable; urgency=medium
+
+  * fix: modify the title of a static HTML page
+
+ -- xionglinlin <xionglinlin@uniontech.com>  Wed, 11 Sep 2024 15:43:57 +0800
+
 deepin-deepinid-client (7.0.6) unstable; urgency=medium
 
   * fix: blank deepinid login dialog and exit abnormally when offline
