@@ -72,18 +72,21 @@ void Session::authorize(const AuthorizeRequest &authReq)
     });
 
     qDebug() << "get" << req.url() << req.rawHeader("X-DeepinID-SessionID");
-    connect(reply, &QNetworkReply::finished, this, [=]()
-    {
+    connect(reply, &QNetworkReply::finished, this, [=] {
         timer->stop();
         AuthorizeResponse resp;
         resp.success = true;
+        resp.isTimeout = false;
         resp.req = authReq;
 
         if (reply->error() != QNetworkReply::NoError) {
             qWarning() << reply->error();
             resp.success = false;
-        }
-        else {
+            // 当请求超时调用reply->abort()，会返回OperationCanceledError
+            if (reply->error() == QNetworkReply::OperationCanceledError) {
+                resp.isTimeout = true;
+            }
+        } else {
             auto data = reply->readAll();
             qDebug() << "resp" << data;
             auto json = QJsonDocument::fromJson(data).object();
@@ -94,7 +97,7 @@ void Session::authorize(const AuthorizeRequest &authReq)
                 resp.success = false;
             }
         }
-        qDebug() << "resp" << resp.success;
+        qDebug() << "resp" << resp.success << resp.isTimeout << resp.code << resp.state;
         Q_EMIT this->authorizeFinished(resp);
     });
 }

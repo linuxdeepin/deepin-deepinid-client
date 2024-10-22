@@ -29,6 +29,7 @@ class AuthorizeResponse
 {
 public:
     bool success;
+    bool isTimeout;
     QString code;
     QString state;
 
