@@ -12,6 +12,8 @@
 #include <QMutexLocker>
 #include <QApplication>
 
+#include <DDBusSender>
+
 namespace ddc
 {
 
@@ -43,8 +45,26 @@ public:
                 }
             }
             else {
-                auto authReq = this->authQueue.first();
-                Q_EMIT p->requestLogin(authReq);
+                if (resp.networkError) {
+                    DDBusSender()
+                        .service("org.deepin.dde.Notification1")
+                        .path("/org/deepin/dde/Notification1")
+                        .interface("org.deepin.dde.Notification1")
+                        .method(QString("Notify"))
+                        .arg(QString("deepin-deepinid-client"))
+                        .arg(static_cast<uint>(0))
+                        .arg(QString("deepin-id"))
+                        .arg(QString(QObject::tr("Synchronization of deepin ID login status failed")))
+                        .arg(QString(QObject::tr("Due to network fluctuations, your deepin ID login status could not be synchronized. Please log in manually or try again later")))
+                        .arg(QStringList())
+                        .arg(QVariantMap())
+                        .arg(5000)
+                        .call();
+                        qApp->quit();
+                } else {
+                    auto authReq = this->authQueue.first();
+                    Q_EMIT p->requestLogin(authReq);
+                }
             }
         });
     }

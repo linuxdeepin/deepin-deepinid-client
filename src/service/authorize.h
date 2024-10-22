@@ -29,6 +29,7 @@ class AuthorizeResponse
 {
 public:
     bool success;
+    bool networkError;
     QString code;
     QString state;
 

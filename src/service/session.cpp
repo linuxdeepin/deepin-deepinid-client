@@ -77,13 +77,14 @@ void Session::authorize(const AuthorizeRequest &authReq)
         timer->stop();
         AuthorizeResponse resp;
         resp.success = true;
+        resp.networkError = false;
         resp.req = authReq;
 
         if (reply->error() != QNetworkReply::NoError) {
             qWarning() << reply->error();
             resp.success = false;
-        }
-        else {
+            resp.networkError = true;
+        } else {
             auto data = reply->readAll();
             qDebug() << "resp" << data;
             auto json = QJsonDocument::fromJson(data).object();
@@ -94,7 +95,7 @@ void Session::authorize(const AuthorizeRequest &authReq)
                 resp.success = false;
             }
         }
-        qDebug() << "resp" << resp.success;
+        qDebug() << "resp" << resp.success << resp.networkError << resp.code << resp.state;
         Q_EMIT this->authorizeFinished(resp);
     });
 }
