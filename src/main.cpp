@@ -122,7 +122,10 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
-    app.loadTranslator();
+    QTranslator translator;
+    if (translator.load(QString("/usr/share/deepin-deepinid-client/translations/deepin-deepinid-client_%1").arg(QLocale().name()))) {
+        app.installTranslator(&translator);
+    }
 
     ddc::LoginWindow lw;
     lw.setWindowIcon(QIcon::fromTheme("deepin-id"));
