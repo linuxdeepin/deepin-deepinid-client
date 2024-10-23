@@ -1,3 +1,9 @@
+deepin-deepinid-client (7.0.8) unstable; urgency=medium
+
+  * fix: do not pop up the login window when the network fluctuates
+
+ -- xionglinlin <xionglinlin@uniontech.com>  Wed, 23 Oct 2024 15:18:37 +0800
+
 deepin-deepinid-client (7.0.7) unstable; urgency=medium
 
   * fix: modify the title of a static HTML page
