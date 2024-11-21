@@ -1,3 +1,9 @@
+deepin-deepinid-client (7.0.9) unstable; urgency=medium
+
+  * add depends libqt6webenginecore6-bin.
+
+ -- lichenggang <lichenggang@deepin.org>  Thu, 21 Nov 2024 20:42:07 +0800
+
 deepin-deepinid-client (7.0.8) unstable; urgency=medium
 
   * fix: do not pop up the login window when the network fluctuates
